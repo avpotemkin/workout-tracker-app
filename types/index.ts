@@ -6,11 +6,18 @@ export type Exercise = {
   weight?: number;
 };
 
+export type WorkoutDay = {
+  id: string;
+  name: string;
+  description?: string;
+  exercises: Exercise[];
+};
+
 export type Program = {
   id: string;
   name: string;
   description?: string;
-  exercises?: Exercise[];
+  days: WorkoutDay[];
   createdAt?: Date;
   updatedAt?: Date;
   isActive?: boolean
@@ -19,6 +26,7 @@ export type Program = {
 export type WorkoutSession = {
   id: string;
   programName: string;
+  dayName: string;
   exercises: WorkoutExercise[];
   startedAt: Date;
   isFinished: boolean;

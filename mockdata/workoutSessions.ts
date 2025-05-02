@@ -3,23 +3,39 @@ import { PROGRAMS } from './programs';
 
 export const ACTIVE_WORKOUT_SESSION: WorkoutSession | null = null;
 
-export const createWorkoutSessionFromProgram = (programId: string, programName: string): WorkoutSession => {
+export const createWorkoutSessionFromProgram = (programId: string, dayId: string): WorkoutSession => {
   // Find the program in our mock data
   const program = PROGRAMS.find(p => p.id === programId);
   
-  if (!program || !program.exercises) {
+  if (!program || !program.days) {
     // Fallback to an empty workout if program not found
     return {
       id: `session-${Date.now()}`,
-      programName: programName || "Custom Workout",
+      programName: "Custom Workout",
+      dayName: "Custom Day",
       exercises: [],
       startedAt: new Date(),
       isFinished: false
     };
   }
   
-  // Create workout exercises from program exercises
-  const workoutExercises: WorkoutExercise[] = program.exercises.map(exercise => {
+  // Find the specific day
+  const day = program.days.find(d => d.id === dayId);
+  
+  if (!day) {
+    // Fallback to an empty workout if day not found
+    return {
+      id: `session-${Date.now()}`,
+      programName: program.name,
+      dayName: "Custom Day",
+      exercises: [],
+      startedAt: new Date(),
+      isFinished: false
+    };
+  }
+  
+  // Create workout exercises from day exercises
+  const workoutExercises: WorkoutExercise[] = day.exercises.map(exercise => {
     // Create sets based on the exercise's set count
     const sets: WorkoutSet[] = Array.from({ length: exercise.sets }, (_, i) => ({
       id: `${exercise.id}-set-${i + 1}`,
@@ -40,6 +56,7 @@ export const createWorkoutSessionFromProgram = (programId: string, programName: 
   return {
     id: `session-${Date.now()}`,
     programName: program.name,
+    dayName: day.name,
     exercises: workoutExercises,
     startedAt: new Date(),
     isFinished: false
