@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
@@ -15,7 +14,8 @@ export default function ProgramDetailsScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
-  const program = PROGRAMS.find((p) => p.id === id);
+  const { programs } = useAppContext();
+  const program = programs.find((p) => p.id === id);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const { selectedProgram, setSelectedProgram } = useAppContext();
 
@@ -71,7 +71,11 @@ export default function ProgramDetailsScreen() {
         <TouchableOpacity
           style={[
             styles.selectProgramButton,
-            { backgroundColor: isProgramSelected ? colors.success : colors.accent }
+            {
+              backgroundColor: isProgramSelected
+                ? colors.success
+                : colors.accent,
+            },
           ]}
           onPress={handleSelectProgram}
         >
@@ -183,11 +187,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     marginBottom: 16,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   selectProgramButtonText: {
-    color: 'white',
-    fontWeight: '600',
+    color: "white",
+    fontWeight: "600",
   },
   dayTabs: {
     flexDirection: "row",

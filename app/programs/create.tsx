@@ -389,7 +389,7 @@ export default function CreateProgramScreen() {
             </View>
 
             <TouchableOpacity
-              style={[styles.addButton, { backgroundColor: tintColor }]}
+              style={[styles.addButton, { backgroundColor: colors.accent }]}
               onPress={handleAddExercise}
             >
               <ThemedText style={styles.buttonText}>Add Exercise</ThemedText>
@@ -598,7 +598,9 @@ export default function CreateProgramScreen() {
               styles.saveButton,
               {
                 backgroundColor:
-                  name.trim() && days.length > 0 ? tintColor : `${tintColor}80`,
+                  name.trim() && days.length > 0
+                    ? colors.accent
+                    : `${colors.accent}80`,
               },
             ]}
             onPress={handleSave}
