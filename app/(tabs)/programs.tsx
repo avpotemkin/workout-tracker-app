@@ -1,44 +1,40 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Program } from "@/types";
+import React from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useRouter } from "expo-router";
+import { PROGRAMS } from "@/mockdata/programs";
+import { Program } from "@/types";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
-
-  const [programs] = useState<Program[]>([
-    { id: "1", name: "Full Body" },
-    { id: "2", name: "5×5" },
-    { id: "3", name: "Push, Pull, Legs" },
-  ]);
+  const router = useRouter();
 
   const renderProgramItem = ({ item }: { item: Program }) => (
-    <View style={styles.programCard}>
+    <TouchableOpacity 
+      style={styles.programCard} 
+      onPress={() => router.push(`/programs/${item.id}`)}
+    >
       <ThemedText style={styles.programName}>{item.name}</ThemedText>
+    </TouchableOpacity>
+  );
+
+  const Header = () => (
+    <View style={styles.header}>
+      <ThemedText style={styles.title}>Programs</ThemedText>
     </View>
   );
 
-  const Header = () => {
-    return (
-      <View style={styles.header}>
-        <ThemedText style={styles.title}>Programs</ThemedText>
-      </View>
-    );
-  };
-
-  const ProgramList = () => {
-    return (
-      <FlatList
-        data={programs}
-        keyExtractor={(item) => item.id}
-        renderItem={renderProgramItem}
-        contentContainerStyle={{ paddingBottom: 32 }}
-      />
-    );
-  };
+  const ProgramList = () => (
+    <FlatList
+      data={PROGRAMS}
+      keyExtractor={(item) => item.id}
+      renderItem={renderProgramItem}
+      contentContainerStyle={{ paddingBottom: 32 }}
+    />
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
