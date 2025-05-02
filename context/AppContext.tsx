@@ -5,18 +5,30 @@ import { PROGRAMS } from '@/mockdata/programs';
 type AppContextType = {
   selectedProgram: Program | null;
   setSelectedProgram: (program: Program | null) => void;
+  programs: Program[];
+  addProgram: (program: Program) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  const [programs, setPrograms] = useState<Program[]>(PROGRAMS);
   // Default to the first program
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(
-    PROGRAMS.length > 0 ? PROGRAMS[0] : null
+    programs.length > 0 ? programs[0] : null
   );
 
+  const addProgram = (program: Program) => {
+    setPrograms((prevPrograms) => [...prevPrograms, program]);
+  };
+
   return (
-    <AppContext.Provider value={{ selectedProgram, setSelectedProgram }}>
+    <AppContext.Provider value={{ 
+      selectedProgram, 
+      setSelectedProgram, 
+      programs, 
+      addProgram 
+    }}>
       {children}
     </AppContext.Provider>
   );

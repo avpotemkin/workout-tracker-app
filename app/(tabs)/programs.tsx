@@ -4,7 +4,6 @@ import React from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { PROGRAMS } from "@/mockdata/programs";
 import { Program } from "@/types";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -13,9 +12,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
+  const tintColor = useThemeColor({}, "tint");
   const { colors } = useAppTheme();
   const router = useRouter();
-  const { selectedProgram } = useAppContext();
+  const { selectedProgram, programs } = useAppContext();
 
   const renderProgramItem = ({ item }: { item: Program }) => {
     const isSelected = selectedProgram?.id === item.id;
@@ -65,10 +65,16 @@ export default function ProgramsScreen() {
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <ThemedText style={styles.title}>Programs</ThemedText>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => router.push("/programs/create")}
+          >
+            <Ionicons name="add" size={24} color={tintColor} />
+          </TouchableOpacity>
         </View>
 
         <FlatList
-          data={PROGRAMS}
+          data={programs}
           keyExtractor={(item) => item.id}
           renderItem={renderProgramItem}
           contentContainerStyle={styles.listContainer}
@@ -89,10 +95,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 16,
     marginBottom: 24,
+    position: "relative",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+  },
+  addButton: {
+    position: "absolute",
+    right: 0,
+    padding: 8,
   },
   listContainer: {
     paddingBottom: 32,
