@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Alert,
-  Vibration,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, Alert, Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { WorkoutSession, WorkoutExercise, WorkoutSet } from "@/types";
+import { WorkoutSession } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
+import { WorkoutHeader } from "@/components/workout/WorkoutHeader";
+import { WorkoutProgress } from "@/components/workout/WorkoutProgress";
+import { ExerciseList } from "@/components/workout/ExerciseList";
 
 export default function WorkoutSessionScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{ programId: string; workoutId: string }>();
+  const params = useLocalSearchParams<{
+    programId: string;
+    workoutId: string;
+  }>();
 
   // State for workout session
   const [workoutSession, setWorkoutSession] = useState<WorkoutSession | null>(
@@ -44,14 +43,14 @@ export default function WorkoutSessionScreen() {
     // Expand the first exercise by default
     if (session.exercises.length > 0) {
       setExpandedExercises({ [session.exercises[0].id]: true });
-      
+
       // Log exercise details for debugging
       session.exercises.forEach((exercise, index) => {
         console.log(`Exercise ${index}:`, {
           id: exercise.id,
           name: exercise.name,
           sets: exercise.sets.length,
-          setDetails: exercise.sets
+          setDetails: exercise.sets,
         });
       });
     }
@@ -161,87 +160,6 @@ export default function WorkoutSessionScreen() {
     );
   };
 
-  // Render a single set
-  const renderSet = (
-    exercise: WorkoutExercise,
-    set: WorkoutSet,
-    exerciseIndex: number,
-    setIndex: number
-  ) => {
-    const isCurrentSet =
-      exerciseIndex === currentExerciseIndex && setIndex === currentSetIndex;
-
-    return (
-      <View
-        key={set.id}
-        style={[styles.setRow, isCurrentSet && styles.currentSetRow]}
-      >
-        <View style={styles.setNumberContainer}>
-          <ThemedText style={styles.setNumber}>{set.setNumber}</ThemedText>
-        </View>
-
-        <View style={styles.weightContainer}>
-          <ThemedText style={styles.valueText}>{set.weight}</ThemedText>
-          <ThemedText style={styles.inputLabel}>kg</ThemedText>
-        </View>
-
-        <View style={styles.repsContainer}>
-          <ThemedText style={styles.valueText}>{set.reps}</ThemedText>
-          <ThemedText style={styles.inputLabel}>reps</ThemedText>
-        </View>
-
-        <TouchableOpacity
-          style={[
-            styles.checkButton,
-            set.isCompleted && { backgroundColor: colors.accent },
-          ]}
-          onPress={() => toggleSetCompletion(exerciseIndex, setIndex)}
-        >
-          <Ionicons name="checkmark" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  // Render an exercise with its sets
-  const renderExercise = (exercise: WorkoutExercise, index: number) => {
-    const isExpanded = expandedExercises[exercise.id] || Object.keys(expandedExercises).length === 0;
-
-    return (
-      <View
-        key={exercise.id}
-        style={[styles.exerciseCard, { backgroundColor: colors.card }]}
-      >
-        <TouchableOpacity
-          style={styles.exerciseHeader}
-          onPress={() => toggleExerciseExpansion(exercise.id)}
-        >
-          <ThemedText style={styles.exerciseName}>{exercise.name}</ThemedText>
-          <Ionicons
-            name={isExpanded ? "chevron-up" : "chevron-down"}
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-
-        {isExpanded && (
-          <View style={styles.setsContainer}>
-            <View style={styles.setHeaderRow}>
-              <ThemedText style={styles.setHeaderText}>Set</ThemedText>
-              <ThemedText style={styles.setHeaderText}>Weight</ThemedText>
-              <ThemedText style={styles.setHeaderText}>Reps</ThemedText>
-              <ThemedText style={styles.setHeaderText}>Done</ThemedText>
-            </View>
-
-            {exercise.sets.map((set, setIndex) =>
-              renderSet(exercise, set, index, setIndex)
-            )}
-          </View>
-        )}
-      </View>
-    );
-  };
-
   // If no workout session is available yet
   if (!workoutSession) {
     return (
@@ -259,46 +177,27 @@ export default function WorkoutSessionScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => {
-              router.back();
-            }}
-          >
-            <Ionicons name="arrow-back" size={24} color="white" />
-          </TouchableOpacity>
-
-          <ThemedText style={styles.workoutTitle}>
-            {workoutSession.programName}
-          </ThemedText>
-        </View>
+        <WorkoutHeader
+          onBackPress={() => router.back()}
+          title={workoutSession.programName}
+        />
 
         {/* Progress Bar */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBarBackground}>
-            <View
-              style={[
-                styles.progressBarFill,
-                {
-                  width: `${progress.percentage}%`,
-                  backgroundColor: colors.accent,
-                },
-              ]}
-            />
-          </View>
-          <ThemedText style={styles.progressText}>
-            {progress.completed} of {progress.total} sets completed (
-            {progress.percentage}%)
-          </ThemedText>
-        </View>
+        <WorkoutProgress
+          completed={progress.completed}
+          total={progress.total}
+          percentage={progress.percentage}
+        />
 
         {/* Exercise List */}
-        <ScrollView style={styles.exerciseList}>
-          {workoutSession.exercises.map((exercise, index) =>
-            renderExercise(exercise, index)
-          )}
-        </ScrollView>
+        <ExerciseList
+          exercises={workoutSession.exercises}
+          expandedExercises={expandedExercises}
+          toggleExerciseExpansion={toggleExerciseExpansion}
+          toggleSetCompletion={toggleSetCompletion}
+          currentExerciseIndex={currentExerciseIndex}
+          currentSetIndex={currentSetIndex}
+        />
 
         {/* Finish Button */}
         <TouchableOpacity
@@ -323,120 +222,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  workoutTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "center",
-    marginRight: 40, // To center the title accounting for the back button
-  },
-  progressContainer: {
-    marginBottom: 16,
-  },
-  progressBarBackground: {
-    height: 8,
-    backgroundColor: "#333",
-    borderRadius: 4,
-    overflow: "hidden",
-  },
-  progressBarFill: {
-    height: "100%",
-  },
-  progressText: {
-    marginTop: 8,
-    textAlign: "center",
-    fontSize: 14,
-  },
-  exerciseList: {
-    flex: 1,
-  },
-  exerciseCard: {
-    borderRadius: 10,
-    marginBottom: 16,
-    overflow: "hidden",
-  },
-  exerciseHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 16,
-  },
-  exerciseName: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  setsContainer: {
-    borderTopWidth: 1,
-    borderTopColor: "#444",
-  },
-  setHeaderRow: {
-    flexDirection: "row",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#444",
-  },
-  setHeaderText: {
-    fontSize: 14,
-    fontWeight: "600",
-    flex: 1,
-    textAlign: "center",
-  },
-  setRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#444",
-  },
-  currentSetRow: {
-    backgroundColor: "#3a3a3a",
-  },
-  setNumberContainer: {
-    width: 30,
-    alignItems: "center",
-  },
-  setNumber: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  weightContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  repsContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  valueText: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginRight: 4,
-  },
-  inputLabel: {
-    fontSize: 14,
-  },
-  checkButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#555",
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 10,
   },
   finishButton: {
     paddingVertical: 16,
