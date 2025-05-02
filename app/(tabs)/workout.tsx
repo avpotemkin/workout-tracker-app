@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { PROGRAMS } from "@/mockdata/programs";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function WorkoutScreen() {
   const backgroundColor = useThemeColor({}, "background");
+  const { colors } = useAppTheme();
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
+
+  // Get the first program with days for quick start
+  const defaultProgram = PROGRAMS.find((p) => p.days && p.days.length > 0);
 
   // This would be replaced with actual session management logic
   useEffect(() => {
@@ -23,10 +29,19 @@ export default function WorkoutScreen() {
   }, []);
 
   const handleStartWorkout = () => {
-    // Using object notation for proper typing
-    router.push({
-      pathname: "/(workout)/session",
-    });
+    // If we have a default program, go to program selection
+    if (defaultProgram) {
+      router.push({
+        pathname: "/(workout)/session",
+        params: {
+          programId: defaultProgram.id,
+          dayId: defaultProgram.days[0].id,
+        },
+      });
+    } else {
+      // Fallback to programs list if no default program
+      router.push("/(tabs)/programs");
+    }
   };
 
   const handleResumeWorkout = () => {
@@ -36,19 +51,38 @@ export default function WorkoutScreen() {
     });
   };
 
+  const handleSelectProgram = () => {
+    router.push("/(tabs)/programs");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         <ThemedText style={styles.title}>Workout</ThemedText>
 
         {activeSession ? (
-          <TouchableOpacity style={styles.button} onPress={handleResumeWorkout}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.accent }]}
+            onPress={handleResumeWorkout}
+          >
             <ThemedText style={styles.buttonText}>Resume Workout</ThemedText>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={handleStartWorkout}>
-            <ThemedText style={styles.buttonText}>Start Workout</ThemedText>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.accent }]}
+              onPress={handleStartWorkout}
+            >
+              <ThemedText style={styles.buttonText}>Quick Start</ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.card }]}
+              onPress={handleSelectProgram}
+            >
+              <ThemedText style={styles.buttonText}>Select Program</ThemedText>
+            </TouchableOpacity>
+          </View>
         )}
       </ThemedView>
     </SafeAreaView>
@@ -67,12 +101,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 40,
   },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
   button: {
-    backgroundColor: "#FF4500", // Accent color (can be adjusted to match app theme)
+    width: "80%",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
     marginVertical: 10,
+    alignItems: "center",
   },
   buttonText: {
     color: "white",

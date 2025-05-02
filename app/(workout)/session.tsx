@@ -8,7 +8,7 @@ import {
   Vibration,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
@@ -21,6 +21,7 @@ export default function WorkoutSessionScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
+  const params = useLocalSearchParams<{ programId: string; dayId: string }>();
 
   // State for workout session
   const [workoutSession, setWorkoutSession] = useState<WorkoutSession | null>(
@@ -33,14 +34,18 @@ export default function WorkoutSessionScreen() {
   >({});
 
   useEffect(() => {
-    const session = createWorkoutSessionFromProgram("1", "Full Body");
+    // Get the program and day IDs from the URL params
+    const programId = params.programId || "1";
+    const dayId = params.dayId || "1-day-1";
+
+    const session = createWorkoutSessionFromProgram(programId, dayId);
     setWorkoutSession(session);
 
     // Expand the first exercise by default
     if (session.exercises.length > 0) {
       setExpandedExercises({ [session.exercises[0].id]: true });
     }
-  }, []);
+  }, [params.programId, params.dayId]);
 
   // Toggle exercise expansion
   const toggleExerciseExpansion = (exerciseId: string) => {
@@ -193,7 +198,10 @@ export default function WorkoutSessionScreen() {
     const isExpanded = expandedExercises[exercise.id];
 
     return (
-      <View key={exercise.id} style={[styles.exerciseCard, { backgroundColor: colors.card }]}>
+      <View
+        key={exercise.id}
+        style={[styles.exerciseCard, { backgroundColor: colors.card }]}
+      >
         <TouchableOpacity
           style={styles.exerciseHeader}
           onPress={() => toggleExerciseExpansion(exercise.id)}
@@ -262,7 +270,10 @@ export default function WorkoutSessionScreen() {
             <View
               style={[
                 styles.progressBarFill,
-                { width: `${progress.percentage}%`, backgroundColor: colors.accent },
+                {
+                  width: `${progress.percentage}%`,
+                  backgroundColor: colors.accent,
+                },
               ]}
             />
           </View>
