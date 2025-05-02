@@ -172,7 +172,7 @@ export default function WorkoutSessionScreen() {
 
         <View style={styles.weightContainer}>
           <ThemedText style={styles.valueText}>{set.weight}</ThemedText>
-          <ThemedText style={styles.inputLabel}>lbs</ThemedText>
+          <ThemedText style={styles.inputLabel}>kg</ThemedText>
         </View>
 
         <View style={styles.repsContainer}>

@@ -287,7 +287,7 @@ export default function CreateProgramScreen() {
                 <View style={styles.detailItem}>
                   <ThemedText style={styles.detailLabel}>Weight</ThemedText>
                   <ThemedText style={styles.detailValue}>
-                    {exercise.weight} lbs
+                    {exercise.weight} kg
                   </ThemedText>
                 </View>
               )}
@@ -380,7 +380,7 @@ export default function CreateProgramScreen() {
                     backgroundColor: colors.background,
                   },
                 ]}
-                placeholder="Weight (lbs)"
+                placeholder="Weight (kg)"
                 placeholderTextColor={`${textColor}80`}
                 value={exerciseWeight}
                 onChangeText={setExerciseWeight}

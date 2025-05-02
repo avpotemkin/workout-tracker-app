@@ -142,7 +142,7 @@ export default function ProgramDetailsScreen() {
                   <View style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel}>Weight</ThemedText>
                     <ThemedText style={styles.detailValue}>
-                      {exercise.weight} lbs
+                      {exercise.weight} kg
                     </ThemedText>
                   </View>
                 )}
