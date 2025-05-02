@@ -6,7 +6,7 @@ export const ACTIVE_WORKOUT_SESSION: WorkoutSession | null = null;
 export const createWorkoutSessionFromProgram = (programId: string, workoutId?: string): WorkoutSession => {
   // Find the program in our mock data
   const program = PROGRAMS.find((p: Program) => p.id === programId);
-  const workout = program?.workouts.find((w: Workout) => w.id === workoutId);
+  const workout = program?.workouts.find((w: Workout) => w.id === workoutId || w.name === workoutId);
   
   if (!program || !workout) {
     // Fallback to an empty workout if program not found

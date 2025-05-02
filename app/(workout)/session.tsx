@@ -21,7 +21,7 @@ export default function WorkoutSessionScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{ programId: string; dayId: string }>();
+  const params = useLocalSearchParams<{ programId: string; workoutId: string }>();
 
   // State for workout session
   const [workoutSession, setWorkoutSession] = useState<WorkoutSession | null>(
@@ -36,16 +36,26 @@ export default function WorkoutSessionScreen() {
   useEffect(() => {
     // Get the program and day IDs from the URL params
     const programId = params.programId || "1";
-    const dayId = params.dayId || "1-day-1";
+    const workoutId = params.workoutId || "1-day-1";
 
-    const session = createWorkoutSessionFromProgram(programId, dayId);
+    const session = createWorkoutSessionFromProgram(programId, workoutId);
     setWorkoutSession(session);
 
     // Expand the first exercise by default
     if (session.exercises.length > 0) {
       setExpandedExercises({ [session.exercises[0].id]: true });
+      
+      // Log exercise details for debugging
+      session.exercises.forEach((exercise, index) => {
+        console.log(`Exercise ${index}:`, {
+          id: exercise.id,
+          name: exercise.name,
+          sets: exercise.sets.length,
+          setDetails: exercise.sets
+        });
+      });
     }
-  }, [params.programId, params.dayId]);
+  }, [params.programId, params.workoutId]);
 
   // Toggle exercise expansion
   const toggleExerciseExpansion = (exerciseId: string) => {
@@ -195,7 +205,7 @@ export default function WorkoutSessionScreen() {
 
   // Render an exercise with its sets
   const renderExercise = (exercise: WorkoutExercise, index: number) => {
-    const isExpanded = expandedExercises[exercise.id];
+    const isExpanded = expandedExercises[exercise.id] || Object.keys(expandedExercises).length === 0;
 
     return (
       <View
