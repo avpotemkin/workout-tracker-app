@@ -34,7 +34,7 @@ export default function ProgramsScreen() {
         <ThemedText
           style={[styles.exerciseCountText, { color: colors.accent }]}
         >
-          {item.exercises?.length || 0} exercises
+          {item.days.length} {item.days.length === 1 ? 'day' : 'days'}
         </ThemedText>
       </View>
     </TouchableOpacity>

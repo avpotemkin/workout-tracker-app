@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,19 +15,20 @@ export default function ProgramDetailsScreen() {
   const { colors } = useAppTheme();
   const router = useRouter();
   const program = PROGRAMS.find((p) => p.id === id);
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
 
   if (!program) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor }}>
         <ThemedView style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.backButton}
               onPress={() => router.back()}
             >
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
-            
+
             <ThemedText style={styles.headerTitle}>Not Found</ThemedText>
           </View>
           <ThemedText>Program not found</ThemedText>
@@ -36,24 +37,19 @@ export default function ProgramDetailsScreen() {
     );
   }
 
-  const startWorkout = () => {
-    router.push({
-      pathname: "/(workout)/session",
-      params: { programId: program.id }
-    });
-  };
+  const selectedDay = program.days[selectedDayIndex];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={() => router.back()}
           >
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
-          
+
           <ThemedText style={styles.headerTitle}>{program.name}</ThemedText>
         </View>
 
@@ -63,10 +59,42 @@ export default function ProgramDetailsScreen() {
           </ThemedText>
         )}
 
+        {/* Day tabs */}
+        <View style={styles.dayTabs}>
+          {program.days.map((day, index) => (
+            <TouchableOpacity
+              key={day.id}
+              style={[
+                styles.dayTab,
+                selectedDayIndex === index
+                  ? { backgroundColor: colors.accent }
+                  : { backgroundColor: colors.card },
+              ]}
+              onPress={() => setSelectedDayIndex(index)}
+            >
+              <ThemedText
+                style={[
+                  styles.dayTabText,
+                  selectedDayIndex === index ? { color: "white" } : {},
+                ]}
+              >
+                {day.name}
+              </ThemedText>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Day description if available */}
+        {selectedDay.description && (
+          <ThemedText style={styles.dayDescription}>
+            {selectedDay.description}
+          </ThemedText>
+        )}
+
         <ScrollView style={styles.exerciseList}>
-          {program.exercises?.map((exercise) => (
-            <View 
-              key={exercise.id} 
+          {selectedDay.exercises.map((exercise) => (
+            <View
+              key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
               <ThemedText style={styles.exerciseName}>
@@ -75,29 +103,28 @@ export default function ProgramDetailsScreen() {
               <View style={styles.exerciseDetails}>
                 <View style={styles.detailItem}>
                   <ThemedText style={styles.detailLabel}>Sets</ThemedText>
-                  <ThemedText style={styles.detailValue}>{exercise.sets}</ThemedText>
+                  <ThemedText style={styles.detailValue}>
+                    {exercise.sets}
+                  </ThemedText>
                 </View>
                 <View style={styles.detailItem}>
                   <ThemedText style={styles.detailLabel}>Reps</ThemedText>
-                  <ThemedText style={styles.detailValue}>{exercise.reps}</ThemedText>
+                  <ThemedText style={styles.detailValue}>
+                    {exercise.reps}
+                  </ThemedText>
                 </View>
                 {exercise.weight && (
                   <View style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel}>Weight</ThemedText>
-                    <ThemedText style={styles.detailValue}>{exercise.weight} lbs</ThemedText>
+                    <ThemedText style={styles.detailValue}>
+                      {exercise.weight} lbs
+                    </ThemedText>
                   </View>
                 )}
               </View>
             </View>
           ))}
         </ScrollView>
-
-        <TouchableOpacity 
-          style={[styles.startButton, { backgroundColor: colors.accent }]}
-          onPress={startWorkout}
-        >
-          <ThemedText style={styles.startButtonText}>Start Workout</ThemedText>
-        </TouchableOpacity>
       </ThemedView>
     </SafeAreaView>
   );
@@ -127,7 +154,29 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     textAlign: "center",
-    marginBottom: 24,
+    marginBottom: 16,
+    opacity: 0.7,
+  },
+  dayTabs: {
+    flexDirection: "row",
+    paddingBottom: 10,
+  },
+  dayTab: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  dayTabText: {
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  dayDescription: {
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 16,
+    fontStyle: "italic",
     opacity: 0.7,
   },
   exerciseList: {
@@ -157,17 +206,6 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 16,
-    fontWeight: "600",
-  },
-  startButton: {
-    paddingVertical: 16,
-    borderRadius: 10,
-    marginVertical: 16,
-    alignItems: "center",
-  },
-  startButtonText: {
-    color: "white",
-    fontSize: 18,
     fontWeight: "600",
   },
 });
