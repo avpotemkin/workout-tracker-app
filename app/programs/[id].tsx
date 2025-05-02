@@ -8,6 +8,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppContext } from "@/context/AppContext";
 
 export default function ProgramDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,6 +17,7 @@ export default function ProgramDetailsScreen() {
   const router = useRouter();
   const program = PROGRAMS.find((p) => p.id === id);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const { selectedProgram, setSelectedProgram } = useAppContext();
 
   if (!program) {
     return (
@@ -38,6 +40,13 @@ export default function ProgramDetailsScreen() {
   }
 
   const selectedDay = program.days[selectedDayIndex];
+  const isProgramSelected = selectedProgram?.id === program.id;
+
+  const handleSelectProgram = () => {
+    setSelectedProgram(program);
+    // Show feedback to the user
+    alert(`${program.name} has been set as your active program`);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -58,6 +67,18 @@ export default function ProgramDetailsScreen() {
             {program.description}
           </ThemedText>
         )}
+
+        <TouchableOpacity
+          style={[
+            styles.selectProgramButton,
+            { backgroundColor: isProgramSelected ? colors.success : colors.accent }
+          ]}
+          onPress={handleSelectProgram}
+        >
+          <ThemedText style={styles.selectProgramButtonText}>
+            {isProgramSelected ? "Current Program" : "Set as Current Program"}
+          </ThemedText>
+        </TouchableOpacity>
 
         {/* Day tabs */}
         <View style={styles.dayTabs}>
@@ -157,6 +178,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     opacity: 0.7,
   },
+  selectProgramButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 16,
+    alignSelf: 'center',
+  },
+  selectProgramButtonText: {
+    color: 'white',
+    fontWeight: '600',
+  },
   dayTabs: {
     flexDirection: "row",
     paddingBottom: 10,
@@ -200,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: 12,
     opacity: 0.7,
     marginBottom: 4,
   },

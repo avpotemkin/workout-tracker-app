@@ -7,15 +7,17 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAppContext } from "@/context/AppContext";
 
 export default function WorkoutScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
+  const { selectedProgram } = useAppContext();
 
-  // Get the first program with days for quick start
-  const defaultProgram = PROGRAMS.find((p) => p.days && p.days.length > 0);
+  // Get the first program with days for quick start if no program is selected
+  const defaultProgram = selectedProgram || PROGRAMS.find((p) => p.days && p.days.length > 0);
 
   // This would be replaced with actual session management logic
   useEffect(() => {
@@ -29,8 +31,8 @@ export default function WorkoutScreen() {
   }, []);
 
   const handleStartWorkout = () => {
-    // If we have a default program, go to program selection
-    if (defaultProgram) {
+    // If we have a default program, start the first day of the selected program
+    if (defaultProgram && defaultProgram.days.length > 0) {
       router.push({
         pathname: "/(workout)/session",
         params: {
@@ -73,7 +75,11 @@ export default function WorkoutScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText style={styles.buttonText}>Quick Start</ThemedText>
+              <ThemedText style={styles.buttonText}>
+                {selectedProgram 
+                  ? `Quick Start: ${selectedProgram.name}` 
+                  : "Quick Start"}
+              </ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity

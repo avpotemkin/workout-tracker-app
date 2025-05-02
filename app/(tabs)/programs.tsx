@@ -8,37 +8,57 @@ import { PROGRAMS } from "@/mockdata/programs";
 import { Program } from "@/types";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useAppContext } from "@/context/AppContext";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
+  const { selectedProgram } = useAppContext();
 
-  const renderProgramItem = ({ item }: { item: Program }) => (
-    <TouchableOpacity
-      style={[styles.programCard, { backgroundColor: colors.card }]}
-      onPress={() => router.push(`/programs/${item.id}`)}
-    >
-      <ThemedText style={styles.programName}>{item.name}</ThemedText>
-      {item.description && (
-        <ThemedText style={styles.programDescription}>
-          {item.description}
-        </ThemedText>
-      )}
-      <View
+  const renderProgramItem = ({ item }: { item: Program }) => {
+    const isSelected = selectedProgram?.id === item.id;
+    
+    return (
+      <TouchableOpacity
         style={[
-          styles.exerciseCount,
-          { backgroundColor: `${colors.accent}20` },
+          styles.programCard, 
+          { backgroundColor: colors.card },
+          isSelected && styles.selectedProgramCard
         ]}
+        onPress={() => router.push(`/programs/${item.id}`)}
       >
-        <ThemedText
-          style={[styles.exerciseCountText, { color: colors.accent }]}
+        <View style={styles.programHeader}>
+          <ThemedText style={styles.programName}>{item.name}</ThemedText>
+          {isSelected && (
+            <View style={[styles.selectedBadge, { backgroundColor: colors.accent }]}>
+              <Ionicons name="checkmark-circle" size={16} color="white" />
+              <ThemedText style={styles.selectedText}>Active</ThemedText>
+            </View>
+          )}
+        </View>
+        
+        {item.description && (
+          <ThemedText style={styles.programDescription}>
+            {item.description}
+          </ThemedText>
+        )}
+        <View
+          style={[
+            styles.exerciseCount,
+            { backgroundColor: `${colors.accent}20` },
+          ]}
         >
-          {item.days.length} {item.days.length === 1 ? 'day' : 'days'}
-        </ThemedText>
-      </View>
-    </TouchableOpacity>
-  );
+          <ThemedText
+            style={[styles.exerciseCountText, { color: colors.accent }]}
+          >
+            {item.days.length} {item.days.length === 1 ? 'day' : 'days'}
+          </ThemedText>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -82,10 +102,34 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
   },
+  selectedProgramCard: {
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+  },
+  programHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
   programName: {
     fontSize: 18,
     fontWeight: "600",
-    marginBottom: 8,
+    flex: 1,
+  },
+  selectedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    marginLeft: 8,
+  },
+  selectedText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '600',
+    marginLeft: 4,
   },
   programDescription: {
     fontSize: 14,
