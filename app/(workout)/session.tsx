@@ -15,10 +15,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { WorkoutSession, WorkoutExercise, WorkoutSet } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function WorkoutSessionScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const accentColor = "#FF4500"; // Accent color for buttons, timers, etc.
+  const { colors } = useAppTheme();
   const router = useRouter();
 
   // State for workout session
@@ -130,6 +131,8 @@ export default function WorkoutSessionScreen() {
         {
           text: "Finish",
           onPress: () => {
+            // Mark session as finished
+            // This would be where we'd save the workout data to storage
             if (workoutSession) {
               setWorkoutSession({
                 ...workoutSession,
@@ -175,7 +178,7 @@ export default function WorkoutSessionScreen() {
         <TouchableOpacity
           style={[
             styles.checkButton,
-            set.isCompleted && { backgroundColor: accentColor },
+            set.isCompleted && { backgroundColor: colors.accent },
           ]}
           onPress={() => toggleSetCompletion(exerciseIndex, setIndex)}
         >
@@ -190,7 +193,7 @@ export default function WorkoutSessionScreen() {
     const isExpanded = expandedExercises[exercise.id];
 
     return (
-      <View key={exercise.id} style={styles.exerciseCard}>
+      <View key={exercise.id} style={[styles.exerciseCard, { backgroundColor: colors.card }]}>
         <TouchableOpacity
           style={styles.exerciseHeader}
           onPress={() => toggleExerciseExpansion(exercise.id)}
@@ -259,7 +262,7 @@ export default function WorkoutSessionScreen() {
             <View
               style={[
                 styles.progressBarFill,
-                { width: `${progress.percentage}%` },
+                { width: `${progress.percentage}%`, backgroundColor: colors.accent },
               ]}
             />
           </View>
@@ -278,7 +281,7 @@ export default function WorkoutSessionScreen() {
 
         {/* Finish Button */}
         <TouchableOpacity
-          style={styles.finishButton}
+          style={[styles.finishButton, { backgroundColor: colors.accent }]}
           onPress={handleFinishWorkout}
         >
           <ThemedText style={styles.finishButtonText}>
@@ -326,7 +329,6 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: "100%",
-    backgroundColor: "#FF4500", // Accent color
   },
   progressText: {
     marginTop: 8,
@@ -337,7 +339,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   exerciseCard: {
-    backgroundColor: "#333",
     borderRadius: 10,
     marginBottom: 16,
     overflow: "hidden",
@@ -417,7 +418,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   finishButton: {
-    backgroundColor: "#FF4500", // Accent color
     paddingVertical: 16,
     borderRadius: 10,
     marginVertical: 16,
