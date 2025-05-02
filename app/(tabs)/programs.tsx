@@ -19,26 +19,28 @@ export default function ProgramsScreen() {
 
   const renderProgramItem = ({ item }: { item: Program }) => {
     const isSelected = selectedProgram?.id === item.id;
-    
+
     return (
       <TouchableOpacity
         style={[
-          styles.programCard, 
+          styles.programCard,
           { backgroundColor: colors.card },
-          isSelected && styles.selectedProgramCard
+          isSelected && styles.selectedProgramCard,
         ]}
         onPress={() => router.push(`/programs/${item.id}`)}
       >
         <View style={styles.programHeader}>
           <ThemedText style={styles.programName}>{item.name}</ThemedText>
           {isSelected && (
-            <View style={[styles.selectedBadge, { backgroundColor: colors.accent }]}>
+            <View
+              style={[styles.selectedBadge, { backgroundColor: colors.accent }]}
+            >
               <Ionicons name="checkmark-circle" size={16} color="white" />
               <ThemedText style={styles.selectedText}>Active</ThemedText>
             </View>
           )}
         </View>
-        
+
         {item.description && (
           <ThemedText style={styles.programDescription}>
             {item.description}
@@ -53,7 +55,7 @@ export default function ProgramsScreen() {
           <ThemedText
             style={[styles.exerciseCountText, { color: colors.accent }]}
           >
-            {item.days.length} {item.days.length === 1 ? 'day' : 'days'}
+            {item.workouts.length} {item.workouts.length === 1 ? "workout" : "workouts"}
           </ThemedText>
         </View>
       </TouchableOpacity>
@@ -116,12 +118,12 @@ const styles = StyleSheet.create({
   },
   selectedProgramCard: {
     borderWidth: 2,
-    borderColor: '#4CAF50',
+    borderColor: "#4CAF50",
   },
   programHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
   },
   programName: {
@@ -130,17 +132,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   selectedBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
     marginLeft: 8,
   },
   selectedText: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 4,
   },
   programDescription: {

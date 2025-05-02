@@ -17,7 +17,7 @@ export default function WorkoutScreen() {
   const { selectedProgram } = useAppContext();
 
   // Get the first program with days for quick start if no program is selected
-  const defaultProgram = selectedProgram || PROGRAMS.find((p) => p.days && p.days.length > 0);
+  const defaultProgram = selectedProgram || PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
 
   // This would be replaced with actual session management logic
   useEffect(() => {
@@ -32,12 +32,12 @@ export default function WorkoutScreen() {
 
   const handleStartWorkout = () => {
     // If we have a default program, start the first day of the selected program
-    if (defaultProgram && defaultProgram.days.length > 0) {
+    if (defaultProgram && defaultProgram.workouts.length > 0) {
       router.push({
         pathname: "/(workout)/session",
         params: {
           programId: defaultProgram.id,
-          dayId: defaultProgram.days[0].id,
+          workoutId: defaultProgram.workouts[0].id,
         },
       });
     } else {

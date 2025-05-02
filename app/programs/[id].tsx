@@ -8,6 +8,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
+import { Workout, Exercise } from "@/types";
 
 export default function ProgramDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,7 +17,7 @@ export default function ProgramDetailsScreen() {
   const router = useRouter();
   const { programs } = useAppContext();
   const program = programs.find((p) => p.id === id);
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(0);
   const { selectedProgram, setSelectedProgram } = useAppContext();
 
   if (!program) {
@@ -39,7 +40,7 @@ export default function ProgramDetailsScreen() {
     );
   }
 
-  const selectedDay = program.days[selectedDayIndex];
+  const selectedWorkout = program.workouts[selectedWorkoutIndex];
   const isProgramSelected = selectedProgram?.id === program.id;
 
   const handleSelectProgram = () => {
@@ -84,40 +85,40 @@ export default function ProgramDetailsScreen() {
           </ThemedText>
         </TouchableOpacity>
 
-        {/* Day tabs */}
+        {/* Workout tabs */}
         <View style={styles.dayTabs}>
-          {program.days.map((day, index) => (
+          {program.workouts.map((workout: Workout, index: number) => (
             <TouchableOpacity
-              key={day.id}
+              key={workout.id}
               style={[
                 styles.dayTab,
-                selectedDayIndex === index
+                selectedWorkoutIndex === index
                   ? { backgroundColor: colors.accent }
                   : { backgroundColor: colors.card },
               ]}
-              onPress={() => setSelectedDayIndex(index)}
+              onPress={() => setSelectedWorkoutIndex(index)}
             >
               <ThemedText
                 style={[
                   styles.dayTabText,
-                  selectedDayIndex === index ? { color: "white" } : {},
+                  selectedWorkoutIndex === index ? { color: "white" } : {},
                 ]}
               >
-                {day.name}
+                {workout.name}
               </ThemedText>
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Day description if available */}
-        {selectedDay.description && (
+        {/* Workout description if available */}
+        {selectedWorkout.description && (
           <ThemedText style={styles.dayDescription}>
-            {selectedDay.description}
+            {selectedWorkout.description}
           </ThemedText>
         )}
 
         <ScrollView style={styles.exerciseList}>
-          {selectedDay.exercises.map((exercise) => (
+          {selectedWorkout.exercises.map((exercise: Exercise) => (
             <View
               key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}

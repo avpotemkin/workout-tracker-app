@@ -5,7 +5,7 @@ export const PROGRAMS: Program[] = [
     id: "1", 
     name: "Full Body",
     description: "A comprehensive full-body workout targeting all major muscle groups",
-    days: [
+    workouts: [
       {
         id: "1-day-1",
         name: "Full Body A",
@@ -33,7 +33,7 @@ export const PROGRAMS: Program[] = [
     id: "2", 
     name: "5×5",
     description: "Strength training program focusing on compound lifts",
-    days: [
+    workouts: [
       {
         id: "2-day-1",
         name: "Workout A",
@@ -61,7 +61,7 @@ export const PROGRAMS: Program[] = [
     id: "3", 
     name: "Push, Pull, Legs",
     description: "Split routine targeting different muscle groups on different days",
-    days: [
+    workouts: [
       {
         id: "3-day-1",
         name: "Push",

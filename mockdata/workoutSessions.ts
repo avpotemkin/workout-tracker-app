@@ -1,18 +1,19 @@
-import { WorkoutSession, WorkoutExercise, WorkoutSet } from '@/types';
+import { WorkoutSession, WorkoutExercise, WorkoutSet, Program, Workout, Exercise } from '@/types';
 import { PROGRAMS } from './programs';
 
 export const ACTIVE_WORKOUT_SESSION: WorkoutSession | null = null;
 
-export const createWorkoutSessionFromProgram = (programId: string, dayId: string): WorkoutSession => {
+export const createWorkoutSessionFromProgram = (programId: string, workoutId?: string): WorkoutSession => {
   // Find the program in our mock data
-  const program = PROGRAMS.find(p => p.id === programId);
+  const program = PROGRAMS.find((p: Program) => p.id === programId);
+  const workout = program?.workouts.find((w: Workout) => w.id === workoutId);
   
-  if (!program || !program.days) {
+  if (!program || !workout) {
     // Fallback to an empty workout if program not found
     return {
       id: `session-${Date.now()}`,
-      programName: "Custom Workout",
-      dayName: "Custom Day",
+      programName: program?.name || "Custom Workout",
+      dayName: workout?.name || "Custom Workout",
       exercises: [],
       startedAt: new Date(),
       isFinished: false
@@ -20,9 +21,9 @@ export const createWorkoutSessionFromProgram = (programId: string, dayId: string
   }
   
   // Find the specific day
-  const day = program.days.find(d => d.id === dayId);
+  // Workout already found earlier
   
-  if (!day) {
+  if (!workout) {
     // Fallback to an empty workout if day not found
     return {
       id: `session-${Date.now()}`,
@@ -35,7 +36,7 @@ export const createWorkoutSessionFromProgram = (programId: string, dayId: string
   }
   
   // Create workout exercises from day exercises
-  const workoutExercises: WorkoutExercise[] = day.exercises.map(exercise => {
+  const workoutExercises: WorkoutExercise[] = workout?.exercises.map((exercise: Exercise) => {
     // Create sets based on the exercise's set count
     const sets: WorkoutSet[] = Array.from({ length: exercise.sets }, (_, i) => ({
       id: `${exercise.id}-set-${i + 1}`,
@@ -56,7 +57,7 @@ export const createWorkoutSessionFromProgram = (programId: string, dayId: string
   return {
     id: `session-${Date.now()}`,
     programName: program.name,
-    dayName: day.name,
+    dayName: workout.name,
     exercises: workoutExercises,
     startedAt: new Date(),
     isFinished: false

@@ -17,13 +17,13 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
-import { Exercise, WorkoutDay } from "@/types";
+import { Exercise, Workout, Program } from "@/types";
 
 export default function CreateProgramScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [nameError, setNameError] = useState("");
-  const [days, setDays] = useState<WorkoutDay[]>([]);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [currentDayIndex, setCurrentDayIndex] = useState<number | null>(null);
   const [showDayForm, setShowDayForm] = useState(false);
   const [dayName, setDayName] = useState("");
@@ -97,25 +97,25 @@ export default function CreateProgramScreen() {
     return true;
   };
 
-  const handleAddDay = () => {
+  const handleAddWorkout = () => {
     if (!validateDayForm()) return;
 
-    const newDay: WorkoutDay = {
+    const newWorkout: Workout = {
       id: `day-${Date.now()}`,
       name: dayName.trim(),
       description: dayDescription.trim() || undefined,
       exercises: [],
     };
 
-    setDays([...days, newDay]);
-    setCurrentDayIndex(days.length);
+    setWorkouts([...workouts, newWorkout]);
+    setCurrentDayIndex(workouts.length);
     setDayName("");
     setDayDescription("");
     setShowDayForm(false);
     setShowExerciseForm(true);
   };
 
-  const handleAddExercise = () => {
+  const handleAddExerciseToWorkout = (workoutId: string) => {
     if (!validateExerciseForm()) return;
     if (currentDayIndex === null) return;
 
@@ -127,9 +127,10 @@ export default function CreateProgramScreen() {
       weight: exerciseWeight.trim() ? Number(exerciseWeight) : undefined,
     };
 
-    const updatedDays = [...days];
-    updatedDays[currentDayIndex].exercises.push(newExercise);
-    setDays(updatedDays);
+    const workoutIndex = workouts.findIndex((w) => w.id === workoutId);
+    const updatedWorkouts = [...workouts];
+    updatedWorkouts[workoutIndex].exercises.push(newExercise);
+    setWorkouts(updatedWorkouts);
 
     // Clear exercise form
     setExerciseName("");
@@ -138,21 +139,24 @@ export default function CreateProgramScreen() {
     setExerciseWeight("");
   };
 
-  const handleDeleteExercise = (dayIndex: number, exerciseIndex: number) => {
-    const updatedDays = [...days];
-    updatedDays[dayIndex].exercises.splice(exerciseIndex, 1);
-    setDays(updatedDays);
+  const handleDeleteExercise = (
+    workoutIndex: number,
+    exerciseIndex: number
+  ) => {
+    const updatedWorkouts = [...workouts];
+    updatedWorkouts[workoutIndex].exercises.splice(exerciseIndex, 1);
+    setWorkouts(updatedWorkouts);
   };
 
-  const handleDeleteDay = (dayIndex: number) => {
-    const updatedDays = [...days];
-    updatedDays.splice(dayIndex, 1);
-    setDays(updatedDays);
+  const handleDeleteWorkout = (workoutIndex: number) => {
+    const updatedWorkouts = [...workouts];
+    updatedWorkouts.splice(workoutIndex, 1);
+    setWorkouts(updatedWorkouts);
 
-    if (currentDayIndex === dayIndex) {
+    if (currentDayIndex === workoutIndex) {
       setCurrentDayIndex(null);
       setShowExerciseForm(false);
-    } else if (currentDayIndex !== null && currentDayIndex > dayIndex) {
+    } else if (currentDayIndex !== null && currentDayIndex > workoutIndex) {
       setCurrentDayIndex(currentDayIndex - 1);
     }
   };
@@ -160,7 +164,7 @@ export default function CreateProgramScreen() {
   const handleSave = () => {
     if (!validateProgramForm()) return;
 
-    if (days.length === 0) {
+    if (workouts.length === 0) {
       Alert.alert(
         "No Workout Days",
         "Please add at least one workout day to your program"
@@ -168,16 +172,16 @@ export default function CreateProgramScreen() {
       return;
     }
 
-    const newProgram = {
+    const program: Program = {
       id: Date.now().toString(),
       name: name.trim(),
       description: description.trim() || undefined,
-      days: days,
+      workouts: workouts,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    addProgram(newProgram);
+    addProgram(program);
     router.back();
   };
 
@@ -188,9 +192,9 @@ export default function CreateProgramScreen() {
         showsHorizontalScrollIndicator={false}
         style={styles.dayTabsContainer}
       >
-        {days.map((day, index) => (
+        {workouts.map((workout, index) => (
           <TouchableOpacity
-            key={day.id}
+            key={workout.id}
             style={[
               styles.dayTab,
               currentDayIndex === index
@@ -209,11 +213,11 @@ export default function CreateProgramScreen() {
                 currentDayIndex === index ? { color: "white" } : {},
               ]}
             >
-              {day.name}
+              {workout.name}
             </ThemedText>
             <TouchableOpacity
               style={styles.deleteButton}
-              onPress={() => handleDeleteDay(index)}
+              onPress={() => handleDeleteWorkout(index)}
             >
               <Ionicons
                 name="close-circle"
@@ -240,22 +244,22 @@ export default function CreateProgramScreen() {
   };
 
   const renderExercises = () => {
-    if (currentDayIndex === null || !days[currentDayIndex]) return null;
+    if (currentDayIndex === null || !workouts[currentDayIndex]) return null;
 
-    const currentDay = days[currentDayIndex];
+    const currentWorkout = workouts[currentDayIndex];
 
     return (
       <View style={styles.exercisesContainer}>
         <View style={styles.dayHeader}>
-          <ThemedText style={styles.dayTitle}>{currentDay.name}</ThemedText>
-          {currentDay.description && (
+          <ThemedText style={styles.dayTitle}>{currentWorkout.name}</ThemedText>
+          {currentWorkout.description && (
             <ThemedText style={styles.dayDescription}>
-              {currentDay.description}
+              {currentWorkout.description}
             </ThemedText>
           )}
         </View>
 
-        {currentDay.exercises.map((exercise, index) => (
+        {currentWorkout.exercises.map((exercise, index) => (
           <View
             key={exercise.id}
             style={[styles.exerciseCard, { backgroundColor: colors.card }]}
@@ -390,7 +394,7 @@ export default function CreateProgramScreen() {
 
             <TouchableOpacity
               style={[styles.addButton, { backgroundColor: colors.accent }]}
-              onPress={handleAddExercise}
+              onPress={() => currentDayIndex !== null && handleAddExerciseToWorkout(workouts[currentDayIndex].id)}
             >
               <ThemedText style={styles.buttonText}>Add Exercise</ThemedText>
             </TouchableOpacity>
@@ -476,7 +480,7 @@ export default function CreateProgramScreen() {
 
         <TouchableOpacity
           style={[styles.addButton, { backgroundColor: colors.accent }]}
-          onPress={handleAddDay}
+          onPress={handleAddWorkout}
         >
           <ThemedText style={styles.buttonText}>Add Day</ThemedText>
         </TouchableOpacity>
@@ -562,7 +566,7 @@ export default function CreateProgramScreen() {
                 </ThemedText>
               </View>
 
-              {days.length > 0 ? (
+              {workouts.length > 0 ? (
                 <>
                   {renderDayTabs()}
                   {renderExercises()}
@@ -598,13 +602,13 @@ export default function CreateProgramScreen() {
               styles.saveButton,
               {
                 backgroundColor:
-                  name.trim() && days.length > 0
+                  name.trim() && workouts.length > 0
                     ? colors.accent
                     : `${colors.accent}80`,
               },
             ]}
             onPress={handleSave}
-            disabled={!name.trim() || days.length === 0}
+            disabled={!name.trim() || workouts.length === 0}
           >
             <ThemedText style={styles.saveButtonText}>Save Program</ThemedText>
           </TouchableOpacity>

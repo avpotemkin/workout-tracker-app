@@ -6,7 +6,7 @@ export type Exercise = {
   weight?: number;
 };
 
-export type WorkoutDay = {
+export type Workout = {
   id: string;
   name: string;
   description?: string;
@@ -17,7 +17,7 @@ export type Program = {
   id: string;
   name: string;
   description?: string;
-  days: WorkoutDay[];
+  workouts: Workout[];
   createdAt?: Date;
   updatedAt?: Date;
   isActive?: boolean
