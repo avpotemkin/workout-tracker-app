@@ -2,7 +2,7 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
-import { WorkoutExercise } from "@/types";
+import { WorkoutExercise, WorkoutSet } from "@/types";
 import { SetList } from "./SetList";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useChevronRotation } from "@/animations/chevronRotation";
@@ -14,6 +14,7 @@ type ExerciseCardProps = {
   currentExerciseIndex: number;
   currentSetIndex: number;
   onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
+  onUpdateSet: (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => void;
   exerciseIndex: number;
 };
 
@@ -24,6 +25,7 @@ export function ExerciseCard({
   currentExerciseIndex,
   currentSetIndex,
   onToggleSetCompletion,
+  onUpdateSet,
   exerciseIndex,
 }: ExerciseCardProps) {
   const { colors } = useAppTheme();
@@ -46,6 +48,7 @@ export function ExerciseCard({
           currentExerciseIndex={currentExerciseIndex}
           currentSetIndex={currentSetIndex}
           onToggleSetCompletion={onToggleSetCompletion}
+          onUpdateSet={onUpdateSet}
           exerciseIndex={exerciseIndex}
         />
       )}

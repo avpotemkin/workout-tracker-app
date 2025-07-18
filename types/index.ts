@@ -46,3 +46,38 @@ export type WorkoutSet = {
   reps: number;
   isCompleted: boolean;
 };
+
+// History types
+export type WorkoutHistory = {
+  id: string;
+  programName: string;
+  dayName: string;
+  exercises: WorkoutExercise[];
+  startedAt: Date;
+  finishedAt: Date;
+  duration: number; // in minutes
+  totalSets: number;
+  totalReps: number;
+  totalVolume: number; // weight * reps
+};
+
+export type HistoryFilter = {
+  program?: string;
+  exercise?: string;
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+};
+
+export type HistoryStats = {
+  totalWorkouts: number;
+  totalDuration: number;
+  totalVolume: number;
+  averageWorkoutDuration: number;
+  strongestLifts: Array<{
+    exercise: string;
+    maxWeight: number;
+    date: Date;
+  }>;
+};

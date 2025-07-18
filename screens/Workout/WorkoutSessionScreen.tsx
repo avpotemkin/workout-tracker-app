@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { WorkoutSession } from "@/types";
+import { WorkoutSession, WorkoutSet } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -88,6 +88,23 @@ export function WorkoutSessionScreen({
       // Move to next set or exercise
       moveToNextSet(exerciseIndex, setIndex);
     }
+  };
+
+  // Update set values (weight, reps)
+  const updateSet = (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => {
+    if (!workoutSession) return;
+
+    const updatedExercises = [...workoutSession.exercises];
+    const currentSet = updatedExercises[exerciseIndex].sets[setIndex];
+    
+    // Update the set with new values
+    Object.assign(currentSet, updates);
+
+    // Update workout session
+    setWorkoutSession({
+      ...workoutSession,
+      exercises: updatedExercises,
+    });
   };
 
   // Move to next set or exercise
@@ -202,6 +219,7 @@ export function WorkoutSessionScreen({
           expandedExercises={expandedExercises}
           toggleExerciseExpansion={toggleExerciseExpansion}
           toggleSetCompletion={toggleSetCompletion}
+          onUpdateSet={updateSet}
           currentExerciseIndex={currentExerciseIndex}
           currentSetIndex={currentSetIndex}
         />

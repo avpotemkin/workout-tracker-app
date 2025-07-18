@@ -9,6 +9,7 @@ type SetListProps = {
   currentExerciseIndex: number;
   currentSetIndex: number;
   onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
+  onUpdateSet: (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => void;
   exerciseIndex: number;
 };
 
@@ -17,6 +18,7 @@ export function SetList({
   currentExerciseIndex, 
   currentSetIndex, 
   onToggleSetCompletion,
+  onUpdateSet,
   exerciseIndex
 }: SetListProps) {
   return (
@@ -33,6 +35,7 @@ export function SetList({
           key={set.id}
           set={set}
           onToggle={() => onToggleSetCompletion(exerciseIndex, setIndex)}
+          onUpdateSet={(updates) => onUpdateSet(exerciseIndex, setIndex, updates)}
           isCurrent={
             exerciseIndex === currentExerciseIndex && 
             setIndex === currentSetIndex

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
 import { WorkoutSet } from '@/types';
@@ -8,11 +8,44 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 type SetRowProps = {
   set: WorkoutSet;
   onToggle: () => void;
+  onUpdateSet: (updates: Partial<WorkoutSet>) => void;
   isCurrent: boolean;
 };
 
-export function SetRow({ set, onToggle, isCurrent }: SetRowProps) {
+export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
   const { colors } = useAppTheme();
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
+  const [isEditingReps, setIsEditingReps] = useState(false);
+  const [tempWeight, setTempWeight] = useState(set.weight.toString());
+  const [tempReps, setTempReps] = useState(set.reps.toString());
+
+  const handleWeightSubmit = () => {
+    const newWeight = parseFloat(tempWeight);
+    if (!isNaN(newWeight) && newWeight > 0) {
+      onUpdateSet({ weight: newWeight });
+    } else {
+      setTempWeight(set.weight.toString());
+    }
+    setIsEditingWeight(false);
+  };
+
+  const handleRepsSubmit = () => {
+    const newReps = parseInt(tempReps);
+    if (!isNaN(newReps) && newReps > 0) {
+      onUpdateSet({ reps: newReps });
+    } else {
+      setTempReps(set.reps.toString());
+    }
+    setIsEditingReps(false);
+  };
+
+  const handleWeightBlur = () => {
+    handleWeightSubmit();
+  };
+
+  const handleRepsBlur = () => {
+    handleRepsSubmit();
+  };
 
   return (
     <View
@@ -25,15 +58,47 @@ export function SetRow({ set, onToggle, isCurrent }: SetRowProps) {
         <ThemedText style={styles.setNumber}>{set.setNumber}</ThemedText>
       </View>
 
-      <View style={styles.weightContainer}>
-        <ThemedText style={styles.valueText}>{set.weight}</ThemedText>
+      <TouchableOpacity 
+        style={styles.weightContainer}
+        onPress={() => setIsEditingWeight(true)}
+      >
+        {isEditingWeight ? (
+          <TextInput
+            style={[styles.input, { color: colors.text }]}
+            value={tempWeight}
+            onChangeText={setTempWeight}
+            onBlur={handleWeightBlur}
+            onSubmitEditing={handleWeightSubmit}
+            keyboardType="numeric"
+            autoFocus
+            selectTextOnFocus
+          />
+        ) : (
+          <ThemedText style={styles.valueText}>{set.weight}</ThemedText>
+        )}
         <ThemedText style={styles.inputLabel}>kg</ThemedText>
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.repsContainer}>
-        <ThemedText style={styles.valueText}>{set.reps}</ThemedText>
+      <TouchableOpacity 
+        style={styles.repsContainer}
+        onPress={() => setIsEditingReps(true)}
+      >
+        {isEditingReps ? (
+          <TextInput
+            style={[styles.input, { color: colors.text }]}
+            value={tempReps}
+            onChangeText={setTempReps}
+            onBlur={handleRepsBlur}
+            onSubmitEditing={handleRepsSubmit}
+            keyboardType="numeric"
+            autoFocus
+            selectTextOnFocus
+          />
+        ) : (
+          <ThemedText style={styles.valueText}>{set.reps}</ThemedText>
+        )}
         <ThemedText style={styles.inputLabel}>reps</ThemedText>
-      </View>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={[
@@ -87,6 +152,16 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 14,
+  },
+  input: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginRight: 4,
+    minWidth: 30,
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#666',
+    paddingVertical: 2,
   },
   checkButton: {
     width: 40,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, ViewStyle } from 'react-native';
-import { WorkoutExercise } from '@/types';
+import { WorkoutExercise, WorkoutSet } from '@/types';
 import { ExerciseCard } from './ExerciseCard/ExerciseCard';
 
 type ExerciseListProps = {
@@ -8,6 +8,7 @@ type ExerciseListProps = {
   expandedExercises: Record<string, boolean>;
   toggleExerciseExpansion: (exerciseId: string) => void;
   toggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
+  onUpdateSet: (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => void;
   currentExerciseIndex: number;
   currentSetIndex: number;
   style?: ViewStyle;
@@ -18,6 +19,7 @@ export function ExerciseList({
   expandedExercises,
   toggleExerciseExpansion,
   toggleSetCompletion,
+  onUpdateSet,
   currentExerciseIndex,
   currentSetIndex,
   style,
@@ -36,6 +38,7 @@ export function ExerciseList({
           currentExerciseIndex={currentExerciseIndex}
           currentSetIndex={currentSetIndex}
           onToggleSetCompletion={toggleSetCompletion}
+          onUpdateSet={onUpdateSet}
           exerciseIndex={index}
         />
       ))}
