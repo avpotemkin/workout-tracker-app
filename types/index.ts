@@ -18,6 +18,7 @@ export type Program = {
   name: string;
   description?: string;
   workouts: Workout[];
+  schedule?: string;
   createdAt?: Date;
   updatedAt?: Date;
   isActive?: boolean

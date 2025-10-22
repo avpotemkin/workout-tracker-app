@@ -1,11 +1,10 @@
 import { WorkoutSession, WorkoutExercise, WorkoutSet, Program, Workout, Exercise } from '@/types';
-import { PROGRAMS } from './programs';
 
 export const ACTIVE_WORKOUT_SESSION: WorkoutSession | null = null;
 
-export const createWorkoutSessionFromProgram = (programId: string, workoutId?: string): WorkoutSession => {
-  // Find the program in our mock data
-  const program = PROGRAMS.find((p: Program) => p.id === programId);
+export const createWorkoutSessionFromProgram = (programId: string, programs: Program[], workoutId?: string): WorkoutSession => {
+  // Find the program in the provided programs array
+  const program = programs.find((p: Program) => p.id === programId);
   const workout = program?.workouts.find((w: Workout) => w.id === workoutId || w.name === workoutId);
   
   if (!program || !workout) {

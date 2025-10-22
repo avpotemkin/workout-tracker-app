@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { WorkoutSession, WorkoutSet } from "@/types";
+import { WorkoutSession, WorkoutSet, Program } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -16,11 +16,13 @@ import { ExerciseList } from "@/components/workout/ExerciseList";
 type WorkoutSessionScreenProps = {
   programId?: string;
   workoutId?: string;
+  programs: Program[];
 };
 
 export function WorkoutSessionScreen({
   programId = "1",
   workoutId = "1-day-1",
+  programs,
 }: WorkoutSessionScreenProps) {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
@@ -49,14 +51,18 @@ export function WorkoutSessionScreen({
   >({});
 
   useEffect(() => {
-    const session = createWorkoutSessionFromProgram(programId, workoutId);
+    const session = createWorkoutSessionFromProgram(
+      programId,
+      programs,
+      workoutId
+    );
     setWorkoutSession(session);
 
     // Expand the first exercise by default
     if (session.exercises.length > 0) {
       setExpandedExercises({ [session.exercises[0].id]: true });
     }
-  }, [programId, workoutId]);
+  }, [programId, workoutId, programs]);
 
   // Toggle exercise expansion
   const toggleExerciseExpansion = (exerciseId: string) => {
@@ -91,12 +97,16 @@ export function WorkoutSessionScreen({
   };
 
   // Update set values (weight, reps)
-  const updateSet = (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => {
+  const updateSet = (
+    exerciseIndex: number,
+    setIndex: number,
+    updates: Partial<WorkoutSet>
+  ) => {
     if (!workoutSession) return;
 
     const updatedExercises = [...workoutSession.exercises];
     const currentSet = updatedExercises[exerciseIndex].sets[setIndex];
-    
+
     // Update the set with new values
     Object.assign(currentSet, updates);
 
