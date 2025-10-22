@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Alert, Vibration } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Vibration,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
@@ -209,41 +216,47 @@ export function WorkoutSessionScreen({
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <WorkoutHeader
-          onBackPress={() => router.back()}
-          title={workoutSession.programName}
-        />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
+      >
+        <ThemedView style={styles.container}>
+          {/* Header */}
+          <WorkoutHeader
+            onBackPress={() => router.back()}
+            title={workoutSession.programName}
+          />
 
-        {/* Progress Bar */}
-        <WorkoutProgress
-          completed={progress.completed}
-          total={progress.total}
-          percentage={progress.percentage}
-        />
+          {/* Progress Bar */}
+          <WorkoutProgress
+            completed={progress.completed}
+            total={progress.total}
+            percentage={progress.percentage}
+          />
 
-        {/* Exercise List */}
-        <ExerciseList
-          exercises={workoutSession.exercises}
-          expandedExercises={expandedExercises}
-          toggleExerciseExpansion={toggleExerciseExpansion}
-          toggleSetCompletion={toggleSetCompletion}
-          onUpdateSet={updateSet}
-          currentExerciseIndex={currentExerciseIndex}
-          currentSetIndex={currentSetIndex}
-        />
+          {/* Exercise List */}
+          <ExerciseList
+            exercises={workoutSession.exercises}
+            expandedExercises={expandedExercises}
+            toggleExerciseExpansion={toggleExerciseExpansion}
+            toggleSetCompletion={toggleSetCompletion}
+            onUpdateSet={updateSet}
+            currentExerciseIndex={currentExerciseIndex}
+            currentSetIndex={currentSetIndex}
+          />
 
-        {/* Finish Button */}
-        <TouchableOpacity
-          style={[styles.finishButton, { backgroundColor: colors.accent }]}
-          onPress={handleFinishWorkout}
-        >
-          <ThemedText type="subtitle" style={styles.finishButtonText}>
-            Finish Workout
-          </ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
+          {/* Finish Button */}
+          <TouchableOpacity
+            style={[styles.finishButton, { backgroundColor: colors.accent }]}
+            onPress={handleFinishWorkout}
+          >
+            <ThemedText type="subtitle" style={styles.finishButtonText}>
+              Finish Workout
+            </ThemedText>
+          </TouchableOpacity>
+        </ThemedView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

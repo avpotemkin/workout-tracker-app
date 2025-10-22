@@ -6,6 +6,8 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -81,6 +83,11 @@ export default function CreateProgramScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
+      >
       <ThemedView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
@@ -189,6 +196,7 @@ export default function CreateProgramScreen() {
           </TouchableOpacity>
         </ScrollView>
       </ThemedView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

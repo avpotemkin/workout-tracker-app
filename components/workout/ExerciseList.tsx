@@ -25,7 +25,11 @@ export function ExerciseList({
   style,
 }: ExerciseListProps) {
   return (
-    <ScrollView style={[styles.exerciseList, style]}>
+    <ScrollView
+      style={[styles.exerciseList, style]}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ paddingBottom: 24 }}
+    >
       {exercises.map((exercise, index) => (
         <ExerciseCard
           key={exercise.id}

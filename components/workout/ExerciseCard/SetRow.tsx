@@ -70,6 +70,8 @@ export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
             onBlur={handleWeightBlur}
             onSubmitEditing={handleWeightSubmit}
             keyboardType="numeric"
+            returnKeyType="done"
+            blurOnSubmit
             autoFocus
             selectTextOnFocus
           />
@@ -91,6 +93,8 @@ export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
             onBlur={handleRepsBlur}
             onSubmitEditing={handleRepsSubmit}
             keyboardType="numeric"
+            returnKeyType="done"
+            blurOnSubmit
             autoFocus
             selectTextOnFocus
           />
