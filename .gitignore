@@ -40,3 +40,4 @@ app-example
 
 # Cursor
 .cursor/
+.vscode/
