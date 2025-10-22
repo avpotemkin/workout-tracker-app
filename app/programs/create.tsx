@@ -21,7 +21,6 @@ import { Exercise, Workout, Program } from "@/types";
 
 export default function CreateProgramScreen() {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const [nameError, setNameError] = useState("");
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [currentDayIndex, setCurrentDayIndex] = useState<number | null>(null);
@@ -175,7 +174,7 @@ export default function CreateProgramScreen() {
     const program: Program = {
       id: Date.now().toString(),
       name: name.trim(),
-      description: description.trim() || undefined,
+
       workouts: workouts,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -394,7 +393,10 @@ export default function CreateProgramScreen() {
 
             <TouchableOpacity
               style={[styles.addButton, { backgroundColor: colors.accent }]}
-              onPress={() => currentDayIndex !== null && handleAddExerciseToWorkout(workouts[currentDayIndex].id)}
+              onPress={() =>
+                currentDayIndex !== null &&
+                handleAddExerciseToWorkout(workouts[currentDayIndex].id)
+              }
             >
               <ThemedText style={styles.buttonText}>Add Exercise</ThemedText>
             </TouchableOpacity>
@@ -456,28 +458,6 @@ export default function CreateProgramScreen() {
           ) : null}
         </View>
 
-        <View style={styles.inputGroup}>
-          <ThemedText style={styles.label}>Description (Optional)</ThemedText>
-          <TextInput
-            style={[
-              styles.input,
-              styles.textArea,
-              {
-                color: textColor,
-                borderColor: colors.cardBorder,
-                backgroundColor: colors.background,
-              },
-            ]}
-            placeholder="Enter day description"
-            placeholderTextColor={`${textColor}80`}
-            value={dayDescription}
-            onChangeText={setDayDescription}
-            multiline
-            numberOfLines={3}
-            textAlignVertical="top"
-          />
-        </View>
-
         <TouchableOpacity
           style={[styles.addButton, { backgroundColor: colors.accent }]}
           onPress={handleAddWorkout}
@@ -534,30 +514,6 @@ export default function CreateProgramScreen() {
                     {nameError}
                   </ThemedText>
                 ) : null}
-              </View>
-
-              <View style={styles.inputGroup}>
-                <ThemedText style={styles.label}>
-                  Description (Optional)
-                </ThemedText>
-                <TextInput
-                  style={[
-                    styles.input,
-                    styles.textArea,
-                    {
-                      color: textColor,
-                      borderColor: colors.cardBorder,
-                      backgroundColor: colors.card,
-                    },
-                  ]}
-                  placeholder="Enter program description"
-                  placeholderTextColor={`${textColor}80`}
-                  value={description}
-                  onChangeText={setDescription}
-                  multiline
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                />
               </View>
 
               <View style={styles.sectionHeader}>
@@ -663,11 +619,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 16,
-  },
-  textArea: {
-    height: 100,
-    paddingTop: 12,
-    paddingBottom: 12,
   },
   errorText: {
     fontSize: 14,
