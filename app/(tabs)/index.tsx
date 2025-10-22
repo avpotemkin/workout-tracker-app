@@ -1,20 +1,216 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAppContext } from "@/context/AppContext";
+import { getWorkoutHistory } from "@/mockdata/workoutHistory";
+import { HistoryCard } from "@/components/history/HistoryCard";
 
 export default function HomeScreen() {
+  const backgroundColor = useThemeColor({}, "background");
+  const { colors } = useAppTheme();
+  const router = useRouter();
+  const { selectedProgram } = useAppContext();
+
+  // Get recent workout history
+  const workoutHistory = getWorkoutHistory();
+  const lastWorkout = workoutHistory.length > 0 ? workoutHistory[0] : null;
+
+  const handleStartWorkout = () => {
+    if (selectedProgram && selectedProgram.workouts.length > 0) {
+      router.push({
+        pathname: "/(workout)/session",
+        params: {
+          programId: selectedProgram.id,
+          workoutId: selectedProgram.workouts[0].id,
+        },
+      });
+    } else {
+      router.push("/(tabs)/programs");
+    }
+  };
+
+  const handleBrowsePrograms = () => {
+    router.push("/(tabs)/programs");
+  };
+
+  const handleViewAllHistory = () => {
+    router.push("/(tabs)/history");
+  };
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText>Home Screen</ThemedText>
-    </ThemedView>
+    <SafeAreaView style={{ flex: 1, backgroundColor }}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <ThemedView style={styles.container}>
+          {/* Header */}
+          <ThemedText type="title" style={styles.header}>
+            Dashboard
+          </ThemedText>
+
+          {/* Active Program Overview */}
+          <View style={styles.section}>
+            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+              Active Program
+            </ThemedText>
+
+            {selectedProgram ? (
+              <View style={[styles.card, { backgroundColor: colors.card }]}>
+                <ThemedText type="label" style={styles.programName}>
+                  {selectedProgram.name}
+                </ThemedText>
+                {selectedProgram.description && (
+                  <ThemedText type="body" style={styles.programDescription}>
+                    {selectedProgram.description}
+                  </ThemedText>
+                )}
+                {selectedProgram.workouts.length > 0 && (
+                  <View style={styles.nextWorkoutContainer}>
+                    <ThemedText type="caption" style={styles.nextWorkoutLabel}>
+                      Next Workout:
+                    </ThemedText>
+                    <ThemedText type="body" style={styles.nextWorkoutName}>
+                      {selectedProgram.workouts[0].name}
+                    </ThemedText>
+                  </View>
+                )}
+              </View>
+            ) : (
+              <View style={[styles.card, { backgroundColor: colors.card }]}>
+                <ThemedText type="body" style={styles.emptyText}>
+                  No program selected. Browse programs to get started.
+                </ThemedText>
+              </View>
+            )}
+          </View>
+
+          {/* Recent Activity */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+                Recent Activity
+              </ThemedText>
+              {lastWorkout && (
+                <TouchableOpacity onPress={handleViewAllHistory}>
+                  <ThemedText type="link" style={styles.viewAllLink}>
+                    View All
+                  </ThemedText>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {lastWorkout ? (
+              <HistoryCard workout={lastWorkout} />
+            ) : (
+              <View style={[styles.card, { backgroundColor: colors.card }]}>
+                <ThemedText type="body" style={styles.emptyText}>
+                  No workouts yet. Start your first workout!
+                </ThemedText>
+              </View>
+            )}
+          </View>
+
+          {/* Quick Actions */}
+          <View style={styles.section}>
+            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+              Quick Actions
+            </ThemedText>
+
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.accent }]}
+              onPress={handleStartWorkout}
+            >
+              <ThemedText style={styles.buttonText}>Start Workout</ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.card }]}
+              onPress={handleBrowsePrograms}
+            >
+              <ThemedText style={styles.buttonText}>Browse Programs</ThemedText>
+            </TouchableOpacity>
+          </View>
+        </ThemedView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 32,
+  },
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  header: {
+    marginTop: 16,
+    marginBottom: 24,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    marginBottom: 12,
+  },
+  viewAllLink: {
+    fontSize: 14,
+  },
+  card: {
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  programName: {
+    marginBottom: 8,
+  },
+  programDescription: {
+    opacity: 0.7,
+    marginBottom: 12,
+  },
+  nextWorkoutContainer: {
+    marginTop: 8,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#444",
+  },
+  nextWorkoutLabel: {
+    opacity: 0.7,
+    marginBottom: 4,
+  },
+  nextWorkoutName: {
+    fontWeight: "600",
+  },
+  emptyText: {
+    opacity: 0.7,
+    textAlign: "center",
+  },
+  button: {
+    width: "100%",
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginBottom: 12,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
