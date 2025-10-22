@@ -239,7 +239,7 @@ export function WorkoutSessionScreen({
           style={[styles.finishButton, { backgroundColor: colors.accent }]}
           onPress={handleFinishWorkout}
         >
-          <ThemedText style={styles.finishButtonText}>
+          <ThemedText type="subtitle" style={styles.finishButtonText}>
             Finish Workout
           </ThemedText>
         </TouchableOpacity>
@@ -266,7 +266,5 @@ const styles = StyleSheet.create({
   },
   finishButtonText: {
     color: "white",
-    fontSize: 18,
-    fontWeight: "600",
   },
 });

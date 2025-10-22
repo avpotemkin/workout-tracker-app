@@ -55,7 +55,7 @@ export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
       ]}
     >
       <View style={styles.setNumberContainer}>
-        <ThemedText style={styles.setNumber}>{set.setNumber}</ThemedText>
+        <ThemedText type="defaultSemiBold">{set.setNumber}</ThemedText>
       </View>
 
       <TouchableOpacity 
@@ -74,9 +74,9 @@ export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
             selectTextOnFocus
           />
         ) : (
-          <ThemedText style={styles.valueText}>{set.weight}</ThemedText>
+          <ThemedText type="defaultSemiBold">{set.weight}</ThemedText>
         )}
-        <ThemedText style={styles.inputLabel}>kg</ThemedText>
+        <ThemedText type="body">kg</ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity 
@@ -95,9 +95,9 @@ export function SetRow({ set, onToggle, onUpdateSet, isCurrent }: SetRowProps) {
             selectTextOnFocus
           />
         ) : (
-          <ThemedText style={styles.valueText}>{set.reps}</ThemedText>
+          <ThemedText type="defaultSemiBold">{set.reps}</ThemedText>
         )}
-        <ThemedText style={styles.inputLabel}>reps</ThemedText>
+        <ThemedText type="body">reps</ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -129,10 +129,6 @@ const styles = StyleSheet.create({
     width: 30,
     alignItems: 'center',
   },
-  setNumber: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
   weightContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -144,14 +140,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  valueText: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginRight: 4,
-  },
-  inputLabel: {
-    fontSize: 14,
   },
   input: {
     fontSize: 16,

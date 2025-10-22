@@ -38,11 +38,11 @@ export function HistoryCard({ workout, onPress }: HistoryCardProps) {
     >
       <View style={styles.cardHeader}>
         <View style={styles.programInfo}>
-          <ThemedText style={styles.programName}>{workout.programName}</ThemedText>
-          <ThemedText style={styles.dayName}>{workout.dayName}</ThemedText>
+          <ThemedText type="defaultSemiBold">{workout.programName}</ThemedText>
+          <ThemedText type="body" style={styles.dayName}>{workout.dayName}</ThemedText>
         </View>
         <View style={styles.dateContainer}>
-          <ThemedText style={styles.date}>{formatDate(workout.startedAt)}</ThemedText>
+          <ThemedText type="caption" style={styles.date}>{formatDate(workout.startedAt)}</ThemedText>
           <Ionicons name="chevron-forward" size={20} color={colors.text} />
         </View>
       </View>
@@ -50,22 +50,22 @@ export function HistoryCard({ workout, onPress }: HistoryCardProps) {
       <View style={styles.statsRow}>
         <View style={styles.statItem}>
           <Ionicons name="time-outline" size={16} color={colors.text} />
-          <ThemedText style={styles.statText}>{formatDuration(workout.duration)}</ThemedText>
+          <ThemedText type="caption" style={styles.statText}>{formatDuration(workout.duration)}</ThemedText>
         </View>
         
         <View style={styles.statItem}>
           <Ionicons name="fitness-outline" size={16} color={colors.text} />
-          <ThemedText style={styles.statText}>{workout.totalSets} sets</ThemedText>
+          <ThemedText type="caption" style={styles.statText}>{workout.totalSets} sets</ThemedText>
         </View>
         
         <View style={styles.statItem}>
           <Ionicons name="barbell-outline" size={16} color={colors.text} />
-          <ThemedText style={styles.statText}>{workout.totalVolume}kg</ThemedText>
+          <ThemedText type="caption" style={styles.statText}>{workout.totalVolume}kg</ThemedText>
         </View>
       </View>
 
       <View style={styles.exercisesList}>
-        <ThemedText style={styles.exercisesText}>
+        <ThemedText type="caption" style={styles.exercisesText}>
           {workout.exercises.map(ex => ex.name).join(', ')}
         </ThemedText>
       </View>
@@ -93,12 +93,7 @@ const styles = StyleSheet.create({
   programInfo: {
     flex: 1,
   },
-  programName: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
   dayName: {
-    fontSize: 14,
     color: '#888',
     marginTop: 2,
   },
@@ -107,7 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   date: {
-    fontSize: 12,
     color: '#888',
     marginRight: 4,
   },
@@ -122,7 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statText: {
-    fontSize: 12,
     marginLeft: 4,
   },
   exercisesList: {
@@ -131,7 +124,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   exercisesText: {
-    fontSize: 12,
     color: '#999',
     lineHeight: 16,
   },

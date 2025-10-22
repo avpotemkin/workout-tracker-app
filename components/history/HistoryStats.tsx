@@ -30,37 +30,37 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.card }]}>
-      <ThemedText style={styles.title}>Overview</ThemedText>
+      <ThemedText type="subtitle" style={styles.title}>Overview</ThemedText>
       
       <View style={styles.statsGrid}>
         <View style={styles.statItem}>
-          <ThemedText style={styles.statValue}>{stats.totalWorkouts}</ThemedText>
-          <ThemedText style={styles.statLabel}>Workouts</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>{stats.totalWorkouts}</ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>Workouts</ThemedText>
         </View>
         
         <View style={styles.statItem}>
-          <ThemedText style={styles.statValue}>{formatDuration(stats.totalDuration)}</ThemedText>
-          <ThemedText style={styles.statLabel}>Total Time</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>{formatDuration(stats.totalDuration)}</ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>Total Time</ThemedText>
         </View>
         
         <View style={styles.statItem}>
-          <ThemedText style={styles.statValue}>{formatVolume(stats.totalVolume)}</ThemedText>
-          <ThemedText style={styles.statLabel}>Total Volume</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>{formatVolume(stats.totalVolume)}</ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>Total Volume</ThemedText>
         </View>
         
         <View style={styles.statItem}>
-          <ThemedText style={styles.statValue}>{formatDuration(stats.averageWorkoutDuration)}</ThemedText>
-          <ThemedText style={styles.statLabel}>Avg Duration</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>{formatDuration(stats.averageWorkoutDuration)}</ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>Avg Duration</ThemedText>
         </View>
       </View>
 
       {stats.strongestLifts.length > 0 && (
         <View style={styles.strongestLifts}>
-          <ThemedText style={styles.subtitle}>Strongest Lifts</ThemedText>
+          <ThemedText type="label" style={styles.subtitle}>Strongest Lifts</ThemedText>
           {stats.strongestLifts.slice(0, 3).map((lift, index) => (
             <View key={index} style={styles.liftRow}>
-              <ThemedText style={styles.exerciseName}>{lift.exercise}</ThemedText>
-              <ThemedText style={styles.liftWeight}>{lift.maxWeight}kg</ThemedText>
+              <ThemedText type="body">{lift.exercise}</ThemedText>
+              <ThemedText type="body" style={styles.liftWeight}>{lift.maxWeight}kg</ThemedText>
             </View>
           ))}
         </View>
@@ -76,8 +76,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
     marginBottom: 16,
   },
   statsGrid: {
@@ -90,12 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
     color: '#4A90E2',
   },
   statLabel: {
-    fontSize: 12,
     marginTop: 4,
   },
   strongestLifts: {
@@ -104,8 +99,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   subtitle: {
-    fontSize: 16,
-    fontWeight: '600',
     marginBottom: 8,
   },
   liftRow: {
@@ -114,12 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 4,
   },
-  exerciseName: {
-    fontSize: 14,
-  },
   liftWeight: {
-    fontSize: 14,
-    fontWeight: '600',
     color: '#4A90E2',
   },
 }); 

@@ -26,10 +26,10 @@ export function HistoryList({
 
   const renderEmptyState = () => (
     <ThemedView style={styles.emptyState}>
-      <ThemedText style={styles.emptyText}>
+      <ThemedText type="subtitle" style={styles.emptyText}>
         No workout history found
       </ThemedText>
-      <ThemedText style={styles.emptySubtext}>
+      <ThemedText type="body" style={styles.emptySubtext}>
         Complete your first workout to see your history here
       </ThemedText>
     </ThemedView>
@@ -62,13 +62,10 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
   },
   emptyText: {
-    fontSize: 18,
-    fontWeight: '600',
     textAlign: 'center',
     marginBottom: 8,
   },
   emptySubtext: {
-    fontSize: 14,
     textAlign: 'center',
     color: '#888',
     paddingHorizontal: 32,

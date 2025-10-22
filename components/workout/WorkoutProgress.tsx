@@ -31,7 +31,7 @@ export function WorkoutProgress({
           ]}
         />
       </View>
-      <ThemedText style={styles.progressText}>
+      <ThemedText type="body" style={styles.progressText}>
         {completed} of {total} sets completed ({percentage}%)
       </ThemedText>
     </View>
@@ -54,6 +54,5 @@ const styles = StyleSheet.create({
   progressText: {
     marginTop: 8,
     textAlign: 'center',
-    fontSize: 14,
   },
 });

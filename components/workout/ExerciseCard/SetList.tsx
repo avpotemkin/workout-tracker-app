@@ -24,10 +24,10 @@ export function SetList({
   return (
     <View style={styles.setsContainer}>
       <View style={styles.setHeaderRow}>
-        <ThemedText style={styles.setHeaderText}>Set</ThemedText>
-        <ThemedText style={styles.setHeaderText}>Weight</ThemedText>
-        <ThemedText style={styles.setHeaderText}>Reps</ThemedText>
-        <ThemedText style={styles.setHeaderText}>Done</ThemedText>
+        <ThemedText type="body" style={styles.setHeaderText}>Set</ThemedText>
+        <ThemedText type="body" style={styles.setHeaderText}>Weight</ThemedText>
+        <ThemedText type="body" style={styles.setHeaderText}>Reps</ThemedText>
+        <ThemedText type="body" style={styles.setHeaderText}>Done</ThemedText>
       </View>
 
       {exercise.sets.map((set: WorkoutSet, setIndex: number) => (
@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#444',
   },
   setHeaderText: {
-    fontSize: 14,
-    fontWeight: '600',
     flex: 1,
     textAlign: 'center',
   },

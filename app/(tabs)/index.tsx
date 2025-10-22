@@ -75,7 +75,7 @@ export default function HomeScreen() {
                     <ThemedText type="caption" style={styles.nextWorkoutLabel}>
                       Next Workout:
                     </ThemedText>
-                    <ThemedText type="body" style={styles.nextWorkoutName}>
+                    <ThemedText type="defaultSemiBold">
                       {selectedProgram.workouts[0].name}
                     </ThemedText>
                   </View>
@@ -98,7 +98,7 @@ export default function HomeScreen() {
               </ThemedText>
               {lastWorkout && (
                 <TouchableOpacity onPress={handleViewAllHistory}>
-                  <ThemedText type="link" style={styles.viewAllLink}>
+                  <ThemedText type="link">
                     View All
                   </ThemedText>
                 </TouchableOpacity>
@@ -126,14 +126,14 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText style={styles.buttonText}>Start Workout</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.buttonText}>Start Workout</ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.card }]}
               onPress={handleBrowsePrograms}
             >
-              <ThemedText style={styles.buttonText}>Browse Programs</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.buttonText}>Browse Programs</ThemedText>
             </TouchableOpacity>
           </View>
         </ThemedView>
@@ -169,9 +169,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginBottom: 12,
   },
-  viewAllLink: {
-    fontSize: 14,
-  },
   card: {
     padding: 16,
     borderRadius: 10,
@@ -194,9 +191,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     marginBottom: 4,
   },
-  nextWorkoutName: {
-    fontWeight: "600",
-  },
   emptyText: {
     opacity: 0.7,
     textAlign: "center",
@@ -210,7 +204,5 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

@@ -14,7 +14,7 @@ export function HistoryHeader({ onToggleFilters, showFilters }: HistoryHeaderPro
 
   return (
     <View style={styles.header}>
-      <ThemedText style={styles.headerTitle}>Workout History</ThemedText>
+      <ThemedText type="title">Workout History</ThemedText>
       <TouchableOpacity
         style={[styles.filterButton, { backgroundColor: colors.card }]}
         onPress={onToggleFilters}
@@ -37,10 +37,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#444',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
   },
   filterButton: {
     width: 44,

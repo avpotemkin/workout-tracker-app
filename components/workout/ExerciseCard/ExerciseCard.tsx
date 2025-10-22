@@ -36,7 +36,7 @@ export function ExerciseCard({
         style={styles.exerciseHeader}
         onPress={() => onToggleExpansion(exercise.id)}
       >
-        <ThemedText style={styles.exerciseName}>{exercise.name}</ThemedText>
+        <ThemedText type="subtitle">{exercise.name}</ThemedText>
         <Animated.View style={rotationStyle}>
           <Ionicons name="chevron-down" size={24} color="white" />
         </Animated.View>
@@ -67,9 +67,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-  },
-  exerciseName: {
-    fontSize: 18,
-    fontWeight: "600",
   },
 });

@@ -32,7 +32,7 @@ export default function ProgramDetailsScreen() {
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
 
-            <ThemedText style={styles.headerTitle}>Not Found</ThemedText>
+            <ThemedText type="subtitle">Not Found</ThemedText>
           </View>
           <ThemedText>Program not found</ThemedText>
         </ThemedView>
@@ -60,11 +60,11 @@ export default function ProgramDetailsScreen() {
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
-          <ThemedText style={styles.headerTitle}>{program.name}</ThemedText>
+          <ThemedText type="subtitle">{program.name}</ThemedText>
         </View>
 
         {program.description && (
-          <ThemedText style={styles.description}>
+          <ThemedText type="default" style={styles.description}>
             {program.description}
           </ThemedText>
         )}
@@ -80,7 +80,7 @@ export default function ProgramDetailsScreen() {
           ]}
           onPress={handleSelectProgram}
         >
-          <ThemedText style={styles.selectProgramButtonText}>
+          <ThemedText type="defaultSemiBold" style={styles.selectProgramButtonText}>
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
         </TouchableOpacity>
@@ -99,10 +99,8 @@ export default function ProgramDetailsScreen() {
               onPress={() => setSelectedWorkoutIndex(index)}
             >
               <ThemedText
-                style={[
-                  styles.dayTabText,
-                  selectedWorkoutIndex === index ? { color: "white" } : {},
-                ]}
+                type="body"
+                style={selectedWorkoutIndex === index ? { color: "white" } : {}}
               >
                 {workout.name}
               </ThemedText>
@@ -112,7 +110,7 @@ export default function ProgramDetailsScreen() {
 
         {/* Workout description if available */}
         {selectedWorkout.description && (
-          <ThemedText style={styles.dayDescription}>
+          <ThemedText type="body" style={styles.dayDescription}>
             {selectedWorkout.description}
           </ThemedText>
         )}
@@ -123,26 +121,26 @@ export default function ProgramDetailsScreen() {
               key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
-              <ThemedText style={styles.exerciseName}>
+              <ThemedText type="subtitle">
                 {exercise.name}
               </ThemedText>
               <View style={styles.exerciseDetails}>
                 <View style={styles.detailItem}>
-                  <ThemedText style={styles.detailLabel}>Sets</ThemedText>
-                  <ThemedText style={styles.detailValue}>
+                  <ThemedText type="caption" style={styles.detailLabel}>Sets</ThemedText>
+                  <ThemedText type="defaultSemiBold">
                     {exercise.sets}
                   </ThemedText>
                 </View>
                 <View style={styles.detailItem}>
-                  <ThemedText style={styles.detailLabel}>Reps</ThemedText>
-                  <ThemedText style={styles.detailValue}>
+                  <ThemedText type="caption" style={styles.detailLabel}>Reps</ThemedText>
+                  <ThemedText type="defaultSemiBold">
                     {exercise.reps}
                   </ThemedText>
                 </View>
                 {exercise.weight && (
                   <View style={styles.detailItem}>
-                    <ThemedText style={styles.detailLabel}>Weight</ThemedText>
-                    <ThemedText style={styles.detailValue}>
+                    <ThemedText type="caption" style={styles.detailLabel}>Weight</ThemedText>
+                    <ThemedText type="defaultSemiBold">
                       {exercise.weight} kg
                     </ThemedText>
                   </View>
@@ -170,15 +168,7 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: 16,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "center",
-    marginRight: 40, // To center the title accounting for the back button
-  },
   description: {
-    fontSize: 16,
     textAlign: "center",
     marginBottom: 16,
     opacity: 0.7,
@@ -192,7 +182,6 @@ const styles = StyleSheet.create({
   },
   selectProgramButtonText: {
     color: "white",
-    fontWeight: "600",
   },
   dayTabs: {
     flexDirection: "row",
@@ -205,12 +194,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 8,
   },
-  dayTabText: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
   dayDescription: {
-    fontSize: 14,
     textAlign: "center",
     marginBottom: 16,
     fontStyle: "italic",
@@ -224,11 +208,6 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
   },
-  exerciseName: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 16,
-  },
   exerciseDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -237,12 +216,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailLabel: {
-    fontSize: 12,
     opacity: 0.7,
     marginBottom: 4,
-  },
-  detailValue: {
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

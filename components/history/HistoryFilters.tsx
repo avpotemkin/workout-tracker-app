@@ -71,17 +71,17 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.card }]}>
       <View style={styles.header}>
-        <ThemedText style={styles.title}>Filters</ThemedText>
+        <ThemedText type="defaultSemiBold">Filters</ThemedText>
         {hasActiveFilters && (
           <TouchableOpacity onPress={clearFilters}>
-            <ThemedText style={styles.clearButton}>Clear All</ThemedText>
+            <ThemedText type="body" style={styles.clearButton}>Clear All</ThemedText>
           </TouchableOpacity>
         )}
       </View>
 
       {/* Program Filter */}
       <View style={styles.filterSection}>
-        <ThemedText style={styles.sectionTitle}>Program</ThemedText>
+        <ThemedText type="body" style={styles.sectionTitle}>Program</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
             {programs.map(program => (
@@ -96,6 +96,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                 )}
               >
                 <ThemedText
+                  type="caption"
                   style={[
                     styles.chipText,
                     selectedProgram === program && styles.selectedChipText,
@@ -111,7 +112,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
 
       {/* Period Filter */}
       <View style={styles.filterSection}>
-        <ThemedText style={styles.sectionTitle}>Period</ThemedText>
+        <ThemedText type="body" style={styles.sectionTitle}>Period</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
             {periods.map(period => (
@@ -124,6 +125,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                 onPress={() => setSelectedPeriod(period.key)}
               >
                 <ThemedText
+                  type="caption"
                   style={[
                     styles.chipText,
                     selectedPeriod === period.key && styles.selectedChipText,
@@ -152,20 +154,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
   clearButton: {
     color: '#4A90E2',
-    fontSize: 14,
   },
   filterSection: {
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: '500',
     marginBottom: 8,
   },
   filterRow: {
@@ -185,11 +180,9 @@ const styles = StyleSheet.create({
     borderColor: '#4A90E2',
   },
   chipText: {
-    fontSize: 12,
     color: '#fff',
   },
   selectedChipText: {
     color: '#fff',
-    fontWeight: '600',
   },
 }); 

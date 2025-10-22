@@ -10,9 +10,9 @@ export default function ProgramsIndexScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor }]}>
       <View style={styles.header}>
-        <ThemedText style={styles.title}>Programs</ThemedText>
+        <ThemedText type="title">Programs</ThemedText>
       </View>
-      <ThemedText style={styles.description}>
+      <ThemedText type="default" style={styles.description}>
         Select or create a workout program to get started.
       </ThemedText>
     </ThemedView>
@@ -29,12 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignItems: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
   description: {
-    fontSize: 16,
     textAlign: "center",
     opacity: 0.7,
   },

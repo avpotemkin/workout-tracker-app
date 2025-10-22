@@ -30,19 +30,19 @@ export default function ProgramsScreen() {
         onPress={() => router.push(`/programs/${item.id}`)}
       >
         <View style={styles.programHeader}>
-          <ThemedText style={styles.programName}>{item.name}</ThemedText>
+          <ThemedText type="subtitle">{item.name}</ThemedText>
           {isSelected && (
             <View
               style={[styles.selectedBadge, { backgroundColor: colors.accent }]}
             >
               <Ionicons name="checkmark-circle" size={16} color="white" />
-              <ThemedText style={styles.selectedText}>Active</ThemedText>
+              <ThemedText type="caption" style={styles.selectedText}>Active</ThemedText>
             </View>
           )}
         </View>
 
         {item.description && (
-          <ThemedText style={styles.programDescription}>
+          <ThemedText type="body" style={styles.programDescription}>
             {item.description}
           </ThemedText>
         )}
@@ -53,7 +53,8 @@ export default function ProgramsScreen() {
           ]}
         >
           <ThemedText
-            style={[styles.exerciseCountText, { color: colors.accent }]}
+            type="caption"
+            style={{ color: colors.accent }}
           >
             {item.workouts.length} {item.workouts.length === 1 ? "workout" : "workouts"}
           </ThemedText>
@@ -66,7 +67,7 @@ export default function ProgramsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <ThemedText style={styles.title}>Programs</ThemedText>
+          <ThemedText type="title">Programs</ThemedText>
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => router.push("/programs/create")}
@@ -99,10 +100,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     position: "relative",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
   addButton: {
     position: "absolute",
     right: 0,
@@ -126,11 +123,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 8,
   },
-  programName: {
-    fontSize: 18,
-    fontWeight: "600",
-    flex: 1,
-  },
   selectedBadge: {
     flexDirection: "row",
     alignItems: "center",
@@ -141,12 +133,9 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: "white",
-    fontSize: 12,
-    fontWeight: "600",
     marginLeft: 4,
   },
   programDescription: {
-    fontSize: 14,
     opacity: 0.7,
     marginBottom: 12,
   },
@@ -155,8 +144,5 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 4,
-  },
-  exerciseCountText: {
-    fontSize: 12,
   },
 });

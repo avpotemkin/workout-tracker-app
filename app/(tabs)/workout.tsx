@@ -60,14 +60,14 @@ export default function WorkoutScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>Workout</ThemedText>
+        <ThemedText type="title">Workout</ThemedText>
 
         {activeSession ? (
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.accent }]}
             onPress={handleResumeWorkout}
           >
-            <ThemedText style={styles.buttonText}>Resume Workout</ThemedText>
+            <ThemedText type="subtitle" style={styles.buttonText}>Resume Workout</ThemedText>
           </TouchableOpacity>
         ) : (
           <View style={styles.buttonContainer}>
@@ -75,7 +75,7 @@ export default function WorkoutScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText style={styles.buttonText}>
+              <ThemedText type="subtitle" style={styles.buttonText}>
                 {selectedProgram 
                   ? `Quick Start: ${selectedProgram.name}` 
                   : "Quick Start"}
@@ -86,7 +86,7 @@ export default function WorkoutScreen() {
               style={[styles.button, { backgroundColor: colors.card }]}
               onPress={handleSelectProgram}
             >
-              <ThemedText style={styles.buttonText}>Select Program</ThemedText>
+              <ThemedText type="subtitle" style={styles.buttonText}>Select Program</ThemedText>
             </TouchableOpacity>
           </View>
         )}
@@ -102,11 +102,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 40,
-  },
   buttonContainer: {
     width: "100%",
     alignItems: "center",
@@ -121,7 +116,5 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 18,
-    fontWeight: "600",
   },
 });
