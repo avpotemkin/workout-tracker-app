@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Program } from '@/types';
-import { PROGRAMS } from '@/mockdata/programs';
+import { fetchPrograms } from '@/lib/api';
 
 type AppContextType = {
   selectedProgram: Program | null;
@@ -12,11 +12,24 @@ type AppContextType = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [programs, setPrograms] = useState<Program[]>(PROGRAMS);
-  // Default to the first program
-  const [selectedProgram, setSelectedProgram] = useState<Program | null>(
-    programs.length > 0 ? programs[0] : null
-  );
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchPrograms()
+      .then((data) => {
+        if (!mounted) return;
+        setPrograms(data);
+        if (!selectedProgram && data.length > 0) {
+          setSelectedProgram(data[0]);
+        }
+      })
+      .catch((e) => console.warn('Failed to load programs', e));
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const addProgram = (program: Program) => {
     setPrograms((prevPrograms) => [...prevPrograms, program]);

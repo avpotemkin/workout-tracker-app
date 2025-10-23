@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { PROGRAMS } from "@/mockdata/programs";
+import { fetchPrograms } from "@/lib/api";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppContext } from "@/context/AppContext";
 
@@ -15,9 +15,11 @@ export default function WorkoutScreen() {
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
   const { selectedProgram } = useAppContext();
-
-  // Get the first program with days for quick start if no program is selected
-  const defaultProgram = selectedProgram || PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
+  const [remotePrograms, setRemotePrograms] = useState<any[]>([]);
+  useEffect(() => {
+    fetchPrograms().then(setRemotePrograms).catch(() => setRemotePrograms([]));
+  }, []);
+  const defaultProgram = selectedProgram || remotePrograms.find((p) => p.workouts && p.workouts.length > 0);
 
   // This would be replaced with actual session management logic
   useEffect(() => {

@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { WorkoutHistory, HistoryStats } from "@/types";
-import { getWorkoutHistory, getHistoryStats } from "@/mockdata/workoutHistory";
+import { fetchWorkoutHistory, fetchHistoryStats } from "@/lib/api";
 
 import { HistoryHeader } from "@/components/history/HistoryHeader";
 import { HistoryStats as HistoryStatsComponent } from "@/components/history/HistoryStats";
@@ -20,13 +20,18 @@ export function HistoryScreen() {
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
-    // Load workout history and stats
-    const history = getWorkoutHistory();
-    const stats = getHistoryStats();
-    
-    setWorkoutHistory(history);
-    setHistoryStats(stats);
-    setFilteredHistory(history);
+    let mounted = true;
+    Promise.all([fetchWorkoutHistory(), fetchHistoryStats()])
+      .then(([history, stats]) => {
+        if (!mounted) return;
+        setWorkoutHistory(history);
+        setHistoryStats(stats);
+        setFilteredHistory(history);
+      })
+      .catch((e) => console.warn('Failed to load history', e));
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const handleFilterChange = (filteredData: WorkoutHistory[]) => {

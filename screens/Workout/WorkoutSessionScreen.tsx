@@ -6,7 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { WorkoutSession, WorkoutSet, Program } from "@/types";
-import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
+import { fetchWorkoutSession } from "@/lib/api";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { WorkoutHeader } from "@/components/workout/WorkoutHeader";
@@ -51,18 +51,20 @@ export function WorkoutSessionScreen({
   >({});
 
   useEffect(() => {
-    const session = createWorkoutSessionFromProgram(
-      programId,
-      programs,
-      workoutId
-    );
-    setWorkoutSession(session);
-
-    // Expand the first exercise by default
-    if (session.exercises.length > 0) {
-      setExpandedExercises({ [session.exercises[0].id]: true });
-    }
-  }, [programId, workoutId, programs]);
+    let mounted = true;
+    fetchWorkoutSession(programId, workoutId)
+      .then((session) => {
+        if (!mounted) return;
+        setWorkoutSession(session);
+        if (session.exercises.length > 0) {
+          setExpandedExercises({ [session.exercises[0].id]: true });
+        }
+      })
+      .catch(() => setWorkoutSession(null));
+    return () => {
+      mounted = false;
+    };
+  }, [programId, workoutId]);
 
   // Toggle exercise expansion
   const toggleExerciseExpansion = (exerciseId: string) => {

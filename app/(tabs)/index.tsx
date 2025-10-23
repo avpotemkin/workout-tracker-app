@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppContext } from "@/context/AppContext";
-import { getWorkoutHistory } from "@/mockdata/workoutHistory";
+import { fetchWorkoutHistory } from "@/lib/api";
 import { HistoryCard } from "@/components/history/HistoryCard";
 
 export default function HomeScreen() {
@@ -16,9 +16,12 @@ export default function HomeScreen() {
   const router = useRouter();
   const { selectedProgram } = useAppContext();
 
-  // Get recent workout history
-  const workoutHistory = getWorkoutHistory();
-  const lastWorkout = workoutHistory.length > 0 ? workoutHistory[0] : null;
+  const [lastWorkout, setLastWorkout] = React.useState<any | null>(null);
+  React.useEffect(() => {
+    fetchWorkoutHistory()
+      .then((items) => setLastWorkout(items[0] || null))
+      .catch(() => setLastWorkout(null));
+  }, []);
 
   const handleStartWorkout = () => {
     if (selectedProgram && selectedProgram.workouts.length > 0) {
