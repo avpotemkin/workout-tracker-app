@@ -216,26 +216,22 @@ export function WorkoutSessionScreen({
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
-      >
-        <ThemedView style={styles.container}>
-          {/* Header */}
-          <WorkoutHeader
-            onBackPress={() => router.back()}
-            title={workoutSession.programName}
-          />
+      <ThemedView style={styles.container}>
+        <WorkoutHeader
+          onBackPress={() => router.back()}
+          title={workoutSession.programName}
+        />
 
-          {/* Progress Bar */}
-          <WorkoutProgress
-            completed={progress.completed}
-            total={progress.total}
-            percentage={progress.percentage}
-          />
+        <WorkoutProgress
+          completed={progress.completed}
+          total={progress.total}
+          percentage={progress.percentage}
+        />
 
-          {/* Exercise List */}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
           <ExerciseList
             exercises={workoutSession.exercises}
             expandedExercises={expandedExercises}
@@ -245,18 +241,16 @@ export function WorkoutSessionScreen({
             currentExerciseIndex={currentExerciseIndex}
             currentSetIndex={currentSetIndex}
           />
-
-          {/* Finish Button */}
-          <TouchableOpacity
-            style={[styles.finishButton, { backgroundColor: colors.accent }]}
-            onPress={handleFinishWorkout}
-          >
-            <ThemedText type="subtitle" style={styles.finishButtonText}>
-              Finish Workout
-            </ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          style={[styles.finishButton, { backgroundColor: colors.accent }]}
+          onPress={handleFinishWorkout}
+        >
+          <ThemedText type="subtitle" style={styles.finishButtonText}>
+            Finish Workout
+          </ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
     </SafeAreaView>
   );
 }

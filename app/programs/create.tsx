@@ -86,116 +86,118 @@ export default function CreateProgramScreen() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
       >
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()}>
-            <ThemedText type="default" style={{ color: colors.error }}>
-              Cancel
-            </ThemedText>
-          </TouchableOpacity>
+        <ThemedView style={styles.container}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => router.back()}>
+              <ThemedText type="default" style={{ color: colors.error }}>
+                Cancel
+              </ThemedText>
+            </TouchableOpacity>
 
-          <ThemedText type="subtitle">Create Program</ThemedText>
+            <ThemedText type="subtitle">Create Program</ThemedText>
 
-          <TouchableOpacity onPress={handleSave}>
-            <ThemedText type="default" style={{ color: colors.accent }}>
-              Done
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Program Name */}
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <TextInput
-              style={[styles.input, { color: textColor }]}
-              placeholder="Program Name"
-              placeholderTextColor={`${textColor}80`}
-              value={programName}
-              onChangeText={setProgramName}
-              autoFocus
-            />
+            <TouchableOpacity onPress={handleSave}>
+              <ThemedText type="default" style={{ color: colors.accent }}>
+                Done
+              </ThemedText>
+            </TouchableOpacity>
           </View>
 
-          {/* Workout Split */}
-          <TouchableOpacity
-            style={[
-              styles.card,
-              styles.selector,
-              { backgroundColor: colors.card },
-            ]}
-            onPress={() =>
-              showWorkoutSplitPicker({ onSelect: setSelectedSplit })
-            }
+          <ScrollView
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
           >
-            <View>
-              <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                Workout Split
-              </ThemedText>
-              <ThemedText type="default">{selectedSplit}</ThemedText>
+            {/* Program Name */}
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <TextInput
+                style={[styles.input, { color: textColor }]}
+                placeholder="Program Name"
+                placeholderTextColor={`${textColor}80`}
+                value={programName}
+                onChangeText={setProgramName}
+                autoFocus
+              />
             </View>
-            <Ionicons name="chevron-forward" size={20} color={textColor} />
-          </TouchableOpacity>
 
-          {/* Schedule */}
-          <TouchableOpacity
-            style={[
-              styles.card,
-              styles.selector,
-              { backgroundColor: colors.card },
-            ]}
-            onPress={() => showSchedulePicker({ onSelect: setSchedule })}
-          >
-            <View>
-              <ThemedText
-                type="caption"
-                style={{ opacity: 0.6, color: colors.error }}
-              >
-                Schedule
-              </ThemedText>
-              <ThemedText type="default">{schedule}</ThemedText>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={textColor} />
-          </TouchableOpacity>
-
-          {/* Workouts List */}
-          {workouts.map((workout) => (
+            {/* Workout Split */}
             <TouchableOpacity
-              key={workout.id}
               style={[
                 styles.card,
-                styles.workoutCard,
+                styles.selector,
                 { backgroundColor: colors.card },
               ]}
-              onPress={() => handleEditWorkout(workout.id)}
+              onPress={() =>
+                showWorkoutSplitPicker({ onSelect: setSelectedSplit })
+              }
             >
-              <View style={styles.workoutInfo}>
-                <ThemedText type="default">{workout.name}</ThemedText>
+              <View>
                 <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                  {workout.exercises.length === 0
-                    ? "No exercises"
-                    : `${workout.exercises.length} exercise${
-                        workout.exercises.length !== 1 ? "s" : ""
-                      }`}
+                  Workout Split
                 </ThemedText>
+                <ThemedText type="default">{selectedSplit}</ThemedText>
               </View>
               <Ionicons name="chevron-forward" size={20} color={textColor} />
             </TouchableOpacity>
-          ))}
 
-          {/* Add Workout Button */}
-          <TouchableOpacity style={styles.addButton} onPress={handleAddWorkout}>
-            <ThemedText type="default" style={{ color: colors.error }}>
-              Add Workout
-            </ThemedText>
-          </TouchableOpacity>
-        </ScrollView>
-      </ThemedView>
+            {/* Schedule */}
+            <TouchableOpacity
+              style={[
+                styles.card,
+                styles.selector,
+                { backgroundColor: colors.card },
+              ]}
+              onPress={() => showSchedulePicker({ onSelect: setSchedule })}
+            >
+              <View>
+                <ThemedText
+                  type="caption"
+                  style={{ opacity: 0.6, color: colors.error }}
+                >
+                  Schedule
+                </ThemedText>
+                <ThemedText type="default">{schedule}</ThemedText>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={textColor} />
+            </TouchableOpacity>
+
+            {/* Workouts List */}
+            {workouts.map((workout) => (
+              <TouchableOpacity
+                key={workout.id}
+                style={[
+                  styles.card,
+                  styles.workoutCard,
+                  { backgroundColor: colors.card },
+                ]}
+                onPress={() => handleEditWorkout(workout.id)}
+              >
+                <View style={styles.workoutInfo}>
+                  <ThemedText type="default">{workout.name}</ThemedText>
+                  <ThemedText type="caption" style={{ opacity: 0.6 }}>
+                    {workout.exercises.length === 0
+                      ? "No exercises"
+                      : `${workout.exercises.length} exercise${
+                          workout.exercises.length !== 1 ? "s" : ""
+                        }`}
+                  </ThemedText>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={textColor} />
+              </TouchableOpacity>
+            ))}
+
+            {/* Add Workout Button */}
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={handleAddWorkout}
+            >
+              <ThemedText type="default" style={{ color: colors.error }}>
+                Add Workout
+              </ThemedText>
+            </TouchableOpacity>
+          </ScrollView>
+        </ThemedView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

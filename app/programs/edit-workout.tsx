@@ -102,100 +102,107 @@ export default function EditWorkoutScreen() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
       >
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleBack}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons name="chevron-back" size={24} color={colors.error} />
-              <ThemedText type="default" style={{ color: colors.error }}>
-                Back
+        <ThemedView style={styles.container}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handleBack}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="chevron-back" size={24} color={colors.error} />
+                <ThemedText type="default" style={{ color: colors.error }}>
+                  Back
+                </ThemedText>
+              </View>
+            </TouchableOpacity>
+
+            <ThemedText type="subtitle">Edit Workout</ThemedText>
+
+            <TouchableOpacity onPress={() => setIsEditingName(!isEditingName)}>
+              <ThemedText type="default" style={{ color: colors.accent }}>
+                {isEditingName ? "Done" : "Edit"}
               </ThemedText>
-            </View>
-          </TouchableOpacity>
-
-          <ThemedText type="subtitle">Edit Workout</ThemedText>
-
-          <TouchableOpacity onPress={() => setIsEditingName(!isEditingName)}>
-            <ThemedText type="default" style={{ color: colors.accent }}>
-              {isEditingName ? "Done" : "Edit"}
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Workout Name */}
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <TextInput
-              style={[styles.input, { color: textColor }]}
-              placeholder="Workout Name"
-              placeholderTextColor={`${textColor}80`}
-              value={workoutName}
-              onChangeText={setWorkoutName}
-              editable={isEditingName}
-              autoFocus={isEditingName}
-            />
+            </TouchableOpacity>
           </View>
 
-          {/* Exercises List */}
-          {exercises.map((exercise) => (
-            <View
-              key={exercise.id}
-              style={[
-                styles.card,
-                styles.exerciseCard,
-                { backgroundColor: colors.card },
-              ]}
-            >
-              <TouchableOpacity
-                style={styles.exerciseContent}
-                onPress={() => {
-                  // TODO: Navigate to exercise detail
-                }}
-              >
-                <View style={styles.exerciseInfo}>
-                  <ThemedText type="default">{exercise.name}</ThemedText>
-                  <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                    {exercise.sets} × {exercise.reps}
-                  </ThemedText>
-                </View>
-                <Ionicons name="chevron-forward" size={20} color={textColor} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleRemoveExercise(exercise.id)}
-              >
-                <Ionicons name="trash-outline" size={20} color={colors.error} />
-              </TouchableOpacity>
+          <ScrollView
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Workout Name */}
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <TextInput
+                style={[styles.input, { color: textColor }]}
+                placeholder="Workout Name"
+                placeholderTextColor={`${textColor}80`}
+                value={workoutName}
+                onChangeText={setWorkoutName}
+                editable={isEditingName}
+                autoFocus={isEditingName}
+              />
             </View>
-          ))}
 
-          {/* Add Exercise Button */}
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowExercisePicker(true)}
-          >
-            <ThemedText type="default" style={{ color: colors.error }}>
-              Add Exercise
-            </ThemedText>
-          </TouchableOpacity>
+            {/* Exercises List */}
+            {exercises.map((exercise) => (
+              <View
+                key={exercise.id}
+                style={[
+                  styles.card,
+                  styles.exerciseCard,
+                  { backgroundColor: colors.card },
+                ]}
+              >
+                <TouchableOpacity
+                  style={styles.exerciseContent}
+                  onPress={() => {
+                    // TODO: Navigate to exercise detail
+                  }}
+                >
+                  <View style={styles.exerciseInfo}>
+                    <ThemedText type="default">{exercise.name}</ThemedText>
+                    <ThemedText type="caption" style={{ opacity: 0.6 }}>
+                      {exercise.sets} × {exercise.reps}
+                    </ThemedText>
+                  </View>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={textColor}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => handleRemoveExercise(exercise.id)}
+                >
+                  <Ionicons
+                    name="trash-outline"
+                    size={20}
+                    color={colors.error}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
 
-          {/* Remove Workout Button */}
-          <TouchableOpacity
-            style={styles.removeWorkoutButton}
-            onPress={handleRemoveWorkout}
-          >
-            <ThemedText type="default" style={{ color: colors.error }}>
-              Remove Workout
-            </ThemedText>
-          </TouchableOpacity>
-        </ScrollView>
-      </ThemedView>
+            {/* Add Exercise Button */}
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowExercisePicker(true)}
+            >
+              <ThemedText type="default" style={{ color: colors.error }}>
+                Add Exercise
+              </ThemedText>
+            </TouchableOpacity>
+
+            {/* Remove Workout Button */}
+            <TouchableOpacity
+              style={styles.removeWorkoutButton}
+              onPress={handleRemoveWorkout}
+            >
+              <ThemedText type="default" style={{ color: colors.error }}>
+                Remove Workout
+              </ThemedText>
+            </TouchableOpacity>
+          </ScrollView>
+        </ThemedView>
       </KeyboardAvoidingView>
 
       {/* Exercise Picker Modal */}
