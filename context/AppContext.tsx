@@ -27,6 +27,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPrograms((prevPrograms) =>
       prevPrograms.map((p) => (p.id === programId ? updatedProgram : p))
     );
+    if (selectedProgram?.id === programId) {
+      setSelectedProgram(updatedProgram);
+    }
   };
 
   return (
