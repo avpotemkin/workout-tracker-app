@@ -1,0 +1,303 @@
+import React, {
+  forwardRef,
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from "react-native";
+import {
+  BottomSheetModal,
+  BottomSheetBackdrop,
+  BottomSheetView,
+  BottomSheetScrollView,
+  BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemedText } from "@/components/ThemedText";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useProgramDraft } from "@/context/ProgramDraftContext";
+import { Ionicons } from "@expo/vector-icons";
+import { AddExerciseModal } from "./AddExerciseModal";
+import { ExerciseTemplate } from "@/constants/Exercises";
+import { Exercise } from "@/types";
+
+interface EditWorkoutModalProps {
+  workoutId: string | null;
+}
+
+export const EditWorkoutModal = forwardRef<
+  BottomSheetModal,
+  EditWorkoutModalProps
+>(({ workoutId }, ref) => {
+  const { colors } = useAppTheme();
+  const insets = useSafeAreaInsets();
+  const addExerciseModalRef = useRef<BottomSheetModal>(null);
+  const { getWorkout, updateWorkout, removeWorkout } = useProgramDraft();
+
+  const workout = workoutId ? getWorkout(workoutId) : null;
+  const [workoutName, setWorkoutName] = useState(workout?.name || "");
+  const [exercises, setExercises] = useState<Exercise[]>(
+    workout?.exercises || []
+  );
+
+  // Update local state when workout changes
+  useEffect(() => {
+    if (workout) {
+      setWorkoutName(workout.name);
+      setExercises(workout.exercises);
+    }
+  }, [workout]);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+      />
+    ),
+    []
+  );
+
+  const handleWorkoutNameChange = (text: string) => {
+    setWorkoutName(text);
+    if (workoutId && workout) {
+      updateWorkout(workoutId, {
+        ...workout,
+        name: text,
+      });
+    }
+  };
+
+  const handleAddExercise = (exerciseTemplate: ExerciseTemplate) => {
+    const newExercise: Exercise = {
+      id: `ex-${Date.now()}`,
+      name: exerciseTemplate.name,
+      sets: exerciseTemplate.sets,
+      reps: exerciseTemplate.reps,
+    };
+    const updatedExercises = [...exercises, newExercise];
+    setExercises(updatedExercises);
+
+    // Auto-save to context
+    if (workoutId && workout) {
+      updateWorkout(workoutId, {
+        ...workout,
+        exercises: updatedExercises,
+      });
+    }
+  };
+
+  const handleRemoveExercise = (exerciseId: string) => {
+    const updatedExercises = exercises.filter((ex) => ex.id !== exerciseId);
+    setExercises(updatedExercises);
+
+    // Auto-save to context
+    if (workoutId && workout) {
+      updateWorkout(workoutId, {
+        ...workout,
+        exercises: updatedExercises,
+      });
+    }
+  };
+
+  const handleRemoveWorkout = () => {
+    Alert.alert(
+      "Remove Workout",
+      "Are you sure you want to remove this workout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Remove",
+          style: "destructive",
+          onPress: () => {
+            if (workoutId) {
+              removeWorkout(workoutId);
+              if (ref && typeof ref !== "function") {
+                ref.current?.dismiss();
+              }
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleDone = () => {
+    if (ref && typeof ref !== "function") {
+      ref.current?.dismiss();
+    }
+  };
+
+  return (
+    <>
+      <BottomSheetModal
+        ref={ref}
+        backdropComponent={renderBackdrop}
+        backgroundStyle={{ backgroundColor: colors.background }}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <View style={styles.header}>
+            <View style={styles.headerLeft} />
+            <ThemedText type="subtitle">Edit Workout</ThemedText>
+            <TouchableOpacity onPress={handleDone}>
+              <ThemedText type="label" style={{ color: colors.accent }}>
+                Done
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+
+          <BottomSheetScrollView
+            style={styles.scrollView}
+            contentContainerStyle={[
+              styles.scrollContent,
+              { paddingBottom: Math.max(insets.bottom, 30) },
+            ]}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Workout Name Input */}
+            <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
+              <TextInput
+                style={[styles.nameInput, { color: colors.text }]}
+                placeholder="Workout Name"
+                placeholderTextColor={`${colors.text}80`}
+                value={workoutName}
+                onChangeText={handleWorkoutNameChange}
+                autoCapitalize="words"
+              />
+            </View>
+
+            {/* Exercise List */}
+            {exercises.map((exercise) => (
+              <View
+                key={exercise.id}
+                style={[styles.exerciseCard, { backgroundColor: colors.card }]}
+              >
+                <View style={styles.exerciseContent}>
+                  <View style={styles.exerciseInfo}>
+                    <ThemedText type="label" style={styles.exerciseName}>
+                      {exercise.name}
+                    </ThemedText>
+                    <ThemedText type="caption" style={styles.exerciseDetails}>
+                      {exercise.sets} × {exercise.reps}
+                    </ThemedText>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => handleRemoveExercise(exercise.id)}
+                    style={styles.deleteButton}
+                  >
+                    <Ionicons
+                      name="trash-outline"
+                      size={20}
+                      color={colors.error}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+
+            {/* Add Exercise Button */}
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => addExerciseModalRef.current?.present()}
+            >
+              <ThemedText type="label" style={{ color: colors.accent }}>
+                Add Exercise
+              </ThemedText>
+            </TouchableOpacity>
+
+            {/* Remove Workout Button */}
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={handleRemoveWorkout}
+            >
+              <ThemedText type="label" style={{ color: colors.error }}>
+                Remove Workout
+              </ThemedText>
+            </TouchableOpacity>
+            <View style={{ paddingBottom: insets.bottom }}></View>
+          </BottomSheetScrollView>
+        </BottomSheetView>
+      </BottomSheetModal>
+
+      <AddExerciseModal
+        ref={addExerciseModalRef}
+        onSelectExercise={handleAddExercise}
+      />
+    </>
+  );
+});
+
+EditWorkoutModal.displayName = "EditWorkoutModal";
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  headerLeft: {
+    width: 40,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 20,
+  },
+  nameCard: {
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  nameInput: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  exerciseCard: {
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  exerciseContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  exerciseInfo: {
+    flex: 1,
+  },
+  exerciseName: {
+    marginBottom: 4,
+  },
+  exerciseDetails: {
+    opacity: 0.6,
+  },
+  deleteButton: {
+    padding: 8,
+    marginLeft: 12,
+  },
+  addButton: {
+    paddingVertical: 16,
+    alignItems: "center",
+    marginTop: 8,
+  },
+  removeButton: {
+    paddingVertical: 16,
+    alignItems: "center",
+    marginTop: 32,
+  },
+});

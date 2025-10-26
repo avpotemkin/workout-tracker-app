@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -9,12 +9,15 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppContext } from "@/context/AppContext";
 import { getWorkoutHistory } from "@/mockdata/workoutHistory";
 import { HistoryCard } from "@/components/history/HistoryCard";
+import { WorkoutSelectionModal } from "@/components/workout";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function HomeScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
   const { selectedProgram } = useAppContext();
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // Get recent workout history
   const workoutHistory = getWorkoutHistory();
@@ -22,15 +25,21 @@ export default function HomeScreen() {
 
   const handleStartWorkout = () => {
     if (selectedProgram && selectedProgram.workouts.length > 0) {
+      bottomSheetModalRef.current?.present();
+    } else {
+      router.push("/(tabs)/programs");
+    }
+  };
+
+  const handleSelectWorkout = (workoutId: string) => {
+    if (selectedProgram) {
       router.push({
         pathname: "/(workout)/session",
         params: {
           programId: selectedProgram.id,
-          workoutId: selectedProgram.workouts[0].id,
+          workoutId: workoutId,
         },
       });
-    } else {
-      router.push("/(tabs)/programs");
     }
   };
 
@@ -143,6 +152,12 @@ export default function HomeScreen() {
           </View>
         </ThemedView>
       </ScrollView>
+
+      <WorkoutSelectionModal
+        ref={bottomSheetModalRef}
+        program={selectedProgram}
+        onSelectWorkout={handleSelectWorkout}
+      />
     </SafeAreaView>
   );
 }

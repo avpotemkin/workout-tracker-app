@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -20,6 +21,7 @@ import { Program, Workout } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
 import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
 import { showSchedulePicker, ScheduleType } from "@/components/SchedulePicker";
+import { EditWorkoutModal } from "@/components/workout";
 
 export default function CreateProgramScreen() {
   const [programName, setProgramName] = useState("");
@@ -27,6 +29,9 @@ export default function CreateProgramScreen() {
     WORKOUT_SPLITS.FULL_BODY
   );
   const [schedule, setSchedule] = useState<ScheduleType>("3x/week");
+  const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null);
+
+  const editWorkoutModalRef = useRef<BottomSheetModal>(null);
 
   const backgroundColor = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
@@ -47,12 +52,14 @@ export default function CreateProgramScreen() {
       exercises: [],
     };
     addWorkout(newWorkout);
-    // Navigate to edit this workout
-    router.push(`/programs/edit-workout?id=${newWorkout.id}`);
+    // Open bottom sheet to edit this workout
+    setEditingWorkoutId(newWorkout.id);
+    editWorkoutModalRef.current?.present();
   }
 
   function handleEditWorkout(workoutId: string) {
-    router.push(`/programs/edit-workout?id=${workoutId}`);
+    setEditingWorkoutId(workoutId);
+    editWorkoutModalRef.current?.present();
   }
 
   function handleSave() {
@@ -189,6 +196,11 @@ export default function CreateProgramScreen() {
           </TouchableOpacity>
         </ScrollView>
       </ThemedView>
+
+      <EditWorkoutModal
+        ref={editWorkoutModalRef}
+        workoutId={editingWorkoutId}
+      />
     </SafeAreaView>
   );
 }

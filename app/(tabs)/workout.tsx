@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -8,12 +8,15 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppContext } from "@/context/AppContext";
+import { WorkoutSelectionModal } from "@/components/workout";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function WorkoutScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const { colors } = useAppTheme();
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { selectedProgram } = useAppContext();
 
   // Get the first program with days for quick start if no program is selected
@@ -33,18 +36,22 @@ export default function WorkoutScreen() {
   }, []);
 
   const handleStartWorkout = () => {
-    // If we have a default program, start the first day of the selected program
     if (defaultProgram && defaultProgram.workouts.length > 0) {
+      bottomSheetModalRef.current?.present();
+    } else {
+      router.push("/(tabs)/programs");
+    }
+  };
+
+  const handleSelectWorkout = (workoutId: string) => {
+    if (defaultProgram) {
       router.push({
         pathname: "/(workout)/session",
         params: {
           programId: defaultProgram.id,
-          workoutId: defaultProgram.workouts[0].id,
+          workoutId: workoutId,
         },
       });
-    } else {
-      // Fallback to programs list if no default program
-      router.push("/(tabs)/programs");
     }
   };
 
@@ -99,6 +106,12 @@ export default function WorkoutScreen() {
             </TouchableOpacity>
           </View>
         )}
+
+        <WorkoutSelectionModal
+          ref={bottomSheetModalRef}
+          program={defaultProgram || null}
+          onSelectWorkout={handleSelectWorkout}
+        />
       </ThemedView>
     </SafeAreaView>
   );
