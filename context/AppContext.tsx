@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Program } from '@/types';
-import { PROGRAMS } from '@/mockdata/programs';
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Program } from "@/types";
+import { PROGRAMS } from "@/mockdata/programs";
 
 type AppContextType = {
   selectedProgram: Program | null;
   setSelectedProgram: (program: Program | null) => void;
   programs: Program[];
   addProgram: (program: Program) => void;
+  updateProgram: (programId: string, updatedProgram: Program) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -22,13 +23,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPrograms((prevPrograms) => [...prevPrograms, program]);
   };
 
+  const updateProgram = (programId: string, updatedProgram: Program) => {
+    setPrograms((prevPrograms) =>
+      prevPrograms.map((p) => (p.id === programId ? updatedProgram : p))
+    );
+  };
+
   return (
-    <AppContext.Provider value={{ 
-      selectedProgram, 
-      setSelectedProgram, 
-      programs, 
-      addProgram 
-    }}>
+    <AppContext.Provider
+      value={{
+        selectedProgram,
+        setSelectedProgram,
+        programs,
+        addProgram,
+        updateProgram,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
@@ -37,7 +47,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 export const useAppContext = (): AppContextType => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider');
+    throw new Error("useAppContext must be used within an AppProvider");
   }
   return context;
 };

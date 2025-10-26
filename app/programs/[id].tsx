@@ -61,6 +61,14 @@ export default function ProgramDetailsScreen() {
           </TouchableOpacity>
 
           <ThemedText type="subtitle">{program.name}</ThemedText>
+
+          <TouchableOpacity
+            onPress={() => router.push(`/programs/edit?id=${program.id}`)}
+          >
+            <ThemedText type="label" style={{ color: colors.accent }}>
+              Edit
+            </ThemedText>
+          </TouchableOpacity>
         </View>
 
         {program.description && (
@@ -169,6 +177,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 16,
     marginBottom: 16,
   },

@@ -24,6 +24,12 @@ export default function ProgramsLayout() {
           }}
         />
         <Stack.Screen
+          name="edit"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="edit-workout"
           options={{
             headerShown: false,
