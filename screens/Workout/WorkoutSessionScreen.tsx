@@ -5,7 +5,14 @@ import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { WorkoutSession, WorkoutSet, Program } from "@/types";
+import {
+  WorkoutSession,
+  WorkoutSet,
+  Program,
+  WorkoutExerciseId,
+  WorkoutId,
+  ProgramId,
+} from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -21,7 +28,7 @@ type WorkoutSessionScreenProps = {
 
 export function WorkoutSessionScreen({
   programId = "1",
-  workoutId = "1-day-1",
+  workoutId = "1",
   programs,
 }: WorkoutSessionScreenProps) {
   const backgroundColor = useThemeColor({}, "background");
@@ -50,24 +57,31 @@ export function WorkoutSessionScreen({
   >({});
 
   useEffect(() => {
-    const session = createWorkoutSessionFromProgram(
-      programId,
-      programs,
-      workoutId
+    // Find the program and workout by their IDs
+    const program = programs.find((p) => p.id === (programId as ProgramId));
+    const workout = program?.workouts.find(
+      (w) => w.id === (workoutId as WorkoutId)
     );
+
+    if (!program || !workout) {
+      console.error("Program or workout not found");
+      return;
+    }
+
+    const session = createWorkoutSessionFromProgram(program, workout);
     setWorkoutSession(session);
 
     // Expand the first exercise by default
     if (session.exercises.length > 0) {
-      setExpandedExercises({ [session.exercises[0].id]: true });
+      setExpandedExercises({ [session.exercises[0].id as string]: true });
     }
   }, [programId, workoutId, programs]);
 
   // Toggle exercise expansion
-  const toggleExerciseExpansion = (exerciseId: string) => {
+  const toggleExerciseExpansion = (exerciseId: WorkoutExerciseId) => {
     setExpandedExercises((prev) => ({
       ...prev,
-      [exerciseId]: !prev[exerciseId],
+      [exerciseId as string]: !prev[exerciseId as string],
     }));
   };
 
@@ -131,10 +145,13 @@ export function WorkoutSessionScreen({
       // Close the previous exercise
       setExpandedExercises((prev) => {
         const newExpanded = { ...prev };
-        delete newExpanded[workoutSession.exercises[exerciseIndex].id];
+        delete newExpanded[
+          workoutSession.exercises[exerciseIndex].id as string
+        ];
 
         // Expand the next exercise
-        newExpanded[workoutSession.exercises[exerciseIndex + 1].id] = true;
+        newExpanded[workoutSession.exercises[exerciseIndex + 1].id as string] =
+          true;
 
         return newExpanded;
       });

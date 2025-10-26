@@ -1,26 +1,62 @@
-import { Program } from '@/types';
+import { Program, ProgramId, WorkoutId, ProgramExerciseId, ExerciseTemplateId } from '@/types';
 
 export const PROGRAMS: Program[] = [
   { 
-    id: "1", 
+    id: "1" as ProgramId,
     name: "Full Body",
     workouts: [
       {
-        id: "1-day-1",
+        id: "1" as WorkoutId,
         name: "Full Body A",
         exercises: [
-          { id: "1-1", name: "Squats", sets: 3, reps: 5, weight: 100 },
-          { id: "1-2", name: "Bench Press", sets: 3, reps: 5, weight: 80 },
-          { id: "1-3", name: "Deadlifts", sets: 3, reps: 5, weight: 120 }
+          { 
+            id: "1" as ProgramExerciseId,
+            templateId: "squat" as ExerciseTemplateId,
+            sets: 3,
+            reps: 5,
+            weight: { value: 100, unit: "kg" }
+          },
+          { 
+            id: "2" as ProgramExerciseId,
+            templateId: "bench-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 5,
+            weight: { value: 80, unit: "kg" }
+          },
+          { 
+            id: "3" as ProgramExerciseId,
+            templateId: "deadlift" as ExerciseTemplateId,
+            sets: 3,
+            reps: 5,
+            weight: { value: 120, unit: "kg" }
+          }
         ]
       },
       {
-        id: "1-day-2",
+        id: "2" as WorkoutId,
         name: "Full Body B",
         exercises: [
-          { id: "1-4", name: "Lunges", sets: 3, reps: 8, weight: 60 },
-          { id: "1-5", name: "Incline Press", sets: 3, reps: 8, weight: 70 },
-          { id: "1-6", name: "Barbell Rows", sets: 3, reps: 8, weight: 80 }
+          { 
+            id: "4" as ProgramExerciseId,
+            templateId: "lunges" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 60, unit: "kg" }
+          },
+          { 
+            id: "5" as ProgramExerciseId,
+            templateId: "incline-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 70, unit: "kg" }
+          },
+          { 
+            id: "6" as ProgramExerciseId,
+            templateId: "barbell-row" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 80, unit: "kg" }
+          }
         ]
       }
     ],
@@ -29,25 +65,61 @@ export const PROGRAMS: Program[] = [
     updatedAt: new Date('2024-01-01')
   },
   { 
-    id: "2", 
+    id: "2" as ProgramId,
     name: "5×5",
     workouts: [
       {
-        id: "2-day-1",
+        id: "3" as WorkoutId,
         name: "Workout A",
         exercises: [
-          { id: "2-1", name: "Squats", sets: 5, reps: 5, weight: 110 },
-          { id: "2-2", name: "Overhead Press", sets: 5, reps: 5, weight: 70 },
-          { id: "2-3", name: "Barbell Rows", sets: 5, reps: 5, weight: 90 }
+          { 
+            id: "7" as ProgramExerciseId,
+            templateId: "squat" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 110, unit: "kg" }
+          },
+          { 
+            id: "8" as ProgramExerciseId,
+            templateId: "overhead-press" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 70, unit: "kg" }
+          },
+          { 
+            id: "9" as ProgramExerciseId,
+            templateId: "barbell-row" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 90, unit: "kg" }
+          }
         ]
       },
       {
-        id: "2-day-2",
+        id: "4" as WorkoutId,
         name: "Workout B",
         exercises: [
-          { id: "2-4", name: "Squats", sets: 5, reps: 5, weight: 110 },
-          { id: "2-5", name: "Bench Press", sets: 5, reps: 5, weight: 85 },
-          { id: "2-6", name: "Deadlifts", sets: 5, reps: 5, weight: 130 }
+          { 
+            id: "10" as ProgramExerciseId,
+            templateId: "squat" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 110, unit: "kg" }
+          },
+          { 
+            id: "11" as ProgramExerciseId,
+            templateId: "bench-press" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 85, unit: "kg" }
+          },
+          { 
+            id: "12" as ProgramExerciseId,
+            templateId: "deadlift" as ExerciseTemplateId,
+            sets: 5,
+            reps: 5,
+            weight: { value: 130, unit: "kg" }
+          }
         ]
       }
     ],
@@ -56,37 +128,108 @@ export const PROGRAMS: Program[] = [
     updatedAt: new Date('2024-01-02')
   },
   { 
-    id: "3", 
+    id: "3" as ProgramId,
     name: "Push, Pull, Legs",
     workouts: [
       {
-        id: "3-day-1",
+        id: "5" as WorkoutId,
         name: "Push",
         exercises: [
-          { id: "3-1", name: "Bench Press", sets: 3, reps: 8, weight: 85 },
-          { id: "3-2", name: "Shoulder Press", sets: 3, reps: 8, weight: 65 },
-          { id: "3-3", name: "Tricep Extensions", sets: 3, reps: 10, weight: 30 },
-          { id: "3-4", name: "Incline Dumbbell Press", sets: 3, reps: 10, weight: 30 }
+          { 
+            id: "13" as ProgramExerciseId,
+            templateId: "bench-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 85, unit: "kg" }
+          },
+          { 
+            id: "14" as ProgramExerciseId,
+            templateId: "dumbbell-shoulder-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 65, unit: "kg" }
+          },
+          { 
+            id: "15" as ProgramExerciseId,
+            templateId: "tricep-pushdown" as ExerciseTemplateId,
+            sets: 3,
+            reps: 10,
+            weight: { value: 30, unit: "kg" }
+          },
+          { 
+            id: "16" as ProgramExerciseId,
+            templateId: "dumbbell-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 10,
+            weight: { value: 30, unit: "kg" }
+          }
         ]
       },
       {
-        id: "3-day-2",
+        id: "6" as WorkoutId,
         name: "Pull",
         exercises: [
-          { id: "3-5", name: "Deadlifts", sets: 3, reps: 8, weight: 120 },
-          { id: "3-6", name: "Pull-ups", sets: 3, reps: 8 },
-          { id: "3-7", name: "Barbell Rows", sets: 3, reps: 8, weight: 70 },
-          { id: "3-8", name: "Bicep Curls", sets: 3, reps: 12, weight: 20 }
+          { 
+            id: "17" as ProgramExerciseId,
+            templateId: "deadlift" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 120, unit: "kg" }
+          },
+          { 
+            id: "18" as ProgramExerciseId,
+            templateId: "pull-ups" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8
+          },
+          { 
+            id: "19" as ProgramExerciseId,
+            templateId: "barbell-row" as ExerciseTemplateId,
+            sets: 3,
+            reps: 8,
+            weight: { value: 70, unit: "kg" }
+          },
+          { 
+            id: "20" as ProgramExerciseId,
+            templateId: "barbell-curl" as ExerciseTemplateId,
+            sets: 3,
+            reps: 12,
+            weight: { value: 20, unit: "kg" }
+          }
         ]
       },
       {
-        id: "3-day-3",
+        id: "7" as WorkoutId,
         name: "Legs",
         exercises: [
-          { id: "3-9", name: "Squats", sets: 4, reps: 8, weight: 100 },
-          { id: "3-10", name: "Leg Press", sets: 3, reps: 10, weight: 150 },
-          { id: "3-11", name: "Romanian Deadlifts", sets: 3, reps: 10, weight: 80 },
-          { id: "3-12", name: "Calf Raises", sets: 4, reps: 15, weight: 40 }
+          { 
+            id: "21" as ProgramExerciseId,
+            templateId: "squat" as ExerciseTemplateId,
+            sets: 4,
+            reps: 8,
+            weight: { value: 100, unit: "kg" }
+          },
+          { 
+            id: "22" as ProgramExerciseId,
+            templateId: "leg-press" as ExerciseTemplateId,
+            sets: 3,
+            reps: 10,
+            weight: { value: 150, unit: "kg" }
+          },
+          { 
+            id: "23" as ProgramExerciseId,
+            templateId: "romanian-deadlift" as ExerciseTemplateId,
+            sets: 3,
+            reps: 10,
+            weight: { value: 80, unit: "kg" }
+          },
+          { 
+            id: "24" as ProgramExerciseId,
+            templateId: "calf-raises" as ExerciseTemplateId,
+            sets: 4,
+            reps: 15,
+            weight: { value: 40, unit: "kg" }
+          }
         ]
       }
     ],

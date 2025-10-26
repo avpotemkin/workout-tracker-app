@@ -2,16 +2,17 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
-import { WorkoutExercise, WorkoutSet } from "@/types";
+import { WorkoutExercise, WorkoutSet, WorkoutExerciseId } from "@/types";
 import { SetList } from "./SetList";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useChevronRotation } from "@/animations/chevronRotation";
 import Animated from "react-native-reanimated";
+import { getExerciseNameById } from "@/constants/Exercises";
 
 type ExerciseCardProps = {
   exercise: WorkoutExercise;
   isExpanded: boolean;
-  onToggleExpansion: (exerciseId: string) => void;
+  onToggleExpansion: (exerciseId: WorkoutExerciseId) => void;
   onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
   onUpdateSet: (
     exerciseIndex: number,
@@ -37,7 +38,9 @@ export function ExerciseCard({
         style={styles.exerciseHeader}
         onPress={() => onToggleExpansion(exercise.id)}
       >
-        <ThemedText type="subtitle">{exercise.name}</ThemedText>
+        <ThemedText type="subtitle">
+          {getExerciseNameById(exercise.templateId)}
+        </ThemedText>
         <Animated.View style={rotationStyle}>
           <Ionicons name="chevron-down" size={24} color={colors.text} />
         </Animated.View>

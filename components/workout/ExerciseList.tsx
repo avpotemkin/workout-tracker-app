@@ -1,12 +1,12 @@
 import React from "react";
 import { ScrollView, StyleSheet, ViewStyle } from "react-native";
-import { WorkoutExercise, WorkoutSet } from "@/types";
+import { WorkoutExercise, WorkoutSet, WorkoutExerciseId } from "@/types";
 import { ExerciseCard } from "./ExerciseCard/ExerciseCard";
 
 type ExerciseListProps = {
   exercises: WorkoutExercise[];
   expandedExercises: Record<string, boolean>;
-  toggleExerciseExpansion: (exerciseId: string) => void;
+  toggleExerciseExpansion: (exerciseId: WorkoutExerciseId) => void;
   toggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
   onUpdateSet: (
     exerciseIndex: number,

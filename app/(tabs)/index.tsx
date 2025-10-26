@@ -60,7 +60,7 @@ export default function HomeScreen() {
         <ThemedView style={styles.container}>
           {/* Header */}
           <ThemedText type="title" style={styles.header}>
-            Dashboard
+            Home
           </ThemedText>
 
           {/* Active Program Overview */}

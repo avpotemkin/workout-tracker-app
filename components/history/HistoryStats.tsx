@@ -29,7 +29,7 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
 
       <View style={styles.statsGrid}>
         <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>
+          <ThemedText type="subtitle" style={{ color: colors.accent }}>
             {stats.totalWorkouts}
           </ThemedText>
           <ThemedText type="caption" style={styles.statLabel}>
@@ -38,7 +38,7 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
         </View>
 
         <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>
+          <ThemedText type="subtitle" style={{ color: colors.accent }}>
             {formatDuration(stats.totalDuration)}
           </ThemedText>
           <ThemedText type="caption" style={styles.statLabel}>
@@ -54,9 +54,10 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
           </ThemedText>
           {stats.strongestLifts.slice(0, 3).map((lift, index) => (
             <View key={index} style={styles.liftRow}>
-              <ThemedText type="body">{lift.exercise}</ThemedText>
-              <ThemedText type="body" style={styles.liftWeight}>
-                {lift.maxWeight}kg
+              <ThemedText type="body">{lift.exerciseName}</ThemedText>
+              <ThemedText type="body" style={{ color: colors.accent }}>
+                {lift.maxWeight.value}
+                {lift.maxWeight.unit}
               </ThemedText>
             </View>
           ))}
@@ -84,9 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  statValue: {
-    color: "#4A90E2",
-  },
   statLabel: {
     marginTop: 4,
   },
@@ -103,8 +101,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 4,
-  },
-  liftWeight: {
-    color: "#4A90E2",
   },
 });

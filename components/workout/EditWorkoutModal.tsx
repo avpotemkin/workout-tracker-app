@@ -25,8 +25,9 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Ionicons } from "@expo/vector-icons";
 import { AddExerciseModal } from "./AddExerciseModal";
-import { ExerciseTemplate } from "@/constants/Exercises";
-import { Exercise } from "@/types";
+import { ExerciseTemplate, getExerciseNameById } from "@/constants/Exercises";
+import { ProgramExercise, ProgramExerciseId, WorkoutId } from "@/types";
+import { generateId } from "@/utils/ids";
 
 interface EditWorkoutModalProps {
   workoutId: string | null;
@@ -41,9 +42,9 @@ export const EditWorkoutModal = forwardRef<
   const addExerciseModalRef = useRef<BottomSheetModal>(null);
   const { getWorkout, updateWorkout, removeWorkout } = useProgramDraft();
 
-  const workout = workoutId ? getWorkout(workoutId) : null;
+  const workout = workoutId ? getWorkout(workoutId as WorkoutId) : null;
   const [workoutName, setWorkoutName] = useState(workout?.name || "");
-  const [exercises, setExercises] = useState<Exercise[]>(
+  const [exercises, setExercises] = useState<ProgramExercise[]>(
     workout?.exercises || []
   );
 
@@ -69,7 +70,7 @@ export const EditWorkoutModal = forwardRef<
   const handleWorkoutNameChange = (text: string) => {
     setWorkoutName(text);
     if (workoutId && workout) {
-      updateWorkout(workoutId, {
+      updateWorkout(workoutId as WorkoutId, {
         ...workout,
         name: text,
       });
@@ -77,31 +78,31 @@ export const EditWorkoutModal = forwardRef<
   };
 
   const handleAddExercise = (exerciseTemplate: ExerciseTemplate) => {
-    const newExercise: Exercise = {
-      id: `ex-${Date.now()}`,
-      name: exerciseTemplate.name,
-      sets: exerciseTemplate.sets,
-      reps: exerciseTemplate.reps,
+    const newExercise: ProgramExercise = {
+      id: generateId() as ProgramExerciseId,
+      templateId: exerciseTemplate.id,
+      sets: exerciseTemplate.defaultSets,
+      reps: exerciseTemplate.defaultReps,
     };
     const updatedExercises = [...exercises, newExercise];
     setExercises(updatedExercises);
 
     // Auto-save to context
     if (workoutId && workout) {
-      updateWorkout(workoutId, {
+      updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
       });
     }
   };
 
-  const handleRemoveExercise = (exerciseId: string) => {
+  const handleRemoveExercise = (exerciseId: ProgramExerciseId) => {
     const updatedExercises = exercises.filter((ex) => ex.id !== exerciseId);
     setExercises(updatedExercises);
 
     // Auto-save to context
     if (workoutId && workout) {
-      updateWorkout(workoutId, {
+      updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
       });
@@ -119,7 +120,7 @@ export const EditWorkoutModal = forwardRef<
           style: "destructive",
           onPress: () => {
             if (workoutId) {
-              removeWorkout(workoutId);
+              removeWorkout(workoutId as WorkoutId);
               if (ref && typeof ref !== "function") {
                 ref.current?.dismiss();
               }
@@ -183,7 +184,7 @@ export const EditWorkoutModal = forwardRef<
                 <View style={styles.exerciseContent}>
                   <View style={styles.exerciseInfo}>
                     <ThemedText type="label" style={styles.exerciseName}>
-                      {exercise.name}
+                      {getExerciseNameById(exercise.templateId)}
                     </ThemedText>
                     <ThemedText type="caption" style={styles.exerciseDetails}>
                       {exercise.sets} × {exercise.reps}

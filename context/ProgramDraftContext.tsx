@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Workout, Program } from "@/types";
+import { Workout, Program, WorkoutId, ProgramExerciseId } from "@/types";
 import {
   WorkoutSplitType,
   getPresetWorkouts,
 } from "@/constants/WorkoutPresets";
+import { generateId } from "@/utils/ids";
 
 interface ProgramDraftContextType {
   workouts: Workout[];
   setWorkouts: (workouts: Workout[]) => void;
-  updateWorkout: (workoutId: string, updatedWorkout: Workout) => void;
-  removeWorkout: (workoutId: string) => void;
+  updateWorkout: (workoutId: WorkoutId, updatedWorkout: Workout) => void;
+  removeWorkout: (workoutId: WorkoutId) => void;
   addWorkout: (workout: Workout) => void;
-  getWorkout: (workoutId: string) => Workout | undefined;
+  getWorkout: (workoutId: WorkoutId) => Workout | undefined;
   resetWithPreset: (split: WorkoutSplitType) => void;
   initializeWithProgram: (program: Program) => void;
 }
@@ -23,13 +24,13 @@ const ProgramDraftContext = createContext<ProgramDraftContextType | undefined>(
 export function ProgramDraftProvider({ children }: { children: ReactNode }) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
-  function updateWorkout(workoutId: string, updatedWorkout: Workout) {
+  function updateWorkout(workoutId: WorkoutId, updatedWorkout: Workout) {
     setWorkouts((prevWorkouts) =>
       prevWorkouts.map((w) => (w.id === workoutId ? updatedWorkout : w))
     );
   }
 
-  function removeWorkout(workoutId: string) {
+  function removeWorkout(workoutId: WorkoutId) {
     setWorkouts((prevWorkouts) =>
       prevWorkouts.filter((w) => w.id !== workoutId)
     );
@@ -39,22 +40,20 @@ export function ProgramDraftProvider({ children }: { children: ReactNode }) {
     setWorkouts((prevWorkouts) => [...prevWorkouts, workout]);
   }
 
-  function getWorkout(workoutId: string) {
+  function getWorkout(workoutId: WorkoutId) {
     return workouts.find((w) => w.id === workoutId);
   }
 
   function resetWithPreset(split: WorkoutSplitType) {
     const presetWorkouts = getPresetWorkouts(split);
-    const initializedWorkouts: Workout[] = presetWorkouts.map(
-      (preset, index) => ({
-        id: `workout-${Date.now()}-${index}`,
-        name: preset.name,
-        exercises: preset.exercises.map((ex, exIndex) => ({
-          ...ex,
-          id: `ex-${Date.now()}-${index}-${exIndex}`,
-        })),
-      })
-    );
+    const initializedWorkouts: Workout[] = presetWorkouts.map((preset) => ({
+      id: generateId() as WorkoutId,
+      name: preset.name,
+      exercises: preset.exercises.map((ex) => ({
+        ...ex,
+        id: generateId() as ProgramExerciseId,
+      })),
+    }));
     setWorkouts(initializedWorkouts);
   }
 

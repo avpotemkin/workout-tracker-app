@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { WorkoutHistory } from "@/types";
+import { getExerciseNameById } from "@/constants/Exercises";
 
 type HistoryCardProps = {
   workout: WorkoutHistory;
@@ -34,8 +35,8 @@ export function HistoryCard({ workout }: HistoryCardProps) {
       <View style={styles.cardHeader}>
         <View style={styles.programInfo}>
           <ThemedText type="defaultSemiBold">{workout.programName}</ThemedText>
-          <ThemedText type="body" style={styles.dayName}>
-            {workout.dayName}
+          <ThemedText type="default" style={{ color: colors.text }}>
+            {workout.workoutName}
           </ThemedText>
         </View>
         <View style={styles.dateContainer}>
@@ -63,7 +64,9 @@ export function HistoryCard({ workout }: HistoryCardProps) {
 
       <View style={styles.exercisesList}>
         <ThemedText type="caption" style={styles.exercisesText}>
-          {workout.exercises.map((ex) => ex.name).join(", ")}
+          {workout.exercises
+            .map((ex) => getExerciseNameById(ex.templateId))
+            .join(", ")}
         </ThemedText>
       </View>
     </View>
@@ -89,10 +92,6 @@ const styles = StyleSheet.create({
   },
   programInfo: {
     flex: 1,
-  },
-  dayName: {
-    color: "#888",
-    marginTop: 2,
   },
   dateContainer: {
     flexDirection: "row",

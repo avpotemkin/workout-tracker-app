@@ -1,11 +1,13 @@
-import { WorkoutHistory, HistoryStats } from "@/types";
+import { WorkoutHistory, HistoryStats, WorkoutHistoryId, ProgramId, WorkoutId, WorkoutExerciseId, WorkoutSetId, ExerciseTemplateId } from "@/types";
 
 // Mock workout history data
 export const mockWorkoutHistory: WorkoutHistory[] = [
   {
-    id: "history-1",
+    id: "1" as WorkoutHistoryId,
+    programId: "3" as ProgramId,
     programName: "Push Pull Legs",
-    dayName: "Push Day",
+    workoutId: "5" as WorkoutId,
+    workoutName: "Push Day",
     startedAt: new Date("2024-01-15T09:00:00Z"),
     finishedAt: new Date("2024-01-15T10:30:00Z"),
     duration: 90,
@@ -13,31 +15,31 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     totalReps: 180,
     exercises: [
       {
-        id: "ex-1",
-        exerciseId: "bench-press",
-        name: "Bench Press",
+        id: "1" as WorkoutExerciseId,
+        templateId: "bench-press" as ExerciseTemplateId,
         sets: [
-          { id: "set-1", setNumber: 1, weight: 80, reps: 10, isCompleted: true },
-          { id: "set-2", setNumber: 2, weight: 85, reps: 8, isCompleted: true },
-          { id: "set-3", setNumber: 3, weight: 90, reps: 6, isCompleted: true },
+          { id: "1" as WorkoutSetId, setNumber: 1, weight: { value: 80, unit: "kg" }, reps: 10, isCompleted: true },
+          { id: "2" as WorkoutSetId, setNumber: 2, weight: { value: 85, unit: "kg" }, reps: 8, isCompleted: true },
+          { id: "3" as WorkoutSetId, setNumber: 3, weight: { value: 90, unit: "kg" }, reps: 6, isCompleted: true },
         ],
       },
       {
-        id: "ex-2",
-        exerciseId: "shoulder-press",
-        name: "Shoulder Press",
+        id: "2" as WorkoutExerciseId,
+        templateId: "dumbbell-shoulder-press" as ExerciseTemplateId,
         sets: [
-          { id: "set-4", setNumber: 1, weight: 30, reps: 12, isCompleted: true },
-          { id: "set-5", setNumber: 2, weight: 30, reps: 10, isCompleted: true },
-          { id: "set-6", setNumber: 3, weight: 30, reps: 8, isCompleted: true },
+          { id: "4" as WorkoutSetId, setNumber: 1, weight: { value: 30, unit: "kg" }, reps: 12, isCompleted: true },
+          { id: "5" as WorkoutSetId, setNumber: 2, weight: { value: 30, unit: "kg" }, reps: 10, isCompleted: true },
+          { id: "6" as WorkoutSetId, setNumber: 3, weight: { value: 30, unit: "kg" }, reps: 8, isCompleted: true },
         ],
       },
     ],
   },
   {
-    id: "history-2",
+    id: "2" as WorkoutHistoryId,
+    programId: "3" as ProgramId,
     programName: "Push Pull Legs",
-    dayName: "Pull Day",
+    workoutId: "6" as WorkoutId,
+    workoutName: "Pull Day",
     startedAt: new Date("2024-01-13T10:00:00Z"),
     finishedAt: new Date("2024-01-13T11:15:00Z"),
     duration: 75,
@@ -45,31 +47,31 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     totalReps: 150,
     exercises: [
       {
-        id: "ex-3",
-        exerciseId: "deadlift",
-        name: "Deadlift",
+        id: "3" as WorkoutExerciseId,
+        templateId: "deadlift" as ExerciseTemplateId,
         sets: [
-          { id: "set-7", setNumber: 1, weight: 120, reps: 8, isCompleted: true },
-          { id: "set-8", setNumber: 2, weight: 125, reps: 6, isCompleted: true },
-          { id: "set-9", setNumber: 3, weight: 130, reps: 4, isCompleted: true },
+          { id: "7" as WorkoutSetId, setNumber: 1, weight: { value: 120, unit: "kg" }, reps: 8, isCompleted: true },
+          { id: "8" as WorkoutSetId, setNumber: 2, weight: { value: 125, unit: "kg" }, reps: 6, isCompleted: true },
+          { id: "9" as WorkoutSetId, setNumber: 3, weight: { value: 130, unit: "kg" }, reps: 4, isCompleted: true },
         ],
       },
       {
-        id: "ex-4",
-        exerciseId: "rows",
-        name: "Barbell Rows",
+        id: "4" as WorkoutExerciseId,
+        templateId: "barbell-row" as ExerciseTemplateId,
         sets: [
-          { id: "set-10", setNumber: 1, weight: 70, reps: 12, isCompleted: true },
-          { id: "set-11", setNumber: 2, weight: 75, reps: 10, isCompleted: true },
-          { id: "set-12", setNumber: 3, weight: 80, reps: 8, isCompleted: true },
+          { id: "10" as WorkoutSetId, setNumber: 1, weight: { value: 70, unit: "kg" }, reps: 12, isCompleted: true },
+          { id: "11" as WorkoutSetId, setNumber: 2, weight: { value: 75, unit: "kg" }, reps: 10, isCompleted: true },
+          { id: "12" as WorkoutSetId, setNumber: 3, weight: { value: 80, unit: "kg" }, reps: 8, isCompleted: true },
         ],
       },
     ],
   },
   {
-    id: "history-3",
+    id: "3" as WorkoutHistoryId,
+    programId: "3" as ProgramId,
     programName: "Push Pull Legs",
-    dayName: "Leg Day",
+    workoutId: "7" as WorkoutId,
+    workoutName: "Leg Day",
     startedAt: new Date("2024-01-11T08:30:00Z"),
     finishedAt: new Date("2024-01-11T10:00:00Z"),
     duration: 90,
@@ -77,23 +79,21 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     totalReps: 210,
     exercises: [
       {
-        id: "ex-5",
-        exerciseId: "squats",
-        name: "Squats",
+        id: "5" as WorkoutExerciseId,
+        templateId: "squat" as ExerciseTemplateId,
         sets: [
-          { id: "set-13", setNumber: 1, weight: 100, reps: 12, isCompleted: true },
-          { id: "set-14", setNumber: 2, weight: 105, reps: 10, isCompleted: true },
-          { id: "set-15", setNumber: 3, weight: 110, reps: 8, isCompleted: true },
+          { id: "13" as WorkoutSetId, setNumber: 1, weight: { value: 100, unit: "kg" }, reps: 12, isCompleted: true },
+          { id: "14" as WorkoutSetId, setNumber: 2, weight: { value: 105, unit: "kg" }, reps: 10, isCompleted: true },
+          { id: "15" as WorkoutSetId, setNumber: 3, weight: { value: 110, unit: "kg" }, reps: 8, isCompleted: true },
         ],
       },
       {
-        id: "ex-6",
-        exerciseId: "leg-press",
-        name: "Leg Press",
+        id: "6" as WorkoutExerciseId,
+        templateId: "leg-press" as ExerciseTemplateId,
         sets: [
-          { id: "set-16", setNumber: 1, weight: 150, reps: 15, isCompleted: true },
-          { id: "set-17", setNumber: 2, weight: 160, reps: 12, isCompleted: true },
-          { id: "set-18", setNumber: 3, weight: 170, reps: 10, isCompleted: true },
+          { id: "16" as WorkoutSetId, setNumber: 1, weight: { value: 150, unit: "kg" }, reps: 15, isCompleted: true },
+          { id: "17" as WorkoutSetId, setNumber: 2, weight: { value: 160, unit: "kg" }, reps: 12, isCompleted: true },
+          { id: "18" as WorkoutSetId, setNumber: 3, weight: { value: 170, unit: "kg" }, reps: 10, isCompleted: true },
         ],
       },
     ],
@@ -106,18 +106,21 @@ export const mockHistoryStats: HistoryStats = {
   totalDuration: 255, // in minutes
   strongestLifts: [
     {
-      exercise: "Leg Press",
-      maxWeight: 170,
+      templateId: "leg-press" as ExerciseTemplateId,
+      exerciseName: "Leg Press",
+      maxWeight: { value: 170, unit: "kg" },
       date: new Date("2024-01-11T08:30:00Z"),
     },
     {
-      exercise: "Deadlift",
-      maxWeight: 130,
+      templateId: "deadlift" as ExerciseTemplateId,
+      exerciseName: "Deadlift",
+      maxWeight: { value: 130, unit: "kg" },
       date: new Date("2024-01-13T10:00:00Z"),
     },
     {
-      exercise: "Squats",
-      maxWeight: 110,
+      templateId: "squat" as ExerciseTemplateId,
+      exerciseName: "Squats",
+      maxWeight: { value: 110, unit: "kg" },
       date: new Date("2024-01-11T08:30:00Z"),
     },
   ],
@@ -136,7 +139,7 @@ export function getWorkoutHistoryById(id: string): WorkoutHistory | undefined {
   return mockWorkoutHistory.find(workout => workout.id === id);
 }
 
-export function getHistoryByProgram(programName: string): WorkoutHistory[] {
+export function getHistoryByProgramName(programName: string): WorkoutHistory[] {
   return mockWorkoutHistory.filter(workout => workout.programName === programName);
 }
 
@@ -144,4 +147,4 @@ export function getHistoryByDateRange(startDate: Date, endDate: Date): WorkoutHi
   return mockWorkoutHistory.filter(workout => 
     workout.startedAt >= startDate && workout.startedAt <= endDate
   );
-} 
+}

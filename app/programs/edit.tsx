@@ -17,17 +17,18 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
-import { Program, Workout } from "@/types";
+import { Program, Workout, ProgramId, WorkoutId } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
 import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
 import { EditWorkoutModal } from "@/components/workout";
+import { generateId } from "@/utils/ids";
 
 export default function EditProgramScreen() {
   const params = useLocalSearchParams();
   const programId = params.id as string;
 
   const { programs, updateProgram } = useAppContext();
-  const program = programs.find((p) => p.id === programId);
+  const program = programs.find((p) => p.id === (programId as ProgramId));
 
   const [programName, setProgramName] = useState(program?.name || "");
   const [selectedSplit, setSelectedSplit] = useState<WorkoutSplitType>(
@@ -52,7 +53,7 @@ export default function EditProgramScreen() {
 
   function handleAddWorkout() {
     const newWorkout: Workout = {
-      id: `workout-${Date.now()}`,
+      id: generateId() as WorkoutId,
       name: `Workout ${String.fromCharCode(65 + workouts.length)}`,
       exercises: [],
     };
@@ -90,7 +91,7 @@ export default function EditProgramScreen() {
       updatedAt: new Date(),
     };
 
-    updateProgram(programId, updatedProgram);
+    updateProgram(programId as ProgramId, updatedProgram);
     router.back();
   }
 

@@ -1,4 +1,4 @@
-import { Exercise } from '@/types';
+import { ProgramExercise, ProgramExerciseId, ExerciseTemplateId } from '@/types';
 
 export const WORKOUT_SPLITS = {
   FULL_BODY: 'Full Body',
@@ -12,7 +12,7 @@ export type WorkoutSplitType = typeof WORKOUT_SPLITS[keyof typeof WORKOUT_SPLITS
 
 export interface WorkoutPreset {
   name: string;
-  exercises: Exercise[];
+  exercises: ProgramExercise[];
 }
 
 export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
@@ -20,17 +20,17 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
     {
       name: 'Workout A',
       exercises: [
-        { id: 'ex-1', name: 'Squat', sets: 3, reps: 5 },
-        { id: 'ex-2', name: 'Bench Press', sets: 3, reps: 5 },
-        { id: 'ex-3', name: 'Barbell Row', sets: 3, reps: 5 },
+        { id: 'preset-1' as ProgramExerciseId, templateId: 'squat' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-2' as ProgramExerciseId, templateId: 'bench-press' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-3' as ProgramExerciseId, templateId: 'barbell-row' as ExerciseTemplateId, sets: 3, reps: 5 },
       ],
     },
     {
       name: 'Workout B',
       exercises: [
-        { id: 'ex-4', name: 'Deadlift', sets: 3, reps: 5 },
-        { id: 'ex-5', name: 'Overhead Press', sets: 3, reps: 5 },
-        { id: 'ex-6', name: 'Pull-ups', sets: 3, reps: 8 },
+        { id: 'preset-4' as ProgramExerciseId, templateId: 'deadlift' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-5' as ProgramExerciseId, templateId: 'overhead-press' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-6' as ProgramExerciseId, templateId: 'pull-ups' as ExerciseTemplateId, sets: 3, reps: 8 },
       ],
     },
   ],
@@ -38,19 +38,19 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
     {
       name: 'Upper Body',
       exercises: [
-        { id: 'ex-1', name: 'Bench Press', sets: 3, reps: 8 },
-        { id: 'ex-2', name: 'Barbell Row', sets: 3, reps: 8 },
-        { id: 'ex-3', name: 'Overhead Press', sets: 3, reps: 8 },
-        { id: 'ex-4', name: 'Pull-ups', sets: 3, reps: 8 },
+        { id: 'preset-7' as ProgramExerciseId, templateId: 'bench-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-8' as ProgramExerciseId, templateId: 'barbell-row' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-9' as ProgramExerciseId, templateId: 'overhead-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-10' as ProgramExerciseId, templateId: 'pull-ups' as ExerciseTemplateId, sets: 3, reps: 8 },
       ],
     },
     {
       name: 'Lower Body',
       exercises: [
-        { id: 'ex-5', name: 'Squat', sets: 3, reps: 5 },
-        { id: 'ex-6', name: 'Romanian Deadlift', sets: 3, reps: 10 },
-        { id: 'ex-7', name: 'Leg Press', sets: 3, reps: 10 },
-        { id: 'ex-8', name: 'Leg Curl', sets: 3, reps: 12 },
+        { id: 'preset-11' as ProgramExerciseId, templateId: 'squat' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-12' as ProgramExerciseId, templateId: 'romanian-deadlift' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-13' as ProgramExerciseId, templateId: 'leg-press' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-14' as ProgramExerciseId, templateId: 'leg-curl' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
   ],
@@ -58,28 +58,28 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
     {
       name: 'Push',
       exercises: [
-        { id: 'ex-1', name: 'Bench Press', sets: 3, reps: 8 },
-        { id: 'ex-2', name: 'Overhead Press', sets: 3, reps: 8 },
-        { id: 'ex-3', name: 'Incline Press', sets: 3, reps: 10 },
-        { id: 'ex-4', name: 'Lateral Raises', sets: 3, reps: 12 },
+        { id: 'preset-15' as ProgramExerciseId, templateId: 'bench-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-16' as ProgramExerciseId, templateId: 'overhead-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-17' as ProgramExerciseId, templateId: 'incline-press' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-18' as ProgramExerciseId, templateId: 'lateral-raises' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
     {
       name: 'Pull',
       exercises: [
-        { id: 'ex-5', name: 'Deadlift', sets: 3, reps: 5 },
-        { id: 'ex-6', name: 'Pull-ups', sets: 3, reps: 8 },
-        { id: 'ex-7', name: 'Barbell Row', sets: 3, reps: 8 },
-        { id: 'ex-8', name: 'Face Pulls', sets: 3, reps: 15 },
+        { id: 'preset-19' as ProgramExerciseId, templateId: 'deadlift' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-20' as ProgramExerciseId, templateId: 'pull-ups' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-21' as ProgramExerciseId, templateId: 'barbell-row' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-22' as ProgramExerciseId, templateId: 'face-pulls' as ExerciseTemplateId, sets: 3, reps: 15 },
       ],
     },
     {
       name: 'Legs',
       exercises: [
-        { id: 'ex-9', name: 'Squat', sets: 3, reps: 5 },
-        { id: 'ex-10', name: 'Romanian Deadlift', sets: 3, reps: 10 },
-        { id: 'ex-11', name: 'Leg Press', sets: 3, reps: 10 },
-        { id: 'ex-12', name: 'Calf Raises', sets: 3, reps: 15 },
+        { id: 'preset-23' as ProgramExerciseId, templateId: 'squat' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-24' as ProgramExerciseId, templateId: 'romanian-deadlift' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-25' as ProgramExerciseId, templateId: 'leg-press' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-26' as ProgramExerciseId, templateId: 'calf-raises' as ExerciseTemplateId, sets: 3, reps: 15 },
       ],
     },
   ],
@@ -87,19 +87,19 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
     {
       name: 'Push',
       exercises: [
-        { id: 'ex-1', name: 'Bench Press', sets: 3, reps: 8 },
-        { id: 'ex-2', name: 'Overhead Press', sets: 3, reps: 8 },
-        { id: 'ex-3', name: 'Squat', sets: 3, reps: 5 },
-        { id: 'ex-4', name: 'Tricep Pushdown', sets: 3, reps: 12 },
+        { id: 'preset-27' as ProgramExerciseId, templateId: 'bench-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-28' as ProgramExerciseId, templateId: 'overhead-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-29' as ProgramExerciseId, templateId: 'squat' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-30' as ProgramExerciseId, templateId: 'tricep-pushdown' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
     {
       name: 'Pull',
       exercises: [
-        { id: 'ex-5', name: 'Deadlift', sets: 3, reps: 5 },
-        { id: 'ex-6', name: 'Pull-ups', sets: 3, reps: 8 },
-        { id: 'ex-7', name: 'Barbell Row', sets: 3, reps: 8 },
-        { id: 'ex-8', name: 'Barbell Curl', sets: 3, reps: 10 },
+        { id: 'preset-31' as ProgramExerciseId, templateId: 'deadlift' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-32' as ProgramExerciseId, templateId: 'pull-ups' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-33' as ProgramExerciseId, templateId: 'barbell-row' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-34' as ProgramExerciseId, templateId: 'barbell-curl' as ExerciseTemplateId, sets: 3, reps: 10 },
       ],
     },
   ],
@@ -107,41 +107,41 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
     {
       name: 'Chest',
       exercises: [
-        { id: 'ex-1', name: 'Bench Press', sets: 3, reps: 8 },
-        { id: 'ex-2', name: 'Incline Press', sets: 3, reps: 10 },
-        { id: 'ex-3', name: 'Chest Fly', sets: 3, reps: 12 },
+        { id: 'preset-35' as ProgramExerciseId, templateId: 'bench-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-36' as ProgramExerciseId, templateId: 'incline-press' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-37' as ProgramExerciseId, templateId: 'chest-fly' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
     {
       name: 'Back',
       exercises: [
-        { id: 'ex-4', name: 'Deadlift', sets: 3, reps: 5 },
-        { id: 'ex-5', name: 'Barbell Row', sets: 3, reps: 8 },
-        { id: 'ex-6', name: 'Pull-ups', sets: 3, reps: 8 },
+        { id: 'preset-38' as ProgramExerciseId, templateId: 'deadlift' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-39' as ProgramExerciseId, templateId: 'barbell-row' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-40' as ProgramExerciseId, templateId: 'pull-ups' as ExerciseTemplateId, sets: 3, reps: 8 },
       ],
     },
     {
       name: 'Legs',
       exercises: [
-        { id: 'ex-7', name: 'Squat', sets: 3, reps: 5 },
-        { id: 'ex-8', name: 'Leg Press', sets: 3, reps: 10 },
-        { id: 'ex-9', name: 'Leg Curl', sets: 3, reps: 12 },
+        { id: 'preset-41' as ProgramExerciseId, templateId: 'squat' as ExerciseTemplateId, sets: 3, reps: 5 },
+        { id: 'preset-42' as ProgramExerciseId, templateId: 'leg-press' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-43' as ProgramExerciseId, templateId: 'leg-curl' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
     {
       name: 'Shoulders',
       exercises: [
-        { id: 'ex-10', name: 'Overhead Press', sets: 3, reps: 8 },
-        { id: 'ex-11', name: 'Lateral Raises', sets: 3, reps: 12 },
-        { id: 'ex-12', name: 'Front Raises', sets: 3, reps: 12 },
+        { id: 'preset-44' as ProgramExerciseId, templateId: 'overhead-press' as ExerciseTemplateId, sets: 3, reps: 8 },
+        { id: 'preset-45' as ProgramExerciseId, templateId: 'lateral-raises' as ExerciseTemplateId, sets: 3, reps: 12 },
+        { id: 'preset-46' as ProgramExerciseId, templateId: 'front-raises' as ExerciseTemplateId, sets: 3, reps: 12 },
       ],
     },
     {
       name: 'Arms',
       exercises: [
-        { id: 'ex-13', name: 'Barbell Curl', sets: 3, reps: 10 },
-        { id: 'ex-14', name: 'Tricep Pushdown', sets: 3, reps: 12 },
-        { id: 'ex-15', name: 'Hammer Curl', sets: 3, reps: 10 },
+        { id: 'preset-47' as ProgramExerciseId, templateId: 'barbell-curl' as ExerciseTemplateId, sets: 3, reps: 10 },
+        { id: 'preset-48' as ProgramExerciseId, templateId: 'tricep-pushdown' as ExerciseTemplateId, sets: 3, reps: 12 },
+        { id: 'preset-49' as ProgramExerciseId, templateId: 'hammer-curl' as ExerciseTemplateId, sets: 3, reps: 10 },
       ],
     },
   ],
@@ -150,7 +150,3 @@ export const SPLIT_PRESETS: Record<WorkoutSplitType, WorkoutPreset[]> = {
 export function getPresetWorkouts(split: WorkoutSplitType): WorkoutPreset[] {
   return SPLIT_PRESETS[split] || SPLIT_PRESETS[WORKOUT_SPLITS.FULL_BODY];
 }
-
-
-
-

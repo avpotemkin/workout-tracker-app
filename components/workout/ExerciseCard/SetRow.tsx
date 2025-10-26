@@ -15,15 +15,17 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
   const { colors } = useAppTheme();
   const [isEditingWeight, setIsEditingWeight] = useState(false);
   const [isEditingReps, setIsEditingReps] = useState(false);
-  const [tempWeight, setTempWeight] = useState(set.weight.toString());
+  const [tempWeight, setTempWeight] = useState(set.weight.value.toString());
   const [tempReps, setTempReps] = useState(set.reps.toString());
 
   const handleWeightSubmit = () => {
-    const newWeight = parseFloat(tempWeight);
-    if (!isNaN(newWeight) && newWeight > 0) {
-      onUpdateSet({ weight: newWeight });
+    const newWeightValue = parseFloat(tempWeight);
+    if (!isNaN(newWeightValue) && newWeightValue > 0) {
+      onUpdateSet({
+        weight: { value: newWeightValue, unit: set.weight.unit },
+      });
     } else {
-      setTempWeight(set.weight.toString());
+      setTempWeight(set.weight.value.toString());
     }
     setIsEditingWeight(false);
   };
@@ -68,9 +70,9 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
             selectTextOnFocus
           />
         ) : (
-          <ThemedText type="defaultSemiBold">{set.weight}</ThemedText>
+          <ThemedText type="defaultSemiBold">{set.weight.value}</ThemedText>
         )}
-        <ThemedText type="body">kg</ThemedText>
+        <ThemedText type="body">{set.weight.unit}</ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity

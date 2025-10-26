@@ -15,23 +15,25 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
-import { Exercise } from "@/types";
+import { ProgramExercise, ProgramExerciseId, WorkoutId } from "@/types";
 import {
   EXERCISES,
   EXERCISE_CATEGORIES,
   ExerciseTemplate,
+  getExerciseNameById,
 } from "@/constants/Exercises";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
+import { generateId } from "@/utils/ids";
 
 export default function EditWorkoutScreen() {
   const params = useLocalSearchParams();
   const workoutId = params.id as string;
 
   const { getWorkout, updateWorkout, removeWorkout } = useProgramDraft();
-  const workout = getWorkout(workoutId);
+  const workout = getWorkout(workoutId as WorkoutId);
 
   const [workoutName, setWorkoutName] = useState(workout?.name || "Workout");
-  const [exercises, setExercises] = useState<Exercise[]>(
+  const [exercises, setExercises] = useState<ProgramExercise[]>(
     workout?.exercises || []
   );
   const [showExercisePicker, setShowExercisePicker] = useState(false);
@@ -51,17 +53,17 @@ export default function EditWorkoutScreen() {
   }, [workout]);
 
   function handleAddExercise(exerciseTemplate: ExerciseTemplate) {
-    const newExercise: Exercise = {
-      id: `ex-${Date.now()}`,
-      name: exerciseTemplate.name,
-      sets: exerciseTemplate.sets,
-      reps: exerciseTemplate.reps,
+    const newExercise: ProgramExercise = {
+      id: generateId() as ProgramExerciseId,
+      templateId: exerciseTemplate.id,
+      sets: exerciseTemplate.defaultSets,
+      reps: exerciseTemplate.defaultReps,
     };
     setExercises([...exercises, newExercise]);
     setShowExercisePicker(false);
   }
 
-  function handleRemoveExercise(exerciseId: string) {
+  function handleRemoveExercise(exerciseId: ProgramExerciseId) {
     setExercises(exercises.filter((ex) => ex.id !== exerciseId));
   }
 
@@ -75,7 +77,7 @@ export default function EditWorkoutScreen() {
           text: "Remove",
           style: "destructive",
           onPress: () => {
-            removeWorkout(workoutId);
+            removeWorkout(workoutId as WorkoutId);
             router.back();
           },
         },
@@ -86,7 +88,7 @@ export default function EditWorkoutScreen() {
   function handleBack() {
     // Save changes to workout
     if (workout) {
-      updateWorkout(workoutId, {
+      updateWorkout(workoutId as WorkoutId, {
         ...workout,
         name: workoutName,
         exercises: exercises,
@@ -152,7 +154,9 @@ export default function EditWorkoutScreen() {
                 }}
               >
                 <View style={styles.exerciseInfo}>
-                  <ThemedText type="default">{exercise.name}</ThemedText>
+                  <ThemedText type="default">
+                    {getExerciseNameById(exercise.templateId)}
+                  </ThemedText>
                   <ThemedText type="caption" style={{ opacity: 0.6 }}>
                     {exercise.sets} × {exercise.reps}
                   </ThemedText>
@@ -253,7 +257,7 @@ function ExercisePicker({ visible, onSelect, onClose }: ExercisePickerProps) {
                     >
                       <ThemedText type="default">{exercise.name}</ThemedText>
                       <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                        {exercise.sets} × {exercise.reps}
+                        {exercise.defaultSets} × {exercise.defaultReps}
                       </ThemedText>
                     </TouchableOpacity>
                   ))}

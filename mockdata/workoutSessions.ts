@@ -1,64 +1,38 @@
-import { WorkoutSession, WorkoutExercise, WorkoutSet, Program, Workout, Exercise } from '@/types';
+import { WorkoutSession, WorkoutExercise, WorkoutSet, Program, Workout, ProgramExercise, WorkoutSessionId, WorkoutExerciseId, WorkoutSetId } from '@/types';
+import { generateId } from '@/utils/ids';
 
 export const ACTIVE_WORKOUT_SESSION: WorkoutSession | null = null;
 
-export const createWorkoutSessionFromProgram = (programId: string, programs: Program[], workoutId?: string): WorkoutSession => {
-  // Find the program in the provided programs array
-  const program = programs.find((p: Program) => p.id === programId);
-  const workout = program?.workouts.find((w: Workout) => w.id === workoutId || w.name === workoutId);
-  
-  if (!program || !workout) {
-    // Fallback to an empty workout if program not found
-    return {
-      id: `session-${Date.now()}`,
-      programName: program?.name || "Custom Workout",
-      workoutName: workout?.name || "Custom Workout",
-      exercises: [],
-      startedAt: new Date(),
-      isFinished: false
-    };
-  }
-  
-  // Find the specific day
-  // Workout already found earlier
-  
-  if (!workout) {
-    // Fallback to an empty workout if day not found
-    return {
-      id: `session-${Date.now()}`,
-      programName: program.name,
-      workoutName: "Custom Workout",
-      exercises: [],
-      startedAt: new Date(),
-      isFinished: false
-    };
-  }
-  
-  // Create workout exercises from day exercises
-  const workoutExercises: WorkoutExercise[] = workout?.exercises.map((exercise: Exercise) => {
+export function createWorkoutSessionFromProgram(
+  program: Program,
+  workout: Workout
+): WorkoutSession {
+  // Create workout exercises from program exercises
+  const workoutExercises: WorkoutExercise[] = workout.exercises.map((exercise: ProgramExercise) => {
     // Create sets based on the exercise's set count
     const sets: WorkoutSet[] = Array.from({ length: exercise.sets }, (_, i) => ({
-      id: `${exercise.id}-set-${i + 1}`,
+      id: generateId() as WorkoutSetId,
       setNumber: i + 1,
-      weight: exercise.weight || 0,
+      weight: exercise.weight || { value: 0, unit: "kg" },
       reps: exercise.reps,
       isCompleted: false
     }));
     
     return {
-      id: exercise.id,
-      exerciseId: exercise.id,
-      name: exercise.name,
+      id: generateId() as WorkoutExerciseId,
+      templateId: exercise.templateId,
       sets
     };
   });
 
   return {
-    id: `session-${Date.now()}`,
+    id: generateId() as WorkoutSessionId,
+    programId: program.id,
     programName: program.name,
+    workoutId: workout.id,
     workoutName: workout.name,
     exercises: workoutExercises,
     startedAt: new Date(),
     isFinished: false
   };
-};
+}

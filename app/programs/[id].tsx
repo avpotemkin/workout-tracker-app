@@ -8,7 +8,8 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
-import { Workout, Exercise } from "@/types";
+import { Workout, ProgramExercise } from "@/types";
+import { getExerciseNameById } from "@/constants/Exercises";
 
 export default function ProgramDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -91,12 +92,12 @@ export default function ProgramDetailsScreen() {
         </TouchableOpacity>
 
         {/* Workout tabs */}
-        <View style={styles.dayTabs}>
+        <View style={styles.workoutTabs}>
           {program.workouts.map((workout: Workout, index: number) => (
             <TouchableOpacity
               key={workout.id}
               style={[
-                styles.dayTab,
+                styles.workoutTab,
                 selectedWorkoutIndex === index
                   ? { backgroundColor: colors.accent }
                   : { backgroundColor: colors.card },
@@ -114,12 +115,14 @@ export default function ProgramDetailsScreen() {
         </View>
 
         <ScrollView style={styles.exerciseList}>
-          {selectedWorkout.exercises.map((exercise: Exercise) => (
+          {selectedWorkout.exercises.map((exercise: ProgramExercise) => (
             <View
               key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
-              <ThemedText type="subtitle">{exercise.name}</ThemedText>
+              <ThemedText type="subtitle">
+                {getExerciseNameById(exercise.templateId)}
+              </ThemedText>
               <View style={styles.exerciseDetails}>
                 <View style={styles.detailItem}>
                   <ThemedText type="caption" style={styles.detailLabel}>
@@ -143,7 +146,7 @@ export default function ProgramDetailsScreen() {
                       Weight
                     </ThemedText>
                     <ThemedText type="defaultSemiBold">
-                      {exercise.weight} kg
+                      {exercise.weight.value} {exercise.weight.unit}
                     </ThemedText>
                   </View>
                 )}
@@ -181,11 +184,11 @@ const styles = StyleSheet.create({
   selectProgramButtonText: {
     color: "white",
   },
-  dayTabs: {
+  workoutTabs: {
     flexDirection: "row",
     paddingBottom: 10,
   },
-  dayTab: {
+  workoutTab: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,

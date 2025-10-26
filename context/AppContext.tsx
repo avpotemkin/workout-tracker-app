@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Program } from "@/types";
+import { Program, ProgramId } from "@/types";
 import { PROGRAMS } from "@/mockdata/programs";
 
 type AppContextType = {
@@ -7,7 +7,7 @@ type AppContextType = {
   setSelectedProgram: (program: Program | null) => void;
   programs: Program[];
   addProgram: (program: Program) => void;
-  updateProgram: (programId: string, updatedProgram: Program) => void;
+  updateProgram: (programId: ProgramId, updatedProgram: Program) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -23,7 +23,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPrograms((prevPrograms) => [...prevPrograms, program]);
   };
 
-  const updateProgram = (programId: string, updatedProgram: Program) => {
+  const updateProgram = (programId: ProgramId, updatedProgram: Program) => {
     setPrograms((prevPrograms) =>
       prevPrograms.map((p) => (p.id === programId ? updatedProgram : p))
     );
