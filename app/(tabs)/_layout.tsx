@@ -1,67 +1,86 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import {
+  NativeTabs,
+  Icon,
+  Label,
+  VectorIcon,
+} from "expo-router/unstable-native-tabs";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
-import { Platform } from "react-native";
-import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
+import { Platform, DynamicColorIOS } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+  // Dynamic colors for liquid glass - adapts to light/dark backgrounds
+  const dynamicTextColor =
+    Platform.OS === "ios"
+      ? DynamicColorIOS({ dark: "white", light: "black" })
+      : Colors[colorScheme ?? "light"].text;
+
+  const dynamicTintColor =
+    Platform.OS === "ios"
+      ? DynamicColorIOS({
+          dark: "white",
+          light: Colors[colorScheme ?? "light"].tint,
+        })
+      : Colors[colorScheme ?? "light"].tint;
+
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: "absolute",
-          },
-          default: {},
-        }),
+    <NativeTabs
+      // Liquid glass effect automatically applied on iOS 26+
+      labelStyle={{
+        color: dynamicTextColor,
       }}
+      tintColor={dynamicTintColor}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <Ionicons name="home" size={24} color={color} />
+      <NativeTabs.Trigger name="index">
+        <Label>Home</Label>
+        {Platform.select({
+          ios: <Icon sf={{ default: "house", selected: "house.fill" }} />,
+          default: <Icon src={<VectorIcon family={Ionicons} name="home" />} />,
+        })}
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="programs">
+        <Label>Programs</Label>
+        {Platform.select({
+          ios: (
+            <Icon
+              sf={{
+                default: "list.bullet.rectangle",
+                selected: "list.bullet.rectangle.fill",
+              }}
+            />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="programs"
-        options={{
-          title: "Programs",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <FontAwesome5 name="dumbbell" size={20} color={color} />
+          default: (
+            <Icon src={<VectorIcon family={FontAwesome5} name="dumbbell" />} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="workout"
-        options={{
-          title: "Workout",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <FontAwesome5 name="running" size={20} color={color} />
+        })}
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="workout">
+        <Label>Workout</Label>
+        {Platform.select({
+          ios: (
+            <Icon
+              sf={{ default: "figure.run", selected: "figure.run.circle.fill" }}
+            />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: "History",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <Ionicons name="time" size={24} color={color} />
+          default: (
+            <Icon src={<VectorIcon family={FontAwesome5} name="running" />} />
           ),
-        }}
-      />
-    </Tabs>
+        })}
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="history">
+        <Label>History</Label>
+        {Platform.select({
+          ios: <Icon sf={{ default: "clock", selected: "clock.fill" }} />,
+          default: <Icon src={<VectorIcon family={Ionicons} name="time" />} />,
+        })}
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
