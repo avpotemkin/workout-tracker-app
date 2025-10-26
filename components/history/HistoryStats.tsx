@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { useAppTheme } from '@/hooks/useAppTheme';
-import { HistoryStats as HistoryStatsType } from '@/types';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { HistoryStats as HistoryStatsType } from "@/types";
 
 type HistoryStatsProps = {
   stats: HistoryStatsType;
@@ -21,46 +21,43 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
     return `${remainingMinutes}m`;
   };
 
-  const formatVolume = (volume: number): string => {
-    if (volume >= 1000) {
-      return `${(volume / 1000).toFixed(1)}k`;
-    }
-    return volume.toString();
-  };
-
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.card }]}>
-      <ThemedText type="subtitle" style={styles.title}>Overview</ThemedText>
-      
+      <ThemedText type="subtitle" style={styles.title}>
+        Overview
+      </ThemedText>
+
       <View style={styles.statsGrid}>
         <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>{stats.totalWorkouts}</ThemedText>
-          <ThemedText type="caption" style={styles.statLabel}>Workouts</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>
+            {stats.totalWorkouts}
+          </ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>
+            Workouts
+          </ThemedText>
         </View>
-        
+
         <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>{formatDuration(stats.totalDuration)}</ThemedText>
-          <ThemedText type="caption" style={styles.statLabel}>Total Time</ThemedText>
-        </View>
-        
-        <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>{formatVolume(stats.totalVolume)}</ThemedText>
-          <ThemedText type="caption" style={styles.statLabel}>Total Volume</ThemedText>
-        </View>
-        
-        <View style={styles.statItem}>
-          <ThemedText type="subtitle" style={styles.statValue}>{formatDuration(stats.averageWorkoutDuration)}</ThemedText>
-          <ThemedText type="caption" style={styles.statLabel}>Avg Duration</ThemedText>
+          <ThemedText type="subtitle" style={styles.statValue}>
+            {formatDuration(stats.totalDuration)}
+          </ThemedText>
+          <ThemedText type="caption" style={styles.statLabel}>
+            Total Time
+          </ThemedText>
         </View>
       </View>
 
       {stats.strongestLifts.length > 0 && (
         <View style={styles.strongestLifts}>
-          <ThemedText type="label" style={styles.subtitle}>Strongest Lifts</ThemedText>
+          <ThemedText type="label" style={styles.subtitle}>
+            Strongest Lifts
+          </ThemedText>
           {stats.strongestLifts.slice(0, 3).map((lift, index) => (
             <View key={index} style={styles.liftRow}>
               <ThemedText type="body">{lift.exercise}</ThemedText>
-              <ThemedText type="body" style={styles.liftWeight}>{lift.maxWeight}kg</ThemedText>
+              <ThemedText type="body" style={styles.liftWeight}>
+                {lift.maxWeight}kg
+              </ThemedText>
             </View>
           ))}
         </View>
@@ -79,35 +76,35 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   statsGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   statItem: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   statValue: {
-    color: '#4A90E2',
+    color: "#4A90E2",
   },
   statLabel: {
     marginTop: 4,
   },
   strongestLifts: {
     borderTopWidth: 1,
-    borderTopColor: '#444',
+    borderTopColor: "#444",
     paddingTop: 12,
   },
   subtitle: {
     marginBottom: 8,
   },
   liftRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 4,
   },
   liftWeight: {
-    color: '#4A90E2',
+    color: "#4A90E2",
   },
-}); 
+});

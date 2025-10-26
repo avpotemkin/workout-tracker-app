@@ -11,7 +11,6 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     duration: 90,
     totalSets: 18,
     totalReps: 180,
-    totalVolume: 4500,
     exercises: [
       {
         id: "ex-1",
@@ -44,7 +43,6 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     duration: 75,
     totalSets: 15,
     totalReps: 150,
-    totalVolume: 3750,
     exercises: [
       {
         id: "ex-3",
@@ -77,7 +75,6 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
     duration: 90,
     totalSets: 21,
     totalReps: 210,
-    totalVolume: 6300,
     exercises: [
       {
         id: "ex-5",
@@ -107,8 +104,6 @@ export const mockWorkoutHistory: WorkoutHistory[] = [
 export const mockHistoryStats: HistoryStats = {
   totalWorkouts: 3,
   totalDuration: 255, // in minutes
-  totalVolume: 14550,
-  averageWorkoutDuration: 85,
   strongestLifts: [
     {
       exercise: "Leg Press",

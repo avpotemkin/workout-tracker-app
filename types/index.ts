@@ -9,16 +9,13 @@ export type Exercise = {
 export type Workout = {
   id: string;
   name: string;
-  description?: string;
   exercises: Exercise[];
 };
 
 export type Program = {
   id: string;
   name: string;
-  description?: string;
   workouts: Workout[];
-  schedule?: string;
   createdAt?: Date;
   updatedAt?: Date;
   isActive?: boolean
@@ -27,7 +24,7 @@ export type Program = {
 export type WorkoutSession = {
   id: string;
   programName: string;
-  dayName: string;
+  workoutName: string;
   exercises: WorkoutExercise[];
   startedAt: Date;
   isFinished: boolean;
@@ -59,7 +56,6 @@ export type WorkoutHistory = {
   duration: number; // in minutes
   totalSets: number;
   totalReps: number;
-  totalVolume: number; // weight * reps
 };
 
 export type HistoryFilter = {
@@ -74,8 +70,6 @@ export type HistoryFilter = {
 export type HistoryStats = {
   totalWorkouts: number;
   totalDuration: number;
-  totalVolume: number;
-  averageWorkoutDuration: number;
   strongestLifts: Array<{
     exercise: string;
     maxWeight: number;

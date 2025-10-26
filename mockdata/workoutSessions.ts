@@ -12,7 +12,7 @@ export const createWorkoutSessionFromProgram = (programId: string, programs: Pro
     return {
       id: `session-${Date.now()}`,
       programName: program?.name || "Custom Workout",
-      dayName: workout?.name || "Custom Workout",
+      workoutName: workout?.name || "Custom Workout",
       exercises: [],
       startedAt: new Date(),
       isFinished: false
@@ -27,7 +27,7 @@ export const createWorkoutSessionFromProgram = (programId: string, programs: Pro
     return {
       id: `session-${Date.now()}`,
       programName: program.name,
-      dayName: "Custom Day",
+      workoutName: "Custom Workout",
       exercises: [],
       startedAt: new Date(),
       isFinished: false
@@ -56,7 +56,7 @@ export const createWorkoutSessionFromProgram = (programId: string, programs: Pro
   return {
     id: `session-${Date.now()}`,
     programName: program.name,
-    dayName: workout.name,
+    workoutName: workout.name,
     exercises: workoutExercises,
     startedAt: new Date(),
     isFinished: false

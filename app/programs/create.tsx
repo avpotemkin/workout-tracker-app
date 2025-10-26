@@ -20,7 +20,6 @@ import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Program, Workout } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
 import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
-import { showSchedulePicker, ScheduleType } from "@/components/SchedulePicker";
 import { EditWorkoutModal } from "@/components/workout";
 
 export default function CreateProgramScreen() {
@@ -28,9 +27,7 @@ export default function CreateProgramScreen() {
   const [selectedSplit, setSelectedSplit] = useState<WorkoutSplitType>(
     WORKOUT_SPLITS.FULL_BODY
   );
-  const [schedule, setSchedule] = useState<ScheduleType>("3x/week");
   const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null);
-
   const editWorkoutModalRef = useRef<BottomSheetModal>(null);
 
   const backgroundColor = useThemeColor({}, "background");
@@ -77,7 +74,7 @@ export default function CreateProgramScreen() {
       id: Date.now().toString(),
       name: programName.trim(),
       workouts: workouts,
-      schedule: schedule,
+
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -138,27 +135,6 @@ export default function CreateProgramScreen() {
                 Workout Split
               </ThemedText>
               <ThemedText type="default">{selectedSplit}</ThemedText>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={textColor} />
-          </TouchableOpacity>
-
-          {/* Schedule */}
-          <TouchableOpacity
-            style={[
-              styles.card,
-              styles.selector,
-              { backgroundColor: colors.card },
-            ]}
-            onPress={() => showSchedulePicker({ onSelect: setSchedule })}
-          >
-            <View>
-              <ThemedText
-                type="caption"
-                style={{ opacity: 0.6, color: colors.error }}
-              >
-                Schedule
-              </ThemedText>
-              <ThemedText type="default">{schedule}</ThemedText>
             </View>
             <Ionicons name="chevron-forward" size={20} color={textColor} />
           </TouchableOpacity>

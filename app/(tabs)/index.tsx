@@ -74,11 +74,6 @@ export default function HomeScreen() {
                 <ThemedText type="label" style={styles.programName}>
                   {selectedProgram.name}
                 </ThemedText>
-                {selectedProgram.description && (
-                  <ThemedText type="body" style={styles.programDescription}>
-                    {selectedProgram.description}
-                  </ThemedText>
-                )}
                 {selectedProgram.workouts.length > 0 && (
                   <View style={styles.nextWorkoutContainer}>
                     <ThemedText type="caption" style={styles.nextWorkoutLabel}>
@@ -196,10 +191,6 @@ const styles = StyleSheet.create({
   },
   programName: {
     marginBottom: 8,
-  },
-  programDescription: {
-    opacity: 0.7,
-    marginBottom: 12,
   },
   nextWorkoutContainer: {
     marginTop: 8,

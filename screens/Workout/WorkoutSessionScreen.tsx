@@ -30,7 +30,6 @@ export function WorkoutSessionScreen({
 
   // Validate params
   if (!programId || !workoutId) {
-    console.warn("Missing required programId or workoutId");
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor }}>
         <ThemedView style={styles.loadingContainer}>
@@ -213,7 +212,7 @@ export function WorkoutSessionScreen({
         {/* Header */}
         <WorkoutHeader
           onBackPress={() => router.back()}
-          title={workoutSession.programName}
+          title={workoutSession.workoutName}
         />
 
         {/* Progress Bar */}

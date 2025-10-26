@@ -4,7 +4,6 @@ export const PROGRAMS: Program[] = [
   { 
     id: "1", 
     name: "Full Body",
-    description: "A comprehensive full-body workout targeting all major muscle groups",
     workouts: [
       {
         id: "1-day-1",
@@ -32,7 +31,6 @@ export const PROGRAMS: Program[] = [
   { 
     id: "2", 
     name: "5×5",
-    description: "Strength training program focusing on compound lifts",
     workouts: [
       {
         id: "2-day-1",
@@ -60,12 +58,10 @@ export const PROGRAMS: Program[] = [
   { 
     id: "3", 
     name: "Push, Pull, Legs",
-    description: "Split routine targeting different muscle groups on different days",
     workouts: [
       {
         id: "3-day-1",
         name: "Push",
-        description: "Chest, shoulders, and triceps",
         exercises: [
           { id: "3-1", name: "Bench Press", sets: 3, reps: 8, weight: 85 },
           { id: "3-2", name: "Shoulder Press", sets: 3, reps: 8, weight: 65 },
@@ -76,7 +72,6 @@ export const PROGRAMS: Program[] = [
       {
         id: "3-day-2",
         name: "Pull",
-        description: "Back and biceps",
         exercises: [
           { id: "3-5", name: "Deadlifts", sets: 3, reps: 8, weight: 120 },
           { id: "3-6", name: "Pull-ups", sets: 3, reps: 8 },
@@ -87,7 +82,6 @@ export const PROGRAMS: Program[] = [
       {
         id: "3-day-3",
         name: "Legs",
-        description: "Quadriceps, hamstrings, and calves",
         exercises: [
           { id: "3-9", name: "Squats", sets: 4, reps: 8, weight: 100 },
           { id: "3-10", name: "Leg Press", sets: 3, reps: 10, weight: 150 },

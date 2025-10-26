@@ -20,7 +20,6 @@ import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Program, Workout } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
 import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
-import { showSchedulePicker, ScheduleType } from "@/components/SchedulePicker";
 import { EditWorkoutModal } from "@/components/workout";
 
 export default function EditProgramScreen() {
@@ -33,9 +32,6 @@ export default function EditProgramScreen() {
   const [programName, setProgramName] = useState(program?.name || "");
   const [selectedSplit, setSelectedSplit] = useState<WorkoutSplitType>(
     WORKOUT_SPLITS.FULL_BODY
-  );
-  const [schedule, setSchedule] = useState<ScheduleType>(
-    (program?.schedule as ScheduleType) || "3x/week"
   );
   const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null);
 
@@ -91,7 +87,6 @@ export default function EditProgramScreen() {
       ...program,
       name: programName.trim(),
       workouts: workouts,
-      schedule: schedule,
       updatedAt: new Date(),
     };
 
@@ -169,27 +164,6 @@ export default function EditProgramScreen() {
                 Workout Split
               </ThemedText>
               <ThemedText type="default">{selectedSplit}</ThemedText>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={textColor} />
-          </TouchableOpacity>
-
-          {/* Schedule */}
-          <TouchableOpacity
-            style={[
-              styles.card,
-              styles.selector,
-              { backgroundColor: colors.card },
-            ]}
-            onPress={() => showSchedulePicker({ onSelect: setSchedule })}
-          >
-            <View>
-              <ThemedText
-                type="caption"
-                style={{ opacity: 0.6, color: colors.error }}
-              >
-                Schedule
-              </ThemedText>
-              <ThemedText type="default">{schedule}</ThemedText>
             </View>
             <Ionicons name="chevron-forward" size={20} color={textColor} />
           </TouchableOpacity>

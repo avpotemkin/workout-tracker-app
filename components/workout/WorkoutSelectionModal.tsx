@@ -73,11 +73,6 @@ export const WorkoutSelectionModal = forwardRef<
                   <ThemedText type="label" style={styles.workoutName}>
                     {workout.name}
                   </ThemedText>
-                  {workout.description && (
-                    <ThemedText type="body" style={styles.workoutDescription}>
-                      {workout.description}
-                    </ThemedText>
-                  )}
                   <View style={styles.exerciseCountContainer}>
                     <ThemedText type="caption" style={styles.exerciseCount}>
                       {workout.exercises.length}{" "}
@@ -139,10 +134,6 @@ const styles = StyleSheet.create({
   },
   workoutName: {
     marginBottom: 4,
-  },
-  workoutDescription: {
-    opacity: 0.7,
-    marginBottom: 8,
   },
   exerciseCountContainer: {
     marginTop: 4,

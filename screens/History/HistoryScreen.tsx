@@ -9,59 +9,29 @@ import { getWorkoutHistory, getHistoryStats } from "@/mockdata/workoutHistory";
 import { HistoryHeader } from "@/components/history/HistoryHeader";
 import { HistoryStats as HistoryStatsComponent } from "@/components/history/HistoryStats";
 import { HistoryList } from "@/components/history/HistoryList";
-import { HistoryFilters } from "@/components/history/HistoryFilters";
 
 export function HistoryScreen() {
   const backgroundColor = useThemeColor({}, "background");
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
   const [historyStats, setHistoryStats] = useState<HistoryStats | null>(null);
-  const [filteredHistory, setFilteredHistory] = useState<WorkoutHistory[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     // Load workout history and stats
     const history = getWorkoutHistory();
     const stats = getHistoryStats();
-    
+
     setWorkoutHistory(history);
     setHistoryStats(stats);
-    setFilteredHistory(history);
   }, []);
-
-  const handleFilterChange = (filteredData: WorkoutHistory[]) => {
-    setFilteredHistory(filteredData);
-  };
-
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
-  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        {/* Header */}
-        <HistoryHeader
-          onToggleFilters={toggleFilters}
-          showFilters={showFilters}
-        />
-
-        {/* Stats */}
-        {historyStats && (
-          <HistoryStatsComponent stats={historyStats} />
-        )}
-
-        {/* Filters */}
-        {showFilters && (
-          <HistoryFilters
-            workoutHistory={workoutHistory}
-            onFilterChange={handleFilterChange}
-          />
-        )}
-
-        {/* History List */}
+        <HistoryHeader />
+        {historyStats && <HistoryStatsComponent stats={historyStats} />}
         <HistoryList
-          workoutHistory={filteredHistory}
+          workoutHistory={workoutHistory}
           style={styles.historyList}
         />
       </ThemedView>
@@ -77,4 +47,4 @@ const styles = StyleSheet.create({
   historyList: {
     flex: 1,
   },
-}); 
+});

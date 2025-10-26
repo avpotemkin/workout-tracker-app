@@ -71,12 +71,6 @@ export default function ProgramDetailsScreen() {
           </TouchableOpacity>
         </View>
 
-        {program.description && (
-          <ThemedText type="default" style={styles.description}>
-            {program.description}
-          </ThemedText>
-        )}
-
         <TouchableOpacity
           style={[
             styles.selectProgramButton,
@@ -118,13 +112,6 @@ export default function ProgramDetailsScreen() {
             </TouchableOpacity>
           ))}
         </View>
-
-        {/* Workout description if available */}
-        {selectedWorkout.description && (
-          <ThemedText type="body" style={styles.dayDescription}>
-            {selectedWorkout.description}
-          </ThemedText>
-        )}
 
         <ScrollView style={styles.exerciseList}>
           {selectedWorkout.exercises.map((exercise: Exercise) => (
@@ -184,11 +171,6 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: 16,
   },
-  description: {
-    textAlign: "center",
-    marginBottom: 16,
-    opacity: 0.7,
-  },
   selectProgramButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -209,12 +191,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 8,
     marginBottom: 8,
-  },
-  dayDescription: {
-    textAlign: "center",
-    marginBottom: 16,
-    fontStyle: "italic",
-    opacity: 0.7,
   },
   exerciseList: {
     flex: 1,

@@ -42,11 +42,6 @@ export default function ProgramsScreen() {
           )}
         </View>
 
-        {item.description && (
-          <ThemedText type="body" style={styles.programDescription}>
-            {item.description}
-          </ThemedText>
-        )}
         <View
           style={[
             styles.exerciseCount,
@@ -135,10 +130,6 @@ const styles = StyleSheet.create({
   selectedText: {
     color: "white",
     marginLeft: 4,
-  },
-  programDescription: {
-    opacity: 0.7,
-    marginBottom: 12,
   },
   exerciseCount: {
     alignSelf: "flex-start",
