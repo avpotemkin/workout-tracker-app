@@ -22,7 +22,7 @@ import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
 import { showSchedulePicker, ScheduleType } from "@/components/SchedulePicker";
 
 export default function CreateProgramScreen() {
-  const [programName, setProgramName] = useState("Custom");
+  const [programName, setProgramName] = useState("");
   const [selectedSplit, setSelectedSplit] = useState<WorkoutSplitType>(
     WORKOUT_SPLITS.FULL_BODY
   );

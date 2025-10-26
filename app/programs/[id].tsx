@@ -29,7 +29,7 @@ export default function ProgramDetailsScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color="white" />
+              <Ionicons name="arrow-back" size={24} color={colors.text} />
             </TouchableOpacity>
 
             <ThemedText type="subtitle">Not Found</ThemedText>
@@ -57,7 +57,7 @@ export default function ProgramDetailsScreen() {
             style={styles.backButton}
             onPress={() => router.back()}
           >
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
 
           <ThemedText type="subtitle">{program.name}</ThemedText>
@@ -80,7 +80,10 @@ export default function ProgramDetailsScreen() {
           ]}
           onPress={handleSelectProgram}
         >
-          <ThemedText type="defaultSemiBold" style={styles.selectProgramButtonText}>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.selectProgramButtonText}
+          >
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
         </TouchableOpacity>
@@ -121,25 +124,29 @@ export default function ProgramDetailsScreen() {
               key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
-              <ThemedText type="subtitle">
-                {exercise.name}
-              </ThemedText>
+              <ThemedText type="subtitle">{exercise.name}</ThemedText>
               <View style={styles.exerciseDetails}>
                 <View style={styles.detailItem}>
-                  <ThemedText type="caption" style={styles.detailLabel}>Sets</ThemedText>
+                  <ThemedText type="caption" style={styles.detailLabel}>
+                    Sets
+                  </ThemedText>
                   <ThemedText type="defaultSemiBold">
                     {exercise.sets}
                   </ThemedText>
                 </View>
                 <View style={styles.detailItem}>
-                  <ThemedText type="caption" style={styles.detailLabel}>Reps</ThemedText>
+                  <ThemedText type="caption" style={styles.detailLabel}>
+                    Reps
+                  </ThemedText>
                   <ThemedText type="defaultSemiBold">
                     {exercise.reps}
                   </ThemedText>
                 </View>
                 {exercise.weight && (
                   <View style={styles.detailItem}>
-                    <ThemedText type="caption" style={styles.detailLabel}>Weight</ThemedText>
+                    <ThemedText type="caption" style={styles.detailLabel}>
+                      Weight
+                    </ThemedText>
                     <ThemedText type="defaultSemiBold">
                       {exercise.weight} kg
                     </ThemedText>

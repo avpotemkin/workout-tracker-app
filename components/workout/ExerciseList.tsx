@@ -1,14 +1,18 @@
-import React from 'react';
-import { ScrollView, StyleSheet, ViewStyle } from 'react-native';
-import { WorkoutExercise, WorkoutSet } from '@/types';
-import { ExerciseCard } from './ExerciseCard/ExerciseCard';
+import React from "react";
+import { ScrollView, StyleSheet, ViewStyle } from "react-native";
+import { WorkoutExercise, WorkoutSet } from "@/types";
+import { ExerciseCard } from "./ExerciseCard/ExerciseCard";
 
 type ExerciseListProps = {
   exercises: WorkoutExercise[];
   expandedExercises: Record<string, boolean>;
   toggleExerciseExpansion: (exerciseId: string) => void;
   toggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
-  onUpdateSet: (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => void;
+  onUpdateSet: (
+    exerciseIndex: number,
+    setIndex: number,
+    updates: Partial<WorkoutSet>
+  ) => void;
   currentExerciseIndex: number;
   currentSetIndex: number;
   style?: ViewStyle;
@@ -20,8 +24,6 @@ export function ExerciseList({
   toggleExerciseExpansion,
   toggleSetCompletion,
   onUpdateSet,
-  currentExerciseIndex,
-  currentSetIndex,
   style,
 }: ExerciseListProps) {
   return (
@@ -31,12 +33,10 @@ export function ExerciseList({
           key={exercise.id}
           exercise={exercise}
           isExpanded={
-            expandedExercises[exercise.id] || 
+            expandedExercises[exercise.id] ||
             Object.keys(expandedExercises).length === 0
           }
           onToggleExpansion={toggleExerciseExpansion}
-          currentExerciseIndex={currentExerciseIndex}
-          currentSetIndex={currentSetIndex}
           onToggleSetCompletion={toggleSetCompletion}
           onUpdateSet={onUpdateSet}
           exerciseIndex={index}

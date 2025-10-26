@@ -12,7 +12,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const tintColor = useThemeColor({}, "tint");
   const { colors } = useAppTheme();
   const router = useRouter();
   const { selectedProgram, programs } = useAppContext();
@@ -36,7 +35,9 @@ export default function ProgramsScreen() {
               style={[styles.selectedBadge, { backgroundColor: colors.accent }]}
             >
               <Ionicons name="checkmark-circle" size={16} color="white" />
-              <ThemedText type="caption" style={styles.selectedText}>Active</ThemedText>
+              <ThemedText type="caption" style={styles.selectedText}>
+                Active
+              </ThemedText>
             </View>
           )}
         </View>
@@ -52,11 +53,9 @@ export default function ProgramsScreen() {
             { backgroundColor: `${colors.accent}20` },
           ]}
         >
-          <ThemedText
-            type="caption"
-            style={{ color: colors.accent }}
-          >
-            {item.workouts.length} {item.workouts.length === 1 ? "workout" : "workouts"}
+          <ThemedText type="caption" style={{ color: colors.accent }}>
+            {item.workouts.length}{" "}
+            {item.workouts.length === 1 ? "workout" : "workouts"}
           </ThemedText>
         </View>
       </TouchableOpacity>
@@ -67,12 +66,14 @@ export default function ProgramsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <ThemedText type="title">Programs</ThemedText>
+          <ThemedText type="title" style={{ color: colors.text }}>
+            Programs
+          </ThemedText>
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => router.push("/programs/create")}
           >
-            <Ionicons name="add" size={24} color={tintColor} />
+            <Ionicons name="add" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
 

@@ -98,9 +98,7 @@ export default function HomeScreen() {
               </ThemedText>
               {lastWorkout && (
                 <TouchableOpacity onPress={handleViewAllHistory}>
-                  <ThemedText type="link">
-                    View All
-                  </ThemedText>
+                  <ThemedText type="link">View All</ThemedText>
                 </TouchableOpacity>
               )}
             </View>
@@ -126,14 +124,21 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText type="defaultSemiBold" style={styles.buttonText}>Start Workout</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                Start Workout
+              </ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { backgroundColor: colors.card }]}
               onPress={handleBrowsePrograms}
             >
-              <ThemedText type="defaultSemiBold" style={styles.buttonText}>Browse Programs</ThemedText>
+              <ThemedText
+                type="defaultSemiBold"
+                style={[styles.buttonText, { color: colors.text }]}
+              >
+                Browse Programs
+              </ThemedText>
             </TouchableOpacity>
           </View>
         </ThemedView>

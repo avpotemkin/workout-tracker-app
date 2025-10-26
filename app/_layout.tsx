@@ -38,6 +38,8 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="programs" />
+          <Stack.Screen name="(workout)" />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

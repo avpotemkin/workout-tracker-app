@@ -17,7 +17,9 @@ export default function WorkoutScreen() {
   const { selectedProgram } = useAppContext();
 
   // Get the first program with days for quick start if no program is selected
-  const defaultProgram = selectedProgram || PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
+  const defaultProgram =
+    selectedProgram ||
+    PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
 
   // This would be replaced with actual session management logic
   useEffect(() => {
@@ -67,7 +69,9 @@ export default function WorkoutScreen() {
             style={[styles.button, { backgroundColor: colors.accent }]}
             onPress={handleResumeWorkout}
           >
-            <ThemedText type="subtitle" style={styles.buttonText}>Resume Workout</ThemedText>
+            <ThemedText type="subtitle" style={styles.buttonText}>
+              Resume Workout
+            </ThemedText>
           </TouchableOpacity>
         ) : (
           <View style={styles.buttonContainer}>
@@ -76,8 +80,8 @@ export default function WorkoutScreen() {
               onPress={handleStartWorkout}
             >
               <ThemedText type="subtitle" style={styles.buttonText}>
-                {selectedProgram 
-                  ? `Quick Start: ${selectedProgram.name}` 
+                {selectedProgram
+                  ? `Quick Start: ${selectedProgram.name}`
                   : "Quick Start"}
               </ThemedText>
             </TouchableOpacity>
@@ -86,7 +90,12 @@ export default function WorkoutScreen() {
               style={[styles.button, { backgroundColor: colors.card }]}
               onPress={handleSelectProgram}
             >
-              <ThemedText type="subtitle" style={styles.buttonText}>Select Program</ThemedText>
+              <ThemedText
+                type="subtitle"
+                style={[styles.buttonText, { color: colors.text }]}
+              >
+                Select Program
+              </ThemedText>
             </TouchableOpacity>
           </View>
         )}

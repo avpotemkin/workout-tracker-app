@@ -7,14 +7,17 @@ import { SetList } from "./SetList";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useChevronRotation } from "@/animations/chevronRotation";
 import Animated from "react-native-reanimated";
+
 type ExerciseCardProps = {
   exercise: WorkoutExercise;
   isExpanded: boolean;
   onToggleExpansion: (exerciseId: string) => void;
-  currentExerciseIndex: number;
-  currentSetIndex: number;
   onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
-  onUpdateSet: (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => void;
+  onUpdateSet: (
+    exerciseIndex: number,
+    setIndex: number,
+    updates: Partial<WorkoutSet>
+  ) => void;
   exerciseIndex: number;
 };
 
@@ -22,8 +25,6 @@ export function ExerciseCard({
   exercise,
   isExpanded,
   onToggleExpansion,
-  currentExerciseIndex,
-  currentSetIndex,
   onToggleSetCompletion,
   onUpdateSet,
   exerciseIndex,
@@ -38,15 +39,13 @@ export function ExerciseCard({
       >
         <ThemedText type="subtitle">{exercise.name}</ThemedText>
         <Animated.View style={rotationStyle}>
-          <Ionicons name="chevron-down" size={24} color="white" />
+          <Ionicons name="chevron-down" size={24} color={colors.text} />
         </Animated.View>
       </TouchableOpacity>
 
       {isExpanded && (
         <SetList
           exercise={exercise}
-          currentExerciseIndex={currentExerciseIndex}
-          currentSetIndex={currentSetIndex}
           onToggleSetCompletion={onToggleSetCompletion}
           onUpdateSet={onUpdateSet}
           exerciseIndex={exerciseIndex}
