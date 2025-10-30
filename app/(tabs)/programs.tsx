@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   header: {
-    alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: spacing.md,
     marginBottom: spacing.lg,
     position: "relative",
