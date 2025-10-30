@@ -102,9 +102,6 @@ export const AddExerciseModal = forwardRef<
                       <ThemedText type="label" style={styles.exerciseName}>
                         {exercise.name}
                       </ThemedText>
-                      <ThemedText type="caption" style={styles.exerciseInfo}>
-                        {exercise.defaultSets} × {exercise.defaultReps}
-                      </ThemedText>
                     </View>
                   </TouchableOpacity>
                 ))}

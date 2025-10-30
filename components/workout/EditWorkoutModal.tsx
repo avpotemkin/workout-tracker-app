@@ -29,6 +29,7 @@ import { AddExerciseModal } from "./AddExerciseModal";
 import { ExerciseTemplate, getExerciseNameById } from "@/constants/Exercises";
 import { ProgramExercise, ProgramExerciseId, WorkoutId } from "@/types";
 import { generateId } from "@/utils/ids";
+import { SetsRepsCounter } from "./SetsRepsCounter";
 
 interface EditWorkoutModalProps {
   workoutId: string | null;
@@ -81,10 +82,38 @@ export const EditWorkoutModal = forwardRef<
     const newExercise: ProgramExercise = {
       id: generateId() as ProgramExerciseId,
       templateId: exerciseTemplate.id,
-      sets: exerciseTemplate.defaultSets,
-      reps: exerciseTemplate.defaultReps,
+      sets: 3,
+      reps: 12,
     };
     const updatedExercises = [...exercises, newExercise];
+    setExercises(updatedExercises);
+
+    if (workoutId && workout) {
+      updateWorkout(workoutId as WorkoutId, {
+        ...workout,
+        exercises: updatedExercises,
+      });
+    }
+  };
+
+  const handleUpdateSets = (exerciseId: ProgramExerciseId, sets: number) => {
+    const updatedExercises = exercises.map((ex) =>
+      ex.id === exerciseId ? { ...ex, sets } : ex
+    );
+    setExercises(updatedExercises);
+
+    if (workoutId && workout) {
+      updateWorkout(workoutId as WorkoutId, {
+        ...workout,
+        exercises: updatedExercises,
+      });
+    }
+  };
+
+  const handleUpdateReps = (exerciseId: ProgramExerciseId, reps: number) => {
+    const updatedExercises = exercises.map((ex) =>
+      ex.id === exerciseId ? { ...ex, reps } : ex
+    );
     setExercises(updatedExercises);
 
     if (workoutId && workout) {
@@ -179,12 +208,17 @@ export const EditWorkoutModal = forwardRef<
               >
                 <View style={styles.exerciseContent}>
                   <View style={styles.exerciseInfo}>
-                    <ThemedText type="label" style={styles.exerciseName}>
-                      {getExerciseNameById(exercise.templateId)}
-                    </ThemedText>
-                    <ThemedText type="caption" style={styles.exerciseDetails}>
-                      {exercise.sets} × {exercise.reps}
-                    </ThemedText>
+                    <View style={styles.exerciseHeader}>
+                      <ThemedText type="label" style={styles.exerciseName}>
+                        {getExerciseNameById(exercise.templateId)}
+                      </ThemedText>
+                      <SetsRepsCounter
+                        sets={exercise.sets}
+                        reps={exercise.reps}
+                        onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
+                        onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
+                      />
+                    </View>
                   </View>
                   <TouchableOpacity
                     onPress={() => handleRemoveExercise(exercise.id)}
@@ -275,9 +309,12 @@ const styles = StyleSheet.create({
   exerciseInfo: {
     flex: 1,
   },
-  exerciseName: {
-    marginBottom: 4,
+  exerciseHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
+  exerciseName: {},
   exerciseDetails: {
     opacity: 0.6,
   },

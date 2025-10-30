@@ -25,6 +25,7 @@ import {
 } from "@/constants/Exercises";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { generateId } from "@/utils/ids";
+import { SetsRepsCounter } from "@/components/workout/SetsRepsCounter";
 
 export default function EditWorkoutScreen() {
   const params = useLocalSearchParams();
@@ -56,11 +57,25 @@ export default function EditWorkoutScreen() {
     const newExercise: ProgramExercise = {
       id: generateId() as ProgramExerciseId,
       templateId: exerciseTemplate.id,
-      sets: exerciseTemplate.defaultSets,
-      reps: exerciseTemplate.defaultReps,
+      sets: 3,
+      reps: 12,
     };
     setExercises([...exercises, newExercise]);
     setShowExercisePicker(false);
+  }
+
+  function handleUpdateSets(exerciseId: ProgramExerciseId, sets: number) {
+    const updatedExercises = exercises.map((ex) =>
+      ex.id === exerciseId ? { ...ex, sets } : ex
+    );
+    setExercises(updatedExercises);
+  }
+
+  function handleUpdateReps(exerciseId: ProgramExerciseId, reps: number) {
+    const updatedExercises = exercises.map((ex) =>
+      ex.id === exerciseId ? { ...ex, reps } : ex
+    );
+    setExercises(updatedExercises);
   }
 
   function handleRemoveExercise(exerciseId: ProgramExerciseId) {
@@ -143,28 +158,27 @@ export default function EditWorkoutScreen() {
                 { backgroundColor: colors.card },
               ]}
             >
-              <TouchableOpacity
-                style={styles.exerciseContent}
-                onPress={() => {
-                  // TODO: Navigate to exercise detail
-                }}
-              >
+              <View style={styles.exerciseContent}>
                 <View style={styles.exerciseInfo}>
-                  <ThemedText type="default">
-                    {getExerciseNameById(exercise.templateId)}
-                  </ThemedText>
-                  <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                    {exercise.sets} × {exercise.reps}
-                  </ThemedText>
+                  <View style={styles.exerciseHeader}>
+                    <ThemedText type="default">
+                      {getExerciseNameById(exercise.templateId)}
+                    </ThemedText>
+                    <SetsRepsCounter
+                      sets={exercise.sets}
+                      reps={exercise.reps}
+                      onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
+                      onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
+                    />
+                  </View>
                 </View>
-                <Ionicons name="chevron-forward" size={20} color={textColor} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleRemoveExercise(exercise.id)}
-              >
-                <Ionicons name="trash-outline" size={20} color={colors.error} />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => handleRemoveExercise(exercise.id)}
+                >
+                  <Ionicons name="trash-outline" size={20} color={colors.error} />
+                </TouchableOpacity>
+              </View>
             </View>
           ))}
 
@@ -248,10 +262,7 @@ function ExercisePicker({ visible, onSelect, onClose }: ExercisePickerProps) {
                       ]}
                       onPress={() => onSelect(exercise)}
                     >
-                      <ThemedText type="default">{exercise.name}</ThemedText>
-                      <ThemedText type="caption" style={{ opacity: 0.6 }}>
-                        {exercise.defaultSets} × {exercise.defaultReps}
-                      </ThemedText>
+                    <ThemedText type="default">{exercise.name}</ThemedText>
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -300,6 +311,11 @@ const styles = StyleSheet.create({
   },
   exerciseInfo: {
     flex: 1,
+  },
+  exerciseHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   deleteButton: {
     padding: 8,
