@@ -67,7 +67,6 @@ export function WorkoutSessionScreen({
     );
 
     if (!program || !workout) {
-      console.error("Program or workout not found");
       return;
     }
 
@@ -220,8 +219,7 @@ export function WorkoutSessionScreen({
               setWorkoutSession(finishedSession);
 
               router.back();
-            } catch (error) {
-              console.error("Error saving workout history:", error);
+            } catch {
               Alert.alert(
                 "Error",
                 "Failed to save workout history. Please try again."

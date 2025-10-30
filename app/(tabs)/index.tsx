@@ -26,9 +26,7 @@ export default function HomeScreen() {
     try {
       const workoutHistory = await fetchWorkoutHistory();
       setLastWorkout(workoutHistory.length > 0 ? workoutHistory[0] : null);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error loading recent history:", error);
+    } catch {
       setLastWorkout(null);
     }
   }, []);

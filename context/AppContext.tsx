@@ -40,8 +40,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setSelectedProgram(fetchedPrograms[0]);
         }
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error("Error loading programs:", error);
         setHasError(true);
         setErrorMessage(
           error instanceof Error ? error.message : "Failed to load programs"

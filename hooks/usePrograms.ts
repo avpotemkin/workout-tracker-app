@@ -11,7 +11,6 @@ export function usePrograms() {
       const createdProgram = await api.createProgram(program);
       setPrograms((prevPrograms) => [...prevPrograms, createdProgram]);
     } catch (error) {
-      console.error("Error adding program:", error);
       throw error;
     }
   };
@@ -29,7 +28,6 @@ export function usePrograms() {
         setSelectedProgram(updated);
       }
     } catch (error) {
-      console.error("Error updating program:", error);
       throw error;
     }
   };

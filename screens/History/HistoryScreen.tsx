@@ -6,10 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { WorkoutHistory, HistoryStats } from "@/types";
-import {
-  fetchWorkoutHistory,
-  getHistoryStats,
-} from "@/services/api";
+import { fetchWorkoutHistory, getHistoryStats } from "@/services/api";
 
 import { HistoryHeader } from "@/components/history/HistoryHeader";
 import { HistoryStats as HistoryStatsComponent } from "@/components/history/HistoryStats";
@@ -28,7 +25,7 @@ export function HistoryScreen() {
     try {
       setIsLoading(true);
       setHasError(false);
-      
+
       // Fetch history first
       const history = await fetchWorkoutHistory();
       setWorkoutHistory(history);
@@ -37,8 +34,7 @@ export function HistoryScreen() {
       try {
         const stats = await getHistoryStats();
         setHistoryStats(stats);
-      } catch (statsError) {
-        console.warn("Failed to fetch history stats:", statsError);
+      } catch {
         // Set default stats if fetch fails
         setHistoryStats({
           totalWorkouts: history.length,
@@ -47,10 +43,11 @@ export function HistoryScreen() {
         });
       }
     } catch (error) {
-      console.error("Error loading workout history:", error);
       setHasError(true);
       setErrorMessage(
-        error instanceof Error ? error.message : "Failed to load workout history"
+        error instanceof Error
+          ? error.message
+          : "Failed to load workout history"
       );
     } finally {
       setIsLoading(false);
