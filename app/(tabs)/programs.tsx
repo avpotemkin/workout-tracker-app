@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors, spacing } = useAppTheme();
+  const { colors } = useAppTheme();
   const router = useRouter();
   const { selectedProgram, programs } = useAppContext();
 
