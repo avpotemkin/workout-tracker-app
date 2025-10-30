@@ -62,7 +62,7 @@ export default function ProgramsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <ThemedText type="title" style={{ color: colors.text }}>
+          <ThemedText type="title">
             Programs
           </ThemedText>
           <TouchableOpacity

@@ -223,11 +223,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 16,
-    marginBottom: 16,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   backButton: {
-    marginRight: 16,
+    marginRight: spacing.md,
   },
   selectProgramButton: {
     paddingVertical: 10,

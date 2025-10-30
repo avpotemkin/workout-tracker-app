@@ -14,6 +14,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
 import { usePrograms } from "@/hooks/usePrograms";
@@ -216,13 +217,14 @@ export default function EditProgramScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.md,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   scrollContainer: {
     flex: 1,

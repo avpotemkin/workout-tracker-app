@@ -22,6 +22,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Ionicons } from "@expo/vector-icons";
 import { AddExerciseModal } from "./AddExerciseModal";
@@ -239,9 +240,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.md,
   },
   headerLeft: {
     width: 40,
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 20,
+    padding: spacing.md,
   },
   nameCard: {
     padding: 16,

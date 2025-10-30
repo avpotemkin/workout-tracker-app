@@ -7,7 +7,7 @@ export function HistoryHeader() {
   const { spacing } = useAppTheme();
   
   return (
-    <View style={[styles.header, { paddingVertical: spacing.md, marginBottom: spacing.lg, paddingHorizontal: spacing.md }]}>
+    <View style={[styles.header, { paddingVertical: spacing.md, marginBottom: spacing.lg }]}>
       <ThemedText type="title">Workout History</ThemedText>
     </View>
   );

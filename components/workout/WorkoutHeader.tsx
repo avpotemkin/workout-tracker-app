@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { spacing } from "@/constants/Theme";
 
 type WorkoutHeaderProps = {
   onBackPress: () => void;
@@ -34,14 +35,15 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   backButton: {
-    marginRight: 16,
+    marginRight: spacing.md,
   },
   workoutTitle: {
     flex: 1,
     textAlign: "center",
-    marginRight: 40,
+    marginRight: spacing.xl,
   },
 });

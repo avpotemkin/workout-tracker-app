@@ -15,6 +15,7 @@ import {
 } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { convertSessionToHistory } from "@/utils/workoutHistory";
 import { createWorkoutHistory } from "@/services/api";
 
@@ -263,7 +264,7 @@ export function WorkoutSessionScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.md,
   },
   loadingContainer: {
     flex: 1,

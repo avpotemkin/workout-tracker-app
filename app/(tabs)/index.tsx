@@ -17,7 +17,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function HomeScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors, spacing } = useAppTheme();
+  const { colors } = useAppTheme();
   const router = useRouter();
   const { selectedProgram } = useAppContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

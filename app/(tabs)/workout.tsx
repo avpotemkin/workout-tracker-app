@@ -15,7 +15,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function WorkoutScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors, spacing } = useAppTheme();
+  const { colors } = useAppTheme();
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
