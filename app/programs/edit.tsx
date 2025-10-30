@@ -68,7 +68,7 @@ export default function EditProgramScreen() {
     editWorkoutModalRef.current?.present();
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!programName.trim()) {
       Alert.alert("Error", "Please enter a program name");
       return;
@@ -91,8 +91,15 @@ export default function EditProgramScreen() {
       updatedAt: new Date(),
     };
 
-    updateProgram(programId as ProgramId, updatedProgram);
-    router.back();
+    try {
+      await updateProgram(programId as ProgramId, updatedProgram);
+      router.back();
+    } catch {
+      Alert.alert(
+        "Error",
+        "Failed to update program. Please check your connection and try again."
+      );
+    }
   }
 
   if (!program) {

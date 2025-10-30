@@ -50,6 +50,63 @@ export default function ProgramDetailsScreen() {
     alert(`${program.name} has been set as your active program`);
   };
 
+  // Check if there are no workouts or selectedWorkout is undefined
+  if (!program.workouts || program.workouts.length === 0) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor }}>
+        <ThemedView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="arrow-back" size={24} color={colors.text} />
+            </TouchableOpacity>
+
+            <ThemedText type="subtitle">{program.name}</ThemedText>
+
+            <TouchableOpacity
+              onPress={() => router.push(`/programs/edit?id=${program.id}`)}
+            >
+              <ThemedText type="label" style={{ color: colors.accent }}>
+                Edit
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+          <ThemedText>No workouts in this program</ThemedText>
+        </ThemedView>
+      </SafeAreaView>
+    );
+  }
+
+  if (!selectedWorkout) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor }}>
+        <ThemedView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="arrow-back" size={24} color={colors.text} />
+            </TouchableOpacity>
+
+            <ThemedText type="subtitle">{program.name}</ThemedText>
+
+            <TouchableOpacity
+              onPress={() => router.push(`/programs/edit?id=${program.id}`)}
+            >
+              <ThemedText type="label" style={{ color: colors.accent }}>
+                Edit
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+          <ThemedText>Workout not found</ThemedText>
+        </ThemedView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
