@@ -925,6 +925,76 @@ export function useIntersectionObserver(
 - **Always use ThemedText component for text rendering**; components should never define their own text styles (fontSize, fontWeight, etc.) in StyleSheet - instead use ThemedText types and only apply layout-specific styles (margins, padding, alignment, colors)
   - Available types in size order: `largeTitle` (32px), `title` (24px), `subtitle` (20px), `default` (16px), `defaultSemiBold` (16px bold), `label` (16px medium), `body` (14px), `caption` (12px), `link` (16px with link color)
 
+### Style Consistency and Header Standards
+
+- **Use spacing constants from `constants/Theme.ts`** for all padding, margins, and spacing values. Never use hardcoded numeric values (e.g., `16`, `20`, `24`) directly in StyleSheet definitions.
+  - Available spacing values: `xs: 4`, `sm: 8`, `md: 16`, `lg: 24`, `xl: 32`, `xxl: 48`
+  - Import spacing for StyleSheet: `import { spacing } from "@/constants/Theme"`
+  - Use `useAppTheme()` hook for dynamic color values in inline styles
+
+- **Main Screen Headers (Tab Screens)** - All main tab screens must follow this consistent pattern:
+  ```typescript
+  // Container
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.md, // 16px
+  },
+  
+  // Header
+  header: {
+    paddingVertical: spacing.md,   // 16px
+    marginBottom: spacing.lg,      // 24px
+  },
+  ```
+  - Use `ThemedText type="title"` for header text
+  - Headers must be left-aligned (never centered)
+  - All main screens (Home, Workout, Programs, History) must have identical header spacing
+
+- **Subscreen Headers (Edit/Create/Details)** - Secondary screens follow a slightly different pattern:
+  ```typescript
+  // Container
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.md, // 16px
+  },
+  
+  // Header
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: spacing.md,   // 16px
+    marginBottom: spacing.md,      // 16px (smaller than main screens)
+  },
+  ```
+  - Use `ThemedText type="subtitle"` for header text
+  - Headers should have space-between layout for back/cancel buttons
+
+- **Modal Headers** - Bottom sheet modals use consistent header spacing:
+  ```typescript
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: spacing.md, // 16px
+    paddingTop: spacing.sm,        // 8px
+    paddingBottom: spacing.md,      // 16px
+  },
+  ```
+  - Use `ThemedText type="subtitle"` for modal titles
+  - Headers should accommodate close/cancel buttons on the right
+
+- **Color Usage** - Always use theme colors from `useAppTheme()` hook:
+  - Never use hardcoded color literals (`"#444"`, `"white"`, `rgba(...)`)
+  - Use `colors.text`, `colors.background`, `colors.card`, `colors.accent`, `colors.divider`, `colors.error`, `colors.success`, `colors.info` for semantic colors
+  - Apply colors inline for dynamic values: `style={{ backgroundColor: colors.card }}`
+  - Use `colors.divider` for borders instead of hardcoded grays
+
+- **Container Padding** - All screen containers use consistent horizontal padding:
+  - Main screens: `paddingHorizontal: spacing.md` (16px)
+  - Subscreens: `paddingHorizontal: spacing.md` (16px)
+  - Avoid adding additional `paddingHorizontal` to headers if container already has it (prevents double padding)
+
 ### TypeScript and Validation
 
 - **Use TypeScript for all code**; prefer interfaces over types for object shapes
