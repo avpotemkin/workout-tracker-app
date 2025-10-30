@@ -29,16 +29,13 @@ export function HistoryScreen() {
       setIsLoading(true);
       setHasError(false);
 
-      // Fetch history first
       const history = await fetchWorkoutHistory();
       setWorkoutHistory(history);
 
-      // Try to fetch stats, but don't fail if it errors
       try {
         const stats = await getHistoryStats();
         setHistoryStats(stats);
       } catch {
-        // Set default stats if fetch fails
         setHistoryStats({
           totalWorkouts: history.length,
           totalDuration: history.reduce((sum, h) => sum + h.duration, 0),

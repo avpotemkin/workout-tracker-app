@@ -47,11 +47,9 @@ export default function ProgramDetailsScreen() {
 
   const handleSelectProgram = () => {
     setSelectedProgram(program);
-    // Show feedback to the user
     alert(`${program.name} has been set as your active program`);
   };
 
-  // Check if there are no workouts or selectedWorkout is undefined
   if (!program.workouts || program.workouts.length === 0) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -149,7 +147,6 @@ export default function ProgramDetailsScreen() {
           </ThemedText>
         </TouchableOpacity>
 
-        {/* Workout tabs */}
         <View style={styles.workoutTabs}>
           {program.workouts.map((workout: Workout, index: number) => (
             <TouchableOpacity
@@ -239,9 +236,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignSelf: "center",
   },
-  selectProgramButtonText: {
-    // Color will be set inline
-  },
+  selectProgramButtonText: {},
   workoutTabs: {
     flexDirection: "row",
     paddingBottom: 10,

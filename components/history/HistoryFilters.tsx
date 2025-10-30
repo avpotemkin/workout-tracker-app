@@ -15,10 +15,8 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
 
-  // Get unique programs
   const programs = [...new Set(workoutHistory.map(w => w.programName))];
 
-  // Filter periods
   const periods = [
     { key: 'all', label: 'All Time' },
     { key: 'week', label: 'This Week' },
@@ -33,12 +31,10 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
   const applyFilters = () => {
     let filtered = [...workoutHistory];
 
-    // Filter by program
     if (selectedProgram) {
       filtered = filtered.filter(w => w.programName === selectedProgram);
     }
 
-    // Filter by period
     if (selectedPeriod !== 'all') {
       const now = new Date();
       const startDate = new Date();
@@ -79,7 +75,6 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
         )}
       </View>
 
-      {/* Program Filter */}
       <View style={styles.filterSection}>
         <ThemedText type="body" style={styles.sectionTitle}>Program</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -116,7 +111,6 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
         </ScrollView>
       </View>
 
-      {/* Period Filter */}
       <View style={styles.filterSection}>
         <ThemedText type="body" style={styles.sectionTitle}>Period</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

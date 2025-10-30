@@ -44,7 +44,6 @@ export default function EditWorkoutScreen() {
   const { colors } = useAppTheme();
   const router = useRouter();
 
-  // Update local state when workout changes
   useEffect(() => {
     if (workout) {
       setWorkoutName(workout.name);
@@ -86,7 +85,6 @@ export default function EditWorkoutScreen() {
   }
 
   function handleBack() {
-    // Save changes to workout
     if (workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
@@ -100,7 +98,6 @@ export default function EditWorkoutScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleBack}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -124,7 +121,6 @@ export default function EditWorkoutScreen() {
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Workout Name */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
               style={[styles.input, { color: textColor }]}
@@ -137,7 +133,6 @@ export default function EditWorkoutScreen() {
             />
           </View>
 
-          {/* Exercises List */}
           {exercises.map((exercise) => (
             <View
               key={exercise.id}
@@ -172,7 +167,6 @@ export default function EditWorkoutScreen() {
             </View>
           ))}
 
-          {/* Add Exercise Button */}
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => setShowExercisePicker(true)}
@@ -182,7 +176,6 @@ export default function EditWorkoutScreen() {
             </ThemedText>
           </TouchableOpacity>
 
-          {/* Remove Workout Button */}
           <TouchableOpacity
             style={styles.removeWorkoutButton}
             onPress={handleRemoveWorkout}
@@ -194,7 +187,6 @@ export default function EditWorkoutScreen() {
         </ScrollView>
       </ThemedView>
 
-      {/* Exercise Picker Modal */}
       <ExercisePicker
         visible={showExercisePicker}
         onSelect={handleAddExercise}

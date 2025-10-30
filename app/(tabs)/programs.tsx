@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   selectedText: {
-    // Color will be set inline
     marginLeft: 4,
   },
   exerciseCount: {

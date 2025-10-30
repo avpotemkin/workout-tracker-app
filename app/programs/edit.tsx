@@ -46,7 +46,6 @@ export default function EditProgramScreen() {
   const router = useRouter();
   const { workouts, initializeWithProgram, addWorkout } = useProgramDraft();
 
-  // Initialize workouts from the existing program
   useEffect(() => {
     if (program) {
       initializeWithProgram(program);
@@ -60,7 +59,6 @@ export default function EditProgramScreen() {
       exercises: [],
     };
     addWorkout(newWorkout);
-    // Open bottom sheet to edit this workout
     setEditingWorkoutId(newWorkout.id);
     editWorkoutModalRef.current?.present();
   }
@@ -126,7 +124,6 @@ export default function EditProgramScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
             <ThemedText type="default" style={{ color: colors.error }}>
@@ -147,7 +144,6 @@ export default function EditProgramScreen() {
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Program Name */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
               style={[styles.input, { color: textColor }]}
@@ -158,7 +154,6 @@ export default function EditProgramScreen() {
             />
           </View>
 
-          {/* Workout Split */}
           <TouchableOpacity
             style={[
               styles.card,
@@ -178,7 +173,6 @@ export default function EditProgramScreen() {
             <Ionicons name="chevron-forward" size={20} color={textColor} />
           </TouchableOpacity>
 
-          {/* Workouts List */}
           {workouts.map((workout) => (
             <TouchableOpacity
               key={workout.id}
@@ -203,7 +197,6 @@ export default function EditProgramScreen() {
             </TouchableOpacity>
           ))}
 
-          {/* Add Workout Button */}
           <TouchableOpacity style={styles.addButton} onPress={handleAddWorkout}>
             <ThemedText type="default" style={{ color: colors.error }}>
               Add Workout

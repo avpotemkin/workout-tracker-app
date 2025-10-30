@@ -21,16 +21,12 @@ export default function WorkoutScreen() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { selectedProgram } = useAppContext();
 
-  // Get the first program with days for quick start if no program is selected
   const defaultProgram =
     selectedProgram ||
     PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
 
-  // This would be replaced with actual session management logic
   useEffect(() => {
-    // Check if there's an active session (would be from storage/state management in a real app)
     const checkActiveSession = () => {
-      // Mock check for active session - would be replaced with actual state/storage check
       setActiveSession(null);
     };
 
@@ -58,7 +54,6 @@ export default function WorkoutScreen() {
   };
 
   const handleResumeWorkout = () => {
-    // Using object notation for proper typing
     router.push({
       pathname: "/(workout)/session",
     });
@@ -75,12 +70,10 @@ export default function WorkoutScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          {/* Header */}
           <ThemedText type="title" style={styles.header}>
             Workout
           </ThemedText>
 
-          {/* Active Session */}
           {activeSession ? (
             <View style={styles.section}>
               <View style={[styles.card, { backgroundColor: colors.card }]}>
@@ -114,7 +107,6 @@ export default function WorkoutScreen() {
             </View>
           ) : (
             <>
-              {/* Current Program */}
               <View style={styles.section}>
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
                   Current Program
@@ -180,7 +172,6 @@ export default function WorkoutScreen() {
                 )}
               </View>
 
-              {/* Quick Actions */}
               <View style={styles.section}>
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
                   Quick Actions
@@ -316,7 +307,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    // Color will be set inline based on button type
     marginLeft: 8,
   },
 });

@@ -77,12 +77,10 @@ export default function HomeScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          {/* Header */}
           <ThemedText type="title" style={styles.header}>
             Home
           </ThemedText>
 
-          {/* Active Program Overview */}
           <View style={styles.section}>
             <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
               Active Program
@@ -113,7 +111,6 @@ export default function HomeScreen() {
             )}
           </View>
 
-          {/* Recent Activity */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
@@ -137,7 +134,6 @@ export default function HomeScreen() {
             )}
           </View>
 
-          {/* Quick Actions */}
           <View style={styles.section}>
             <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
               Quick Actions
@@ -231,7 +227,5 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: "center",
   },
-  buttonText: {
-    // Color will be set inline based on button type
-  },
+  buttonText: {},
 });

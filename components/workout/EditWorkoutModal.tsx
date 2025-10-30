@@ -48,7 +48,6 @@ export const EditWorkoutModal = forwardRef<
     workout?.exercises || []
   );
 
-  // Update local state when workout changes
   useEffect(() => {
     if (workout) {
       setWorkoutName(workout.name);
@@ -87,7 +86,6 @@ export const EditWorkoutModal = forwardRef<
     const updatedExercises = [...exercises, newExercise];
     setExercises(updatedExercises);
 
-    // Auto-save to context
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
@@ -100,7 +98,6 @@ export const EditWorkoutModal = forwardRef<
     const updatedExercises = exercises.filter((ex) => ex.id !== exerciseId);
     setExercises(updatedExercises);
 
-    // Auto-save to context
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
@@ -163,7 +160,6 @@ export const EditWorkoutModal = forwardRef<
             ]}
             showsVerticalScrollIndicator={false}
           >
-            {/* Workout Name Input */}
             <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
               <TextInput
                 style={[styles.nameInput, { color: colors.text }]}
@@ -175,7 +171,6 @@ export const EditWorkoutModal = forwardRef<
               />
             </View>
 
-            {/* Exercise List */}
             {exercises.map((exercise) => (
               <View
                 key={exercise.id}
@@ -204,7 +199,6 @@ export const EditWorkoutModal = forwardRef<
               </View>
             ))}
 
-            {/* Add Exercise Button */}
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => addExerciseModalRef.current?.present()}
@@ -214,7 +208,6 @@ export const EditWorkoutModal = forwardRef<
               </ThemedText>
             </TouchableOpacity>
 
-            {/* Remove Workout Button */}
             <TouchableOpacity
               style={styles.removeButton}
               onPress={handleRemoveWorkout}

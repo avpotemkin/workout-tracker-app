@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   exercisesText: {
-    // Color will be set inline
     lineHeight: 16,
   },
   expandedContent: {
