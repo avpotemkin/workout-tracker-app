@@ -225,7 +225,7 @@ function ExercisePicker({ visible, onSelect, onClose }: ExercisePickerProps) {
     >
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
-          <View style={styles.modalHeader}>
+          <View style={[styles.modalHeader, { borderBottomColor: colors.divider }]}>
             <ThemedText type="subtitle">Add Exercise</ThemedText>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={24} color={textColor} />
@@ -337,7 +337,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#333",
   },
   modalContent: {
     maxHeight: "100%",

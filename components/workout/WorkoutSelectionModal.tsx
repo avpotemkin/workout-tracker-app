@@ -83,7 +83,7 @@ export const WorkoutSelectionModal = forwardRef<
                   </View>
                 </View>
                 <ThemedText
-                  type="label"
+                  type="title"
                   style={[styles.chevron, { color: colors.accent }]}
                 >
                   ›
@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   chevron: {
-    fontSize: 32,
     marginLeft: 12,
   },
   emptyContainer: {

@@ -8,13 +8,14 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
 import { WorkoutSelectionModal } from "@/components/workout";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function WorkoutScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
   const router = useRouter();
   const [activeSession, setActiveSession] = useState(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -104,8 +105,8 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleResumeWorkout}
                 >
-                  <Ionicons name="play" size={20} color="white" />
-                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                  <Ionicons name="play" size={20} color={colors.background} />
+                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                     Resume Workout
                   </ThemedText>
                 </TouchableOpacity>
@@ -135,7 +136,7 @@ export default function WorkoutScreen() {
                       </View>
                     </View>
                     {selectedProgram.workouts.length > 0 && (
-                      <View style={styles.nextWorkoutContainer}>
+                      <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
                         <ThemedText
                           type="caption"
                           style={styles.nextWorkoutLabel}
@@ -147,7 +148,7 @@ export default function WorkoutScreen() {
                         </ThemedText>
                       </View>
                     )}
-                    <View style={styles.workoutStats}>
+                    <View style={[styles.workoutStats, { borderTopColor: colors.divider }]}>
                       <View style={styles.statItem}>
                         <Ionicons
                           name="calendar-outline"
@@ -189,8 +190,8 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleStartWorkout}
                 >
-                  <Ionicons name="play-circle" size={24} color="white" />
-                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                  <Ionicons name="play-circle" size={24} color={colors.background} />
+                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                     {selectedProgram
                       ? `Quick Start: ${selectedProgram.name}`
                       : "Quick Start"}
@@ -233,11 +234,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
-    marginTop: 16,
-    marginBottom: 24,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
   },
   section: {
     marginBottom: 24,
@@ -271,7 +272,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
   },
   nextWorkoutLabel: {
     opacity: 0.7,
@@ -281,7 +281,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
   },
   statItem: {
     flexDirection: "row",
@@ -317,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
+    // Color will be set inline based on button type
     marginLeft: 8,
   },
 });

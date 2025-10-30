@@ -7,12 +7,13 @@ import { useRouter } from "expo-router";
 import { Program } from "@/types";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ProgramsScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
   const router = useRouter();
   const { selectedProgram, programs } = useAppContext();
 
@@ -24,7 +25,7 @@ export default function ProgramsScreen() {
         style={[
           styles.programCard,
           { backgroundColor: colors.card },
-          isSelected && styles.selectedProgramCard,
+          isSelected && [styles.selectedProgramCard, { borderColor: colors.success }],
         ]}
         onPress={() => router.push(`/programs/${item.id}`)}
       >
@@ -34,8 +35,8 @@ export default function ProgramsScreen() {
             <View
               style={[styles.selectedBadge, { backgroundColor: colors.accent }]}
             >
-              <Ionicons name="checkmark-circle" size={16} color="white" />
-              <ThemedText type="caption" style={styles.selectedText}>
+              <Ionicons name="checkmark-circle" size={16} color={colors.background} />
+              <ThemedText type="caption" style={[styles.selectedText, { color: colors.background }]}>
                 Active
               </ThemedText>
             </View>
@@ -86,14 +87,14 @@ export default function ProgramsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    paddingVertical: 16,
-    marginBottom: 24,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
     position: "relative",
   },
   addButton: {
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
   },
   selectedProgramCard: {
     borderWidth: 2,
-    borderColor: "#4CAF50",
   },
   programHeader: {
     flexDirection: "row",
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   selectedText: {
-    color: "white",
+    // Color will be set inline
     marginLeft: 4,
   },
   exerciseCount: {

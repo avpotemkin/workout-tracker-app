@@ -6,6 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
 import { Workout, ProgramExercise } from "@/types";
@@ -142,7 +143,7 @@ export default function ProgramDetailsScreen() {
         >
           <ThemedText
             type="defaultSemiBold"
-            style={styles.selectProgramButtonText}
+            style={[styles.selectProgramButtonText, { color: colors.background }]}
           >
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
@@ -163,7 +164,7 @@ export default function ProgramDetailsScreen() {
             >
               <ThemedText
                 type="body"
-                style={selectedWorkoutIndex === index ? { color: "white" } : {}}
+                style={selectedWorkoutIndex === index ? { color: colors.background } : {}}
               >
                 {workout.name}
               </ThemedText>
@@ -219,7 +220,7 @@ export default function ProgramDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
     flexDirection: "row",
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   selectProgramButtonText: {
-    color: "white",
+    // Color will be set inline
   },
   workoutTabs: {
     flexDirection: "row",

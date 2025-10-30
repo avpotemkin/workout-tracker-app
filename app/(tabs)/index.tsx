@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
 import { fetchWorkoutHistory } from "@/services/api";
 import { WorkoutHistory } from "@/types";
@@ -16,7 +17,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function HomeScreen() {
   const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
   const router = useRouter();
   const { selectedProgram } = useAppContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -93,7 +94,7 @@ export default function HomeScreen() {
                   {selectedProgram.name}
                 </ThemedText>
                 {selectedProgram.workouts.length > 0 && (
-                  <View style={styles.nextWorkoutContainer}>
+                  <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
                     <ThemedText type="caption" style={styles.nextWorkoutLabel}>
                       Next Workout:
                     </ThemedText>
@@ -146,7 +147,7 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+              <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                 Start Workout
               </ThemedText>
             </TouchableOpacity>
@@ -184,11 +185,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
-    marginTop: 16,
-    marginBottom: 24,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
   },
   section: {
     marginBottom: 24,
@@ -214,7 +215,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#444",
   },
   nextWorkoutLabel: {
     opacity: 0.7,
@@ -232,6 +232,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "white",
+    // Color will be set inline based on button type
   },
 });
