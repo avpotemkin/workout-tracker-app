@@ -1,10 +1,12 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { WorkoutHistory } from "@/types";
+import { WorkoutHistory, WorkoutSet } from "@/types";
 import { getExerciseNameById } from "@/constants/Exercises";
+import { useChevronRotation } from "@/animations/chevronRotation";
+import Animated from "react-native-reanimated";
 
 type HistoryCardProps = {
   workout: WorkoutHistory;
@@ -12,14 +14,8 @@ type HistoryCardProps = {
 
 export function HistoryCard({ workout }: HistoryCardProps) {
   const { colors } = useAppTheme();
-
-  const formatDate = (date: Date): string => {
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+  const [isExpanded, setIsExpanded] = useState(false);
+  const rotationStyle = useChevronRotation(isExpanded);
 
   const formatDuration = (minutes: number): string => {
     const hours = Math.floor(minutes / 60);
@@ -30,45 +26,83 @@ export function HistoryCard({ workout }: HistoryCardProps) {
     return `${remainingMinutes}m`;
   };
 
+  const formatWeight = (weight: { value: number; unit: string }): string => {
+    return `${weight.value} ${weight.unit}`;
+  };
+
   return (
     <View style={[styles.card, { backgroundColor: colors.card }]}>
-      <View style={styles.cardHeader}>
-        <View style={styles.programInfo}>
-          <ThemedText type="defaultSemiBold">{workout.programName}</ThemedText>
-          <ThemedText type="default" style={{ color: colors.text }}>
-            {workout.workoutName}
-          </ThemedText>
-        </View>
-        <View style={styles.dateContainer}>
-          <ThemedText type="caption" style={styles.date}>
-            {formatDate(workout.startedAt)}
-          </ThemedText>
-        </View>
-      </View>
-
-      <View style={styles.statsRow}>
-        <View style={styles.statItem}>
-          <Ionicons name="time-outline" size={16} color={colors.text} />
-          <ThemedText type="caption" style={styles.statText}>
-            {formatDuration(workout.duration)}
-          </ThemedText>
+      <TouchableOpacity
+        onPress={() => setIsExpanded(!isExpanded)}
+        activeOpacity={0.7}
+      >
+        <View style={styles.cardHeader}>
+          <View style={styles.programInfo}>
+            <ThemedText type="defaultSemiBold">
+              {workout.programName}
+            </ThemedText>
+            <ThemedText type="default" style={{ color: colors.text }}>
+              {workout.workoutName}
+            </ThemedText>
+          </View>
+          <Animated.View style={rotationStyle}>
+            <Ionicons name="chevron-down" size={20} color={colors.text} />
+          </Animated.View>
         </View>
 
-        <View style={styles.statItem}>
-          <Ionicons name="fitness-outline" size={16} color={colors.text} />
-          <ThemedText type="caption" style={styles.statText}>
-            {workout.totalSets} sets
+        <View style={styles.statsRow}>
+          <View style={styles.statItem}>
+            <Ionicons name="time-outline" size={16} color={colors.text} />
+            <ThemedText type="caption" style={styles.statText}>
+              {formatDuration(workout.duration)}
+            </ThemedText>
+          </View>
+
+          <View style={styles.statItem}>
+            <Ionicons name="fitness-outline" size={16} color={colors.text} />
+            <ThemedText type="caption" style={styles.statText}>
+              {workout.totalSets} sets
+            </ThemedText>
+          </View>
+        </View>
+
+        <View style={styles.exercisesList}>
+          <ThemedText type="caption" style={styles.exercisesText}>
+            {workout.exercises
+              .map((ex) => getExerciseNameById(ex.templateId))
+              .join(", ")}
           </ThemedText>
         </View>
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.exercisesList}>
-        <ThemedText type="caption" style={styles.exercisesText}>
-          {workout.exercises
-            .map((ex) => getExerciseNameById(ex.templateId))
-            .join(", ")}
-        </ThemedText>
-      </View>
+      {isExpanded && (
+        <View style={styles.expandedContent}>
+          {workout.exercises.map((exercise) => (
+            <View key={exercise.id} style={styles.exerciseSection}>
+              <ThemedText type="defaultSemiBold" style={styles.exerciseName}>
+                {getExerciseNameById(exercise.templateId)}
+              </ThemedText>
+              <View style={styles.setsContainer}>
+                {exercise.sets
+                  .filter((set) => set.isCompleted)
+                  .map((set: WorkoutSet) => (
+                    <View key={set.id} style={styles.setRow}>
+                      <ThemedText type="body" style={styles.setNumber}>
+                        Set {set.setNumber}
+                      </ThemedText>
+                      <ThemedText type="body" style={styles.setWeight}>
+                        {formatWeight(set.weight)}
+                      </ThemedText>
+                      <ThemedText type="body" style={styles.setReps}>
+                        {set.reps} reps
+                      </ThemedText>
+                    </View>
+                  ))}
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -93,14 +127,6 @@ const styles = StyleSheet.create({
   programInfo: {
     flex: 1,
   },
-  dateContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  date: {
-    color: "#888",
-    marginRight: 4,
-  },
   statsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -116,11 +142,43 @@ const styles = StyleSheet.create({
   },
   exercisesList: {
     borderTopWidth: 1,
-    borderTopColor: "#444",
+    borderTopColor: "rgba(128, 128, 128, 0.3)",
     paddingTop: 8,
   },
   exercisesText: {
     color: "#999",
     lineHeight: 16,
+  },
+  expandedContent: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(128, 128, 128, 0.3)",
+  },
+  exerciseSection: {
+    marginBottom: 16,
+  },
+  exerciseName: {
+    marginBottom: 8,
+  },
+  setsContainer: {
+    paddingLeft: 8,
+  },
+  setRow: {
+    flexDirection: "row",
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(128, 128, 128, 0.2)",
+  },
+  setNumber: {
+    flex: 1,
+  },
+  setWeight: {
+    flex: 1,
+    textAlign: "center",
+  },
+  setReps: {
+    flex: 1,
+    textAlign: "right",
   },
 });

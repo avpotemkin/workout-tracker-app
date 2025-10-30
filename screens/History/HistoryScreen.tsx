@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { WorkoutHistory, HistoryStats } from "@/types";
-import { getWorkoutHistory, getHistoryStats } from "@/mockdata/workoutHistory";
+import {
+  fetchWorkoutHistory,
+  getHistoryStats,
+} from "@/services/api";
 
 import { HistoryHeader } from "@/components/history/HistoryHeader";
 import { HistoryStats as HistoryStatsComponent } from "@/components/history/HistoryStats";
@@ -15,15 +20,76 @@ export function HistoryScreen() {
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
   const [historyStats, setHistoryStats] = useState<HistoryStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Load workout history and stats
-    const history = getWorkoutHistory();
-    const stats = getHistoryStats();
+  const loadHistory = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setHasError(false);
+      
+      // Fetch history first
+      const history = await fetchWorkoutHistory();
+      setWorkoutHistory(history);
 
-    setWorkoutHistory(history);
-    setHistoryStats(stats);
+      // Try to fetch stats, but don't fail if it errors
+      try {
+        const stats = await getHistoryStats();
+        setHistoryStats(stats);
+      } catch (statsError) {
+        console.warn("Failed to fetch history stats:", statsError);
+        // Set default stats if fetch fails
+        setHistoryStats({
+          totalWorkouts: history.length,
+          totalDuration: history.reduce((sum, h) => sum + h.duration, 0),
+          strongestLifts: [],
+        });
+      }
+    } catch (error) {
+      console.error("Error loading workout history:", error);
+      setHasError(true);
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to load workout history"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadHistory();
+    }, [loadHistory])
+  );
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor }}>
+        <ThemedView style={styles.container}>
+          <HistoryHeader />
+          <ThemedView style={styles.centerContent}>
+            <ThemedText>Loading workout history...</ThemedText>
+          </ThemedView>
+        </ThemedView>
+      </SafeAreaView>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor }}>
+        <ThemedView style={styles.container}>
+          <HistoryHeader />
+          <ThemedView style={styles.centerContent}>
+            <ThemedText style={{ color: "red" }}>
+              {errorMessage || "Failed to load workout history"}
+            </ThemedText>
+          </ThemedView>
+        </ThemedView>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -46,5 +112,10 @@ const styles = StyleSheet.create({
   },
   historyList: {
     flex: 1,
+  },
+  centerContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

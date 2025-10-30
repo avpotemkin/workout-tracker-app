@@ -1,6 +1,17 @@
-import { Program, ProgramId, Workout } from "@/types";
+import {
+  Program,
+  ProgramId,
+  Workout,
+  WorkoutHistory,
+  WorkoutHistoryId,
+  HistoryFilter,
+  HistoryStats,
+  WorkoutExercise,
+  WorkoutId,
+} from "@/types";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || "http://localhost:3001/api";
 
 interface ApiResponse<T> {
   data: T;
@@ -17,6 +28,20 @@ interface ProgramDTO {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+interface WorkoutHistoryDTO {
+  id: string;
+  programId: string;
+  programName: string;
+  workoutId: string;
+  workoutName: string;
+  exercises: string | WorkoutExercise[]; // JSON serialized WorkoutExercise[]
+  startedAt: string;
+  finishedAt: string;
+  duration: number;
+  totalSets: number;
+  totalReps: number;
 }
 
 // Helper to convert API response to proper Program type with Date objects
@@ -89,5 +114,113 @@ export async function deleteProgram(id: ProgramId): Promise<void> {
     method: "DELETE",
   });
   await handleResponse<{ success: boolean }>(response);
+}
+
+// Helper to convert API response to proper WorkoutHistory type with Date objects
+function parseWorkoutHistoryDates(history: WorkoutHistoryDTO): WorkoutHistory {
+  return {
+    ...history,
+    id: history.id as WorkoutHistoryId,
+    programId: history.programId as ProgramId,
+    workoutId: history.workoutId as WorkoutId,
+    exercises:
+      typeof history.exercises === "string"
+        ? (JSON.parse(history.exercises) as WorkoutExercise[])
+        : history.exercises,
+    startedAt: new Date(history.startedAt),
+    finishedAt: new Date(history.finishedAt),
+  };
+}
+
+// History API functions
+
+function buildQueryString(params: Record<string, string>): string {
+  const parts: string[] = [];
+  for (const [key, value] of Object.entries(params)) {
+    if (value) {
+      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+    }
+  }
+  return parts.length > 0 ? `?${parts.join("&")}` : "";
+}
+
+export async function fetchWorkoutHistory(
+  filters?: HistoryFilter
+): Promise<WorkoutHistory[]> {
+  const queryParams: Record<string, string> = {};
+  if (filters?.programId) {
+    queryParams.programId = filters.programId;
+  }
+  if (filters?.templateId) {
+    queryParams.templateId = filters.templateId;
+  }
+  if (filters?.dateRange) {
+    queryParams.startDate = filters.dateRange.start.toISOString();
+    queryParams.endDate = filters.dateRange.end.toISOString();
+  }
+
+  const queryString = buildQueryString(queryParams);
+  const url = `${API_BASE_URL}/history${queryString}`;
+
+  const response = await fetch(url);
+  const history = await handleResponse<WorkoutHistoryDTO[]>(response);
+  return history.map(parseWorkoutHistoryDates);
+}
+
+export async function fetchWorkoutHistoryById(
+  id: WorkoutHistoryId
+): Promise<WorkoutHistory> {
+  const response = await fetch(`${API_BASE_URL}/history/${id}`);
+  const history = await handleResponse<WorkoutHistoryDTO>(response);
+  return parseWorkoutHistoryDates(history);
+}
+
+export async function createWorkoutHistory(
+  history: WorkoutHistory
+): Promise<WorkoutHistory> {
+  const response = await fetch(`${API_BASE_URL}/history`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...history,
+      exercises: JSON.stringify(history.exercises),
+      startedAt: history.startedAt.toISOString(),
+      finishedAt: history.finishedAt.toISOString(),
+    }),
+  });
+  const created = await handleResponse<WorkoutHistoryDTO>(response);
+  return parseWorkoutHistoryDates(created);
+}
+
+export async function getHistoryStats(
+  filters?: HistoryFilter
+): Promise<HistoryStats> {
+  const queryParams: Record<string, string> = {};
+  if (filters?.programId) {
+    queryParams.programId = filters.programId;
+  }
+  if (filters?.templateId) {
+    queryParams.templateId = filters.templateId;
+  }
+  if (filters?.dateRange) {
+    queryParams.startDate = filters.dateRange.start.toISOString();
+    queryParams.endDate = filters.dateRange.end.toISOString();
+  }
+
+  const queryString = buildQueryString(queryParams);
+  const url = `${API_BASE_URL}/history/stats${queryString}`;
+
+  const response = await fetch(url);
+  const stats = await handleResponse<HistoryStats>(response);
+  // Parse dates in strongestLifts
+  return {
+    ...stats,
+    strongestLifts: stats.strongestLifts.map((lift) => ({
+      ...lift,
+      date: new Date(lift.date),
+    })),
+  };
 }
 

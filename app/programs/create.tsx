@@ -15,7 +15,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
-import { useAppContext } from "@/context/AppContext";
+import { usePrograms } from "@/hooks/usePrograms";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Program, Workout, ProgramId, WorkoutId } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
@@ -35,7 +35,7 @@ export default function CreateProgramScreen() {
   const textColor = useThemeColor({}, "text");
   const { colors } = useAppTheme();
   const router = useRouter();
-  const { addProgram } = useAppContext();
+  const { addProgram } = usePrograms();
   const { workouts, resetWithPreset, addWorkout } = useProgramDraft();
 
   // Initialize workouts from preset when split changes

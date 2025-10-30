@@ -5,18 +5,14 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { Program, ProgramId } from "@/types";
+import { Program } from "@/types";
 import * as api from "@/services/api";
 
 type AppContextType = {
   selectedProgram: Program | null;
   setSelectedProgram: (program: Program | null) => void;
   programs: Program[];
-  addProgram: (program: Program) => Promise<void>;
-  updateProgram: (
-    programId: ProgramId,
-    updatedProgram: Program
-  ) => Promise<void>;
+  setPrograms: React.Dispatch<React.SetStateAction<Program[]>>;
   isLoading: boolean;
   hasError: boolean;
   errorMessage: string | null;
@@ -44,6 +40,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setSelectedProgram(fetchedPrograms[0]);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error loading programs:", error);
         setHasError(true);
         setErrorMessage(
@@ -57,42 +54,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     loadPrograms();
   }, []);
 
-  const addProgram = async (program: Program) => {
-    try {
-      const createdProgram = await api.createProgram(program);
-      setPrograms((prevPrograms) => [...prevPrograms, createdProgram]);
-    } catch (error) {
-      console.error("Error adding program:", error);
-      throw error;
-    }
-  };
-
-  const updateProgram = async (
-    programId: ProgramId,
-    updatedProgram: Program
-  ) => {
-    try {
-      const updated = await api.updateProgram(programId, updatedProgram);
-      setPrograms((prevPrograms) =>
-        prevPrograms.map((p) => (p.id === programId ? updated : p))
-      );
-      if (selectedProgram?.id === programId) {
-        setSelectedProgram(updated);
-      }
-    } catch (error) {
-      console.error("Error updating program:", error);
-      throw error;
-    }
-  };
-
   return (
     <AppContext.Provider
       value={{
         selectedProgram,
         setSelectedProgram,
         programs,
-        addProgram,
-        updateProgram,
+        setPrograms,
         isLoading,
         hasError,
         errorMessage,

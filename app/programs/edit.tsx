@@ -16,6 +16,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
+import { usePrograms } from "@/hooks/usePrograms";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Program, Workout, ProgramId, WorkoutId } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
@@ -27,7 +28,8 @@ export default function EditProgramScreen() {
   const params = useLocalSearchParams();
   const programId = params.id as string;
 
-  const { programs, updateProgram } = useAppContext();
+  const { programs } = useAppContext();
+  const { updateProgram } = usePrograms();
   const program = programs.find((p) => p.id === (programId as ProgramId));
 
   const [programName, setProgramName] = useState(program?.name || "");

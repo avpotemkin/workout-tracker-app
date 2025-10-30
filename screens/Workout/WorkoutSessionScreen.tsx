@@ -15,6 +15,8 @@ import {
 } from "@/types";
 import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { convertSessionToHistory } from "@/utils/workoutHistory";
+import { createWorkoutHistory } from "@/services/api";
 
 import { WorkoutHeader } from "@/components/workout/WorkoutHeader";
 import { WorkoutProgress } from "@/components/workout/WorkoutProgress";
@@ -55,6 +57,7 @@ export function WorkoutSessionScreen({
   const [expandedExercises, setExpandedExercises] = useState<
     Record<string, boolean>
   >({});
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     // Find the program and workout by their IDs
@@ -183,7 +186,9 @@ export function WorkoutSessionScreen({
   };
 
   // Finish workout
-  const handleFinishWorkout = () => {
+  const handleFinishWorkout = async () => {
+    if (!workoutSession) return;
+
     Alert.alert(
       "Finish Workout",
       "Are you sure you want to finish this workout?",
@@ -194,16 +199,36 @@ export function WorkoutSessionScreen({
         },
         {
           text: "Finish",
-          onPress: () => {
-            // Mark session as finished
-            // This would be where we'd save the workout data to storage
-            if (workoutSession) {
-              setWorkoutSession({
+          onPress: async () => {
+            try {
+              setIsSaving(true);
+
+              // Mark session as finished and set finishedAt
+              const finishedSession: WorkoutSession = {
                 ...workoutSession,
                 isFinished: true,
-              });
+                finishedAt: new Date(),
+              };
+
+              // Convert to history format
+              const history = convertSessionToHistory(finishedSession);
+
+              // Save to backend
+              await createWorkoutHistory(history);
+
+              // Update local state
+              setWorkoutSession(finishedSession);
+
+              router.back();
+            } catch (error) {
+              console.error("Error saving workout history:", error);
+              Alert.alert(
+                "Error",
+                "Failed to save workout history. Please try again."
+              );
+            } finally {
+              setIsSaving(false);
             }
-            router.back();
           },
         },
       ]
@@ -252,11 +277,16 @@ export function WorkoutSessionScreen({
 
         {/* Finish Button */}
         <TouchableOpacity
-          style={[styles.finishButton, { backgroundColor: colors.accent }]}
+          style={[
+            styles.finishButton,
+            { backgroundColor: colors.accent },
+            isSaving && styles.finishButtonDisabled,
+          ]}
           onPress={handleFinishWorkout}
+          disabled={isSaving}
         >
           <ThemedText type="subtitle" style={styles.finishButtonText}>
-            Finish Workout
+            {isSaving ? "Saving..." : "Finish Workout"}
           </ThemedText>
         </TouchableOpacity>
       </ThemedView>
@@ -282,5 +312,8 @@ const styles = StyleSheet.create({
   },
   finishButtonText: {
     color: "white",
+  },
+  finishButtonDisabled: {
+    opacity: 0.6,
   },
 });

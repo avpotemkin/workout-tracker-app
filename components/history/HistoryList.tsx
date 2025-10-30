@@ -7,21 +7,16 @@ import { HistoryCard } from './HistoryCard';
 
 type HistoryListProps = {
   workoutHistory: WorkoutHistory[];
-  onWorkoutPress?: (workout: WorkoutHistory) => void;
   style?: ViewStyle;
 };
 
 export function HistoryList({ 
   workoutHistory, 
-  onWorkoutPress, 
   style 
 }: HistoryListProps) {
   
   const renderWorkoutItem = ({ item }: { item: WorkoutHistory }) => (
-    <HistoryCard
-      workout={item}
-      onPress={() => onWorkoutPress?.(item)}
-    />
+    <HistoryCard workout={item} />
   );
 
   const renderEmptyState = () => (

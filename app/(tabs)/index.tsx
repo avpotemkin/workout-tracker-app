@@ -1,13 +1,15 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppContext } from "@/context/AppContext";
-import { getWorkoutHistory } from "@/mockdata/workoutHistory";
+import { fetchWorkoutHistory } from "@/services/api";
+import { WorkoutHistory } from "@/types";
 import { HistoryCard } from "@/components/history/HistoryCard";
 import { WorkoutSelectionModal } from "@/components/workout";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -18,10 +20,28 @@ export default function HomeScreen() {
   const router = useRouter();
   const { selectedProgram } = useAppContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [lastWorkout, setLastWorkout] = useState<WorkoutHistory | null>(null);
 
-  // Get recent workout history
-  const workoutHistory = getWorkoutHistory();
-  const lastWorkout = workoutHistory.length > 0 ? workoutHistory[0] : null;
+  const loadRecentHistory = useCallback(async () => {
+    try {
+      const workoutHistory = await fetchWorkoutHistory();
+      setLastWorkout(workoutHistory.length > 0 ? workoutHistory[0] : null);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Error loading recent history:", error);
+      setLastWorkout(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadRecentHistory();
+  }, [loadRecentHistory]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadRecentHistory();
+    }, [loadRecentHistory])
+  );
 
   const handleStartWorkout = () => {
     if (selectedProgram && selectedProgram.workouts.length > 0) {
