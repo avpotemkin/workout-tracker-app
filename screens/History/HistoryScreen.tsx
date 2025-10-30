@@ -5,6 +5,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { WorkoutHistory, HistoryStats } from "@/types";
 import { fetchWorkoutHistory, getHistoryStats } from "@/services/api";
 
@@ -14,6 +16,7 @@ import { HistoryList } from "@/components/history/HistoryList";
 
 export function HistoryScreen() {
   const backgroundColor = useThemeColor({}, "background");
+  const { colors } = useAppTheme();
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
   const [historyStats, setHistoryStats] = useState<HistoryStats | null>(null);
@@ -26,16 +29,13 @@ export function HistoryScreen() {
       setIsLoading(true);
       setHasError(false);
 
-      // Fetch history first
       const history = await fetchWorkoutHistory();
       setWorkoutHistory(history);
 
-      // Try to fetch stats, but don't fail if it errors
       try {
         const stats = await getHistoryStats();
         setHistoryStats(stats);
       } catch {
-        // Set default stats if fetch fails
         setHistoryStats({
           totalWorkouts: history.length,
           totalDuration: history.reduce((sum, h) => sum + h.duration, 0),
@@ -79,7 +79,7 @@ export function HistoryScreen() {
         <ThemedView style={styles.container}>
           <HistoryHeader />
           <ThemedView style={styles.centerContent}>
-            <ThemedText style={{ color: "red" }}>
+            <ThemedText style={{ color: colors.error }}>
               {errorMessage || "Failed to load workout history"}
             </ThemedText>
           </ThemedView>
@@ -105,7 +105,7 @@ export function HistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.md,
   },
   historyList: {
     flex: 1,

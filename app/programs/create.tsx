@@ -14,6 +14,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { usePrograms } from "@/hooks/usePrograms";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
@@ -38,7 +39,6 @@ export default function CreateProgramScreen() {
   const { addProgram } = usePrograms();
   const { workouts, resetWithPreset, addWorkout } = useProgramDraft();
 
-  // Initialize workouts from preset when split changes
   useEffect(() => {
     resetWithPreset(selectedSplit);
   }, [selectedSplit]);
@@ -50,7 +50,6 @@ export default function CreateProgramScreen() {
       exercises: [],
     };
     addWorkout(newWorkout);
-    // Open bottom sheet to edit this workout
     setEditingWorkoutId(newWorkout.id as string);
     editWorkoutModalRef.current?.present();
   }
@@ -94,7 +93,6 @@ export default function CreateProgramScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
             <ThemedText type="default" style={{ color: colors.error }}>
@@ -115,7 +113,6 @@ export default function CreateProgramScreen() {
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Program Name */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
               style={[styles.input, { color: textColor }]}
@@ -127,7 +124,6 @@ export default function CreateProgramScreen() {
             />
           </View>
 
-          {/* Workout Split */}
           <TouchableOpacity
             style={[
               styles.card,
@@ -147,7 +143,6 @@ export default function CreateProgramScreen() {
             <Ionicons name="chevron-forward" size={20} color={textColor} />
           </TouchableOpacity>
 
-          {/* Workouts List */}
           {workouts.map((workout) => (
             <TouchableOpacity
               key={workout.id}
@@ -172,7 +167,6 @@ export default function CreateProgramScreen() {
             </TouchableOpacity>
           ))}
 
-          {/* Add Workout Button */}
           <TouchableOpacity style={styles.addButton} onPress={handleAddWorkout}>
             <ThemedText type="default" style={{ color: colors.error }}>
               Add Workout
@@ -192,13 +186,14 @@ export default function CreateProgramScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.md,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   scrollContainer: {
     flex: 1,

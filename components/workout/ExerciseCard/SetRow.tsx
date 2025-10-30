@@ -49,7 +49,7 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
   };
 
   return (
-    <View style={[styles.setRow]}>
+    <View style={[styles.setRow, { borderBottomColor: colors.divider }]}>
       <View style={styles.setNumberContainer}>
         <ThemedText type="defaultSemiBold">{set.setNumber}</ThemedText>
       </View>
@@ -60,7 +60,7 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
       >
         {isEditingWeight ? (
           <TextInput
-            style={[styles.input, { color: colors.text }]}
+            style={[styles.input, { color: colors.text, borderBottomColor: colors.divider }]}
             value={tempWeight}
             onChangeText={setTempWeight}
             onBlur={handleWeightBlur}
@@ -81,7 +81,7 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
       >
         {isEditingReps ? (
           <TextInput
-            style={[styles.input, { color: colors.text }]}
+            style={[styles.input, { color: colors.text, borderBottomColor: colors.divider }]}
             value={tempReps}
             onChangeText={setTempReps}
             onBlur={handleRepsBlur}
@@ -99,11 +99,13 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
       <TouchableOpacity
         style={[
           styles.checkButton,
-          set.isCompleted && { backgroundColor: colors.accent },
+          {
+            backgroundColor: set.isCompleted ? colors.accent : colors.input,
+          },
         ]}
         onPress={onToggle}
       >
-        <Ionicons name="checkmark" size={20} color="white" />
+        <Ionicons name="checkmark" size={20} color={set.isCompleted ? colors.background : colors.text} />
       </TouchableOpacity>
     </View>
   );
@@ -116,7 +118,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#444",
   },
   setNumberContainer: {
     width: 30,
@@ -141,14 +142,12 @@ const styles = StyleSheet.create({
     minWidth: 30,
     textAlign: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#666",
     paddingVertical: 2,
   },
   checkButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#555",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,

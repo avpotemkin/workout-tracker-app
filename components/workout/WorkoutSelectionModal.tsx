@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { Program } from "@/types";
 
 interface WorkoutSelectionModalProps {
@@ -83,7 +84,7 @@ export const WorkoutSelectionModal = forwardRef<
                   </View>
                 </View>
                 <ThemedText
-                  type="label"
+                  type="title"
                   style={[styles.chevron, { color: colors.accent }]}
                 >
                   ›
@@ -111,15 +112,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.md,
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 20,
+    padding: spacing.md,
   },
   workoutCard: {
     flexDirection: "row",
@@ -142,7 +143,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   chevron: {
-    fontSize: 32,
     marginLeft: 12,
   },
   emptyContainer: {

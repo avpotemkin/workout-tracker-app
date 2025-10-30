@@ -66,8 +66,8 @@ export function HistoryCard({ workout }: HistoryCardProps) {
           </View>
         </View>
 
-        <View style={styles.exercisesList}>
-          <ThemedText type="caption" style={styles.exercisesText}>
+        <View style={[styles.exercisesList, { borderTopColor: colors.divider }]}>
+          <ThemedText type="caption" style={[styles.exercisesText, { opacity: 0.7 }]}>
             {workout.exercises
               .map((ex) => getExerciseNameById(ex.templateId))
               .join(", ")}
@@ -76,7 +76,7 @@ export function HistoryCard({ workout }: HistoryCardProps) {
       </TouchableOpacity>
 
       {isExpanded && (
-        <View style={styles.expandedContent}>
+        <View style={[styles.expandedContent, { borderTopColor: colors.divider }]}>
           {workout.exercises.map((exercise) => (
             <View key={exercise.id} style={styles.exerciseSection}>
               <ThemedText type="defaultSemiBold" style={styles.exerciseName}>
@@ -86,7 +86,7 @@ export function HistoryCard({ workout }: HistoryCardProps) {
                 {exercise.sets
                   .filter((set) => set.isCompleted)
                   .map((set: WorkoutSet) => (
-                    <View key={set.id} style={styles.setRow}>
+                    <View key={set.id} style={[styles.setRow, { borderBottomColor: colors.divider }]}>
                       <ThemedText type="body" style={styles.setNumber}>
                         Set {set.setNumber}
                       </ThemedText>
@@ -142,18 +142,15 @@ const styles = StyleSheet.create({
   },
   exercisesList: {
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
     paddingTop: 8,
   },
   exercisesText: {
-    color: "#999",
     lineHeight: 16,
   },
   expandedContent: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
   },
   exerciseSection: {
     marginBottom: 16,
@@ -168,7 +165,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 6,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(128, 128, 128, 0.2)",
   },
   setNumber: {
     flex: 1,

@@ -48,7 +48,7 @@ export function HistoryStats({ stats }: HistoryStatsProps) {
       </View>
 
       {stats.strongestLifts.length > 0 && (
-        <View style={styles.strongestLifts}>
+        <View style={[styles.strongestLifts, { borderTopColor: colors.divider }]}>
           <ThemedText type="label" style={styles.subtitle}>
             Strongest Lifts
           </ThemedText>
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   strongestLifts: {
     borderTopWidth: 1,
-    borderTopColor: "#444",
     paddingTop: 12,
   },
   subtitle: {

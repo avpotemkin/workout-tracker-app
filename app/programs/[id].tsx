@@ -6,6 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "@/context/AppContext";
 import { Workout, ProgramExercise } from "@/types";
@@ -46,11 +47,9 @@ export default function ProgramDetailsScreen() {
 
   const handleSelectProgram = () => {
     setSelectedProgram(program);
-    // Show feedback to the user
     alert(`${program.name} has been set as your active program`);
   };
 
-  // Check if there are no workouts or selectedWorkout is undefined
   if (!program.workouts || program.workouts.length === 0) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -142,13 +141,12 @@ export default function ProgramDetailsScreen() {
         >
           <ThemedText
             type="defaultSemiBold"
-            style={styles.selectProgramButtonText}
+            style={[styles.selectProgramButtonText, { color: colors.background }]}
           >
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
         </TouchableOpacity>
 
-        {/* Workout tabs */}
         <View style={styles.workoutTabs}>
           {program.workouts.map((workout: Workout, index: number) => (
             <TouchableOpacity
@@ -163,7 +161,7 @@ export default function ProgramDetailsScreen() {
             >
               <ThemedText
                 type="body"
-                style={selectedWorkoutIndex === index ? { color: "white" } : {}}
+                style={selectedWorkoutIndex === index ? { color: colors.background } : {}}
               >
                 {workout.name}
               </ThemedText>
@@ -219,17 +217,17 @@ export default function ProgramDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 16,
-    marginBottom: 16,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   backButton: {
-    marginRight: 16,
+    marginRight: spacing.md,
   },
   selectProgramButton: {
     paddingVertical: 10,
@@ -238,9 +236,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignSelf: "center",
   },
-  selectProgramButtonText: {
-    color: "white",
-  },
+  selectProgramButtonText: {},
   workoutTabs: {
     flexDirection: "row",
     paddingBottom: 10,

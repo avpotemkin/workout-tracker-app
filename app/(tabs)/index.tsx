@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
 import { fetchWorkoutHistory } from "@/services/api";
 import { WorkoutHistory } from "@/types";
@@ -76,12 +77,10 @@ export default function HomeScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          {/* Header */}
           <ThemedText type="title" style={styles.header}>
             Home
           </ThemedText>
 
-          {/* Active Program Overview */}
           <View style={styles.section}>
             <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
               Active Program
@@ -93,7 +92,7 @@ export default function HomeScreen() {
                   {selectedProgram.name}
                 </ThemedText>
                 {selectedProgram.workouts.length > 0 && (
-                  <View style={styles.nextWorkoutContainer}>
+                  <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
                     <ThemedText type="caption" style={styles.nextWorkoutLabel}>
                       Next Workout:
                     </ThemedText>
@@ -112,7 +111,6 @@ export default function HomeScreen() {
             )}
           </View>
 
-          {/* Recent Activity */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
@@ -136,7 +134,6 @@ export default function HomeScreen() {
             )}
           </View>
 
-          {/* Quick Actions */}
           <View style={styles.section}>
             <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
               Quick Actions
@@ -146,7 +143,7 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+              <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                 Start Workout
               </ThemedText>
             </TouchableOpacity>
@@ -184,11 +181,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
-    marginTop: 16,
-    marginBottom: 24,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
   },
   section: {
     marginBottom: 24,
@@ -214,7 +211,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#444",
   },
   nextWorkoutLabel: {
     opacity: 0.7,
@@ -231,7 +227,5 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: "center",
   },
-  buttonText: {
-    color: "white",
-  },
+  buttonText: {},
 });

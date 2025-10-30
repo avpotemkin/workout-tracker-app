@@ -8,6 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
 import { WorkoutSelectionModal } from "@/components/workout";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -20,16 +21,12 @@ export default function WorkoutScreen() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { selectedProgram } = useAppContext();
 
-  // Get the first program with days for quick start if no program is selected
   const defaultProgram =
     selectedProgram ||
     PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
 
-  // This would be replaced with actual session management logic
   useEffect(() => {
-    // Check if there's an active session (would be from storage/state management in a real app)
     const checkActiveSession = () => {
-      // Mock check for active session - would be replaced with actual state/storage check
       setActiveSession(null);
     };
 
@@ -57,7 +54,6 @@ export default function WorkoutScreen() {
   };
 
   const handleResumeWorkout = () => {
-    // Using object notation for proper typing
     router.push({
       pathname: "/(workout)/session",
     });
@@ -74,12 +70,10 @@ export default function WorkoutScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          {/* Header */}
           <ThemedText type="title" style={styles.header}>
             Workout
           </ThemedText>
 
-          {/* Active Session */}
           {activeSession ? (
             <View style={styles.section}>
               <View style={[styles.card, { backgroundColor: colors.card }]}>
@@ -104,8 +98,8 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleResumeWorkout}
                 >
-                  <Ionicons name="play" size={20} color="white" />
-                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                  <Ionicons name="play" size={20} color={colors.background} />
+                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                     Resume Workout
                   </ThemedText>
                 </TouchableOpacity>
@@ -113,7 +107,6 @@ export default function WorkoutScreen() {
             </View>
           ) : (
             <>
-              {/* Current Program */}
               <View style={styles.section}>
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
                   Current Program
@@ -135,7 +128,7 @@ export default function WorkoutScreen() {
                       </View>
                     </View>
                     {selectedProgram.workouts.length > 0 && (
-                      <View style={styles.nextWorkoutContainer}>
+                      <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
                         <ThemedText
                           type="caption"
                           style={styles.nextWorkoutLabel}
@@ -147,7 +140,7 @@ export default function WorkoutScreen() {
                         </ThemedText>
                       </View>
                     )}
-                    <View style={styles.workoutStats}>
+                    <View style={[styles.workoutStats, { borderTopColor: colors.divider }]}>
                       <View style={styles.statItem}>
                         <Ionicons
                           name="calendar-outline"
@@ -179,7 +172,6 @@ export default function WorkoutScreen() {
                 )}
               </View>
 
-              {/* Quick Actions */}
               <View style={styles.section}>
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
                   Quick Actions
@@ -189,8 +181,8 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleStartWorkout}
                 >
-                  <Ionicons name="play-circle" size={24} color="white" />
-                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                  <Ionicons name="play-circle" size={24} color={colors.background} />
+                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
                     {selectedProgram
                       ? `Quick Start: ${selectedProgram.name}`
                       : "Quick Start"}
@@ -233,11 +225,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.md,
   },
   header: {
-    marginTop: 16,
-    marginBottom: 24,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
   },
   section: {
     marginBottom: 24,
@@ -271,7 +263,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
   },
   nextWorkoutLabel: {
     opacity: 0.7,
@@ -281,7 +272,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(128, 128, 128, 0.3)",
   },
   statItem: {
     flexDirection: "row",
@@ -317,7 +307,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
     marginLeft: 8,
   },
 });

@@ -15,10 +15,8 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
 
-  // Get unique programs
   const programs = [...new Set(workoutHistory.map(w => w.programName))];
 
-  // Filter periods
   const periods = [
     { key: 'all', label: 'All Time' },
     { key: 'week', label: 'This Week' },
@@ -33,12 +31,10 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
   const applyFilters = () => {
     let filtered = [...workoutHistory];
 
-    // Filter by program
     if (selectedProgram) {
       filtered = filtered.filter(w => w.programName === selectedProgram);
     }
 
-    // Filter by period
     if (selectedPeriod !== 'all') {
       const now = new Date();
       const startDate = new Date();
@@ -74,67 +70,77 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
         <ThemedText type="defaultSemiBold">Filters</ThemedText>
         {hasActiveFilters && (
           <TouchableOpacity onPress={clearFilters}>
-            <ThemedText type="body" style={styles.clearButton}>Clear All</ThemedText>
+            <ThemedText type="body" style={[styles.clearButton, { color: colors.info }]}>Clear All</ThemedText>
           </TouchableOpacity>
         )}
       </View>
 
-      {/* Program Filter */}
       <View style={styles.filterSection}>
         <ThemedText type="body" style={styles.sectionTitle}>Program</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
-            {programs.map(program => (
-              <TouchableOpacity
-                key={program}
-                style={[
-                  styles.filterChip,
-                  selectedProgram === program && styles.selectedChip,
-                ]}
-                onPress={() => setSelectedProgram(
-                  selectedProgram === program ? null : program
-                )}
-              >
-                <ThemedText
-                  type="caption"
+            {programs.map(program => {
+              const isSelected = selectedProgram === program;
+              return (
+                <TouchableOpacity
+                  key={program}
                   style={[
-                    styles.chipText,
-                    selectedProgram === program && styles.selectedChipText,
+                    styles.filterChip,
+                    {
+                      backgroundColor: isSelected ? colors.info : colors.input,
+                      borderColor: isSelected ? colors.info : colors.cardBorder,
+                    },
                   ]}
+                  onPress={() => setSelectedProgram(
+                    selectedProgram === program ? null : program
+                  )}
                 >
-                  {program}
-                </ThemedText>
-              </TouchableOpacity>
-            ))}
+                  <ThemedText
+                    type="caption"
+                    style={[
+                      styles.chipText,
+                      { color: colors.text },
+                    ]}
+                  >
+                    {program}
+                  </ThemedText>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
       </View>
 
-      {/* Period Filter */}
       <View style={styles.filterSection}>
         <ThemedText type="body" style={styles.sectionTitle}>Period</ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
-            {periods.map(period => (
-              <TouchableOpacity
-                key={period.key}
-                style={[
-                  styles.filterChip,
-                  selectedPeriod === period.key && styles.selectedChip,
-                ]}
-                onPress={() => setSelectedPeriod(period.key)}
-              >
-                <ThemedText
-                  type="caption"
+            {periods.map(period => {
+              const isSelected = selectedPeriod === period.key;
+              return (
+                <TouchableOpacity
+                  key={period.key}
                   style={[
-                    styles.chipText,
-                    selectedPeriod === period.key && styles.selectedChipText,
+                    styles.filterChip,
+                    {
+                      backgroundColor: isSelected ? colors.info : colors.input,
+                      borderColor: isSelected ? colors.info : colors.cardBorder,
+                    },
                   ]}
+                  onPress={() => setSelectedPeriod(period.key)}
                 >
-                  {period.label}
-                </ThemedText>
-              </TouchableOpacity>
-            ))}
+                  <ThemedText
+                    type="caption"
+                    style={[
+                      styles.chipText,
+                      { color: colors.text },
+                    ]}
+                  >
+                    {period.label}
+                  </ThemedText>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
       </View>
