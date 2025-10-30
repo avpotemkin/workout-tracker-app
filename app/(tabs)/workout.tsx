@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -68,75 +69,255 @@ export default function WorkoutScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">Workout</ThemedText>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <ThemedView style={styles.container}>
+          {/* Header */}
+          <ThemedText type="title" style={styles.header}>
+            Workout
+          </ThemedText>
 
-        {activeSession ? (
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.accent }]}
-            onPress={handleResumeWorkout}
-          >
-            <ThemedText type="subtitle" style={styles.buttonText}>
-              Resume Workout
-            </ThemedText>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.accent }]}
-              onPress={handleStartWorkout}
-            >
-              <ThemedText type="subtitle" style={styles.buttonText}>
-                {selectedProgram
-                  ? `Quick Start: ${selectedProgram.name}`
-                  : "Quick Start"}
-              </ThemedText>
-            </TouchableOpacity>
+          {/* Active Session */}
+          {activeSession ? (
+            <View style={styles.section}>
+              <View style={[styles.card, { backgroundColor: colors.card }]}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.cardHeaderLeft}>
+                    <Ionicons
+                      name="fitness"
+                      size={24}
+                      color={colors.accent}
+                      style={styles.cardIcon}
+                    />
+                    <ThemedText type="defaultSemiBold">
+                      Active Workout
+                    </ThemedText>
+                  </View>
+                </View>
+                <ThemedText type="body" style={styles.cardDescription}>
+                  You have an active workout session. Resume to continue where
+                  you left off.
+                </ThemedText>
+                <TouchableOpacity
+                  style={[styles.button, { backgroundColor: colors.accent }]}
+                  onPress={handleResumeWorkout}
+                >
+                  <Ionicons name="play" size={20} color="white" />
+                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                    Resume Workout
+                  </ThemedText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <>
+              {/* Current Program */}
+              <View style={styles.section}>
+                <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+                  Current Program
+                </ThemedText>
 
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.card }]}
-              onPress={handleSelectProgram}
-            >
-              <ThemedText
-                type="subtitle"
-                style={[styles.buttonText, { color: colors.text }]}
-              >
-                Select Program
-              </ThemedText>
-            </TouchableOpacity>
-          </View>
-        )}
+                {selectedProgram ? (
+                  <View style={[styles.card, { backgroundColor: colors.card }]}>
+                    <View style={styles.cardHeader}>
+                      <View style={styles.cardHeaderLeft}>
+                        <Ionicons
+                          name="barbell"
+                          size={24}
+                          color={colors.accent}
+                          style={styles.cardIcon}
+                        />
+                        <ThemedText type="label" style={styles.programName}>
+                          {selectedProgram.name}
+                        </ThemedText>
+                      </View>
+                    </View>
+                    {selectedProgram.workouts.length > 0 && (
+                      <View style={styles.nextWorkoutContainer}>
+                        <ThemedText
+                          type="caption"
+                          style={styles.nextWorkoutLabel}
+                        >
+                          Next Workout:
+                        </ThemedText>
+                        <ThemedText type="defaultSemiBold">
+                          {selectedProgram.workouts[0].name}
+                        </ThemedText>
+                      </View>
+                    )}
+                    <View style={styles.workoutStats}>
+                      <View style={styles.statItem}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={16}
+                          color={colors.text}
+                        />
+                        <ThemedText type="caption" style={styles.statText}>
+                          {selectedProgram.workouts.length} workout
+                          {selectedProgram.workouts.length !== 1 ? "s" : ""}
+                        </ThemedText>
+                      </View>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={[styles.card, { backgroundColor: colors.card }]}>
+                    <View style={styles.emptyCardContent}>
+                      <Ionicons
+                        name="clipboard-outline"
+                        size={32}
+                        color={colors.text}
+                        style={styles.emptyIcon}
+                      />
+                      <ThemedText type="body" style={styles.emptyText}>
+                        No program selected. Select a program to get started
+                        with your workouts.
+                      </ThemedText>
+                    </View>
+                  </View>
+                )}
+              </View>
 
-        <WorkoutSelectionModal
-          ref={bottomSheetModalRef}
-          program={defaultProgram || null}
-          onSelectWorkout={handleSelectWorkout}
-        />
-      </ThemedView>
+              {/* Quick Actions */}
+              <View style={styles.section}>
+                <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+                  Quick Actions
+                </ThemedText>
+
+                <TouchableOpacity
+                  style={[styles.button, { backgroundColor: colors.accent }]}
+                  onPress={handleStartWorkout}
+                >
+                  <Ionicons name="play-circle" size={24} color="white" />
+                  <ThemedText type="defaultSemiBold" style={styles.buttonText}>
+                    {selectedProgram
+                      ? `Quick Start: ${selectedProgram.name}`
+                      : "Quick Start"}
+                  </ThemedText>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.button, { backgroundColor: colors.card }]}
+                  onPress={handleSelectProgram}
+                >
+                  <Ionicons name="list" size={24} color={colors.text} />
+                  <ThemedText
+                    type="defaultSemiBold"
+                    style={[styles.buttonText, { color: colors.text }]}
+                  >
+                    Select Program
+                  </ThemedText>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </ThemedView>
+      </ScrollView>
+
+      <WorkoutSelectionModal
+        ref={bottomSheetModalRef}
+        program={defaultProgram || null}
+        onSelectWorkout={handleSelectWorkout}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 32,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  buttonContainer: {
-    width: "100%",
+  header: {
+    marginTop: 16,
+    marginBottom: 24,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    marginBottom: 12,
+  },
+  card: {
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: 12,
+  },
+  cardHeaderLeft: {
+    flexDirection: "row",
     alignItems: "center",
+    flex: 1,
+  },
+  cardIcon: {
+    marginRight: 12,
+  },
+  programName: {
+    flex: 1,
+  },
+  nextWorkoutContainer: {
+    marginTop: 8,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(128, 128, 128, 0.3)",
+  },
+  nextWorkoutLabel: {
+    opacity: 0.7,
+    marginBottom: 4,
+  },
+  workoutStats: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(128, 128, 128, 0.3)",
+  },
+  statItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statText: {
+    marginLeft: 6,
+    opacity: 0.8,
+  },
+  emptyCardContent: {
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  emptyIcon: {
+    marginBottom: 12,
+    opacity: 0.5,
+  },
+  emptyText: {
+    opacity: 0.7,
+    textAlign: "center",
+  },
+  cardDescription: {
+    opacity: 0.8,
+    marginBottom: 16,
   },
   button: {
-    width: "80%",
+    width: "100%",
     paddingVertical: 15,
-    paddingHorizontal: 40,
     borderRadius: 10,
-    marginVertical: 10,
+    marginBottom: 12,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   buttonText: {
     color: "white",
+    marginLeft: 8,
   },
 });
