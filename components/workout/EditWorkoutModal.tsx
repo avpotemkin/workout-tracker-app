@@ -206,8 +206,12 @@ export const EditWorkoutModal = forwardRef<
                     <SetsRepsCounter
                       sets={exercise.sets}
                       reps={exercise.reps}
-                      onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
-                      onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
+                      onSetsChange={(sets) =>
+                        handleUpdateSets(exercise.id, sets)
+                      }
+                      onRepsChange={(reps) =>
+                        handleUpdateReps(exercise.id, reps)
+                      }
                     />
                   </View>
                 </View>
