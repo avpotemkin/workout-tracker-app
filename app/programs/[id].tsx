@@ -141,10 +141,7 @@ export default function ProgramDetailsScreen() {
         >
           <ThemedText
             type="defaultSemiBold"
-            style={[
-              styles.selectProgramButtonText,
-              { color: colors.background },
-            ]}
+            style={{ color: colors.background }}
           >
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
@@ -263,7 +260,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
     alignSelf: "center",
   },
-  selectProgramButtonText: {},
   workoutTabsContainer: {
     marginBottom: spacing.md,
     height: 44,
@@ -326,7 +322,6 @@ const styles = StyleSheet.create({
     marginRight: spacing.xs,
   },
   counterLabel: {
-    fontSize: 10,
     opacity: 0.7,
   },
 });

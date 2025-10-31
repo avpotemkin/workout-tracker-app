@@ -70,7 +70,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
         <ThemedText type="defaultSemiBold">Filters</ThemedText>
         {hasActiveFilters && (
           <TouchableOpacity onPress={clearFilters}>
-            <ThemedText type="body" style={[styles.clearButton, { color: colors.info }]}>Clear All</ThemedText>
+            <ThemedText type="body" style={{ color: colors.info }}>Clear All</ThemedText>
           </TouchableOpacity>
         )}
       </View>
@@ -97,10 +97,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                 >
                   <ThemedText
                     type="caption"
-                    style={[
-                      styles.chipText,
-                      { color: colors.text },
-                    ]}
+                    style={{ color: colors.text }}
                   >
                     {program}
                   </ThemedText>
@@ -131,10 +128,7 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                 >
                   <ThemedText
                     type="caption"
-                    style={[
-                      styles.chipText,
-                      { color: colors.text },
-                    ]}
+                    style={{ color: colors.text }}
                   >
                     {period.label}
                   </ThemedText>
@@ -160,9 +154,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  clearButton: {
-    color: '#4A90E2',
-  },
   filterSection: {
     marginBottom: 16,
   },
@@ -176,19 +167,7 @@ const styles = StyleSheet.create({
   filterChip: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#333',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#555',
-  },
-  selectedChip: {
-    backgroundColor: '#4A90E2',
-    borderColor: '#4A90E2',
-  },
-  chipText: {
-    color: '#fff',
-  },
-  selectedChipText: {
-    color: '#fff',
   },
 }); 

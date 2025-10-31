@@ -136,8 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    fontSize: 16,
-    fontWeight: "600",
     marginRight: 4,
     minWidth: 30,
     textAlign: "center",

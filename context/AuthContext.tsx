@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Mock user ID - hardcoded for now
 const MOCK_USER_ID = "mock-user-123";
 const AUTH_STORAGE_KEY = "@auth_userId";
 
@@ -25,7 +24,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing auth on mount
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -33,8 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (storedUserId) {
           setUserId(storedUserId);
         }
-      } catch (error) {
-        console.error("Error checking auth:", error);
+      } catch {
       } finally {
         setIsLoading(false);
       }
@@ -48,7 +45,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
       setUserId(MOCK_USER_ID);
     } catch (error) {
-      console.error("Error logging in:", error);
       throw error;
     }
   };
@@ -58,7 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
       setUserId(null);
     } catch (error) {
-      console.error("Error logging out:", error);
       throw error;
     }
   };

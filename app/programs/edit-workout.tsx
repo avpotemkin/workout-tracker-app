@@ -139,7 +139,7 @@ export default function EditWorkoutScreen() {
         >
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
-              style={[styles.input, { color: textColor }]}
+              style={{ color: textColor }}
               placeholder="Workout Name"
               placeholderTextColor={`${textColor}80`}
               value={workoutName}
@@ -294,9 +294,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
-  },
-  input: {
-    fontSize: 16,
   },
   exerciseCard: {
     flexDirection: "row",

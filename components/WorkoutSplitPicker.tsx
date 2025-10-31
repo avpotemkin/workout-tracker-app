@@ -21,15 +21,14 @@ export function showWorkoutSplitPicker({ onSelect }: WorkoutSplitPickerProps) {
       }
     );
   } else {
-    // For Android, show a simple alert with options
-    Alert.alert(
-      'Select Workout Split',
-      '',
-      splits.map((split) => ({
+    const buttons = [
+      ...splits.map((split) => ({
         text: split,
         onPress: () => onSelect(split),
-      })).concat([{ text: 'Cancel', style: 'cancel' }])
-    );
+      })),
+      { text: 'Cancel', style: 'cancel' as const },
+    ];
+    Alert.alert('Select Workout Split', '', buttons);
   }
 }
 

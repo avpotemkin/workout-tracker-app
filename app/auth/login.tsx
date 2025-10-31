@@ -28,8 +28,8 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       await login();
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      return;
     }
   };
 
@@ -40,7 +40,6 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.card}>
-          {/* Logo */}
           <View style={styles.logoContainer}>
             <Image
               source={require("@/assets/images/dumbbell-icon.png")}
@@ -49,12 +48,10 @@ export default function LoginScreen() {
             />
           </View>
 
-          {/* Title */}
           <ThemedText type="title" style={styles.title}>
             Sign In
           </ThemedText>
 
-          {/* Email/Username Input */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[
@@ -75,7 +72,6 @@ export default function LoginScreen() {
             />
           </View>
 
-          {/* Password Input */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[
@@ -107,20 +103,19 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Forgot Password Link */}
           <TouchableOpacity style={styles.forgotPasswordContainer}>
             <ThemedText type="body" style={styles.forgotPasswordText}>
               Forgot{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 password
               </ThemedText>{" "}
               or{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 username
               </ThemedText>
@@ -128,26 +123,24 @@ export default function LoginScreen() {
             </ThemedText>
           </TouchableOpacity>
 
-          {/* Continue Button */}
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.accent }]}
             onPress={handleLogin}
           >
             <ThemedText
               type="label"
-              style={[styles.buttonText, { color: colors.background }]}
+              style={{ color: colors.background }}
             >
               Continue
             </ThemedText>
           </TouchableOpacity>
 
-          {/* Email Support Link */}
           <TouchableOpacity style={styles.supportContainer}>
             <ThemedText type="body" style={styles.supportText}>
-              Still can't sign in?{" "}
+              Still can&apos;t sign in?{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 Email us
               </ThemedText>
@@ -194,7 +187,6 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
     borderWidth: 1,
-    fontSize: 16,
   },
   eyeIcon: {
     position: "absolute",
@@ -206,11 +198,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   forgotPasswordText: {
-    fontSize: 14,
     opacity: 0.7,
-  },
-  linkText: {
-    fontWeight: "600",
   },
   button: {
     width: "100%",
@@ -220,15 +208,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: spacing.lg,
   },
-  buttonText: {
-    fontWeight: "600",
-    fontSize: 16,
-  },
   supportContainer: {
     alignItems: "center",
   },
   supportText: {
-    fontSize: 14,
     opacity: 0.7,
     textAlign: "center",
   },

@@ -97,6 +97,7 @@ export default [
       "react-native/split-platform-components": "off",
       "react/prop-types": "off",
       "react/display-name": "off",
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 

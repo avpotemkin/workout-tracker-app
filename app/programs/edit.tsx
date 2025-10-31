@@ -147,7 +147,7 @@ export default function EditProgramScreen() {
         >
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
-              style={[styles.input, { color: textColor }]}
+              style={{ color: textColor }}
               placeholder="Program Name"
               placeholderTextColor={`${textColor}80`}
               value={programName}
@@ -233,9 +233,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
-  },
-  input: {
-    fontSize: 16,
   },
   selector: {
     flexDirection: "row",
