@@ -15,7 +15,6 @@ import {
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
-  BottomSheetView,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
@@ -158,102 +157,92 @@ export const EditWorkoutModal = forwardRef<
     );
   };
 
-  const handleDone = () => {
-    if (ref && typeof ref !== "function") {
-      ref.current?.dismiss();
-    }
-  };
-
   return (
     <>
       <BottomSheetModal
         ref={ref}
         backdropComponent={renderBackdrop}
         backgroundStyle={{ backgroundColor: colors.background }}
+        snapPoints={["90%"]}
+        topInset={insets.top}
+        index={0}
       >
-        <BottomSheetView style={styles.contentContainer}>
-          <View style={styles.header}>
-            <View style={styles.headerLeft} />
-            <ThemedText type="subtitle">Edit Workout</ThemedText>
-            <TouchableOpacity onPress={handleDone}>
-              <ThemedText type="label" style={{ color: colors.accent }}>
-                Done
-              </ThemedText>
-            </TouchableOpacity>
+        <BottomSheetScrollView
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingBottom: Math.max(insets.bottom, spacing.lg) },
+          ]}
+          stickyHeaderIndices={[0]}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={[styles.header, { backgroundColor: colors.background }]}>
+            <ThemedText type="subtitle" style={styles.headerText}>
+              Edit Workout
+            </ThemedText>
           </View>
 
-          <BottomSheetScrollView
-            style={styles.scrollView}
-            contentContainerStyle={[
-              styles.scrollContent,
-              { paddingBottom: Math.max(insets.bottom, 30) },
-            ]}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
-              <TextInput
-                style={[styles.nameInput, { color: colors.text }]}
-                placeholder="Workout Name"
-                placeholderTextColor={`${colors.text}80`}
-                value={workoutName}
-                onChangeText={handleWorkoutNameChange}
-                autoCapitalize="words"
-              />
-            </View>
+          <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
+            <TextInput
+              style={[styles.nameInput, { color: colors.text }]}
+              placeholder="Workout Name"
+              placeholderTextColor={`${colors.text}80`}
+              value={workoutName}
+              onChangeText={handleWorkoutNameChange}
+              autoCapitalize="words"
+            />
+          </View>
 
-            {exercises.map((exercise) => (
-              <View
-                key={exercise.id}
-                style={[styles.exerciseCard, { backgroundColor: colors.card }]}
-              >
-                <View style={styles.exerciseContent}>
-                  <View style={styles.exerciseInfo}>
-                    <View style={styles.exerciseHeader}>
-                      <ThemedText type="label" style={styles.exerciseName}>
-                        {getExerciseNameById(exercise.templateId)}
-                      </ThemedText>
-                      <SetsRepsCounter
-                        sets={exercise.sets}
-                        reps={exercise.reps}
-                        onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
-                        onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
-                      />
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => handleRemoveExercise(exercise.id)}
-                    style={styles.deleteButton}
-                  >
-                    <Ionicons
-                      name="trash-outline"
-                      size={20}
-                      color={colors.error}
+          {exercises.map((exercise) => (
+            <View
+              key={exercise.id}
+              style={[styles.exerciseCard, { backgroundColor: colors.card }]}
+            >
+              <View style={styles.exerciseContent}>
+                <View style={styles.exerciseInfo}>
+                  <View style={styles.exerciseHeader}>
+                    <ThemedText type="label" style={styles.exerciseName}>
+                      {getExerciseNameById(exercise.templateId)}
+                    </ThemedText>
+                    <SetsRepsCounter
+                      sets={exercise.sets}
+                      reps={exercise.reps}
+                      onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
+                      onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
                     />
-                  </TouchableOpacity>
+                  </View>
                 </View>
+                <TouchableOpacity
+                  onPress={() => handleRemoveExercise(exercise.id)}
+                  style={styles.deleteButton}
+                >
+                  <Ionicons
+                    name="trash-outline"
+                    size={20}
+                    color={colors.error}
+                  />
+                </TouchableOpacity>
               </View>
-            ))}
+            </View>
+          ))}
 
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => addExerciseModalRef.current?.present()}
-            >
-              <ThemedText type="label" style={{ color: colors.accent }}>
-                Add Exercise
-              </ThemedText>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => addExerciseModalRef.current?.present()}
+          >
+            <ThemedText type="label" style={{ color: colors.accent }}>
+              Add Exercise
+            </ThemedText>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.removeButton}
-              onPress={handleRemoveWorkout}
-            >
-              <ThemedText type="label" style={{ color: colors.error }}>
-                Remove Workout
-              </ThemedText>
-            </TouchableOpacity>
-            <View style={{ paddingBottom: insets.bottom }}></View>
-          </BottomSheetScrollView>
-        </BottomSheetView>
+          <TouchableOpacity
+            style={styles.removeButton}
+            onPress={handleRemoveWorkout}
+          >
+            <ThemedText type="label" style={{ color: colors.error }}>
+              Remove Workout
+            </ThemedText>
+          </TouchableOpacity>
+        </BottomSheetScrollView>
       </BottomSheetModal>
 
       <AddExerciseModal
@@ -267,22 +256,16 @@ export const EditWorkoutModal = forwardRef<
 EditWorkoutModal.displayName = "EditWorkoutModal";
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-  },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
   },
-  headerLeft: {
-    width: 40,
-  },
-  scrollView: {
-    flex: 1,
+  headerText: {
+    textAlign: "center",
   },
   scrollContent: {
     padding: spacing.md,

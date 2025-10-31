@@ -984,6 +984,85 @@ export function useIntersectionObserver(
   - Use `ThemedText type="subtitle"` for modal titles
   - Headers should accommodate close/cancel buttons on the right
 
+### Bottom Sheet Modals with @gorhom/bottom-sheet
+
+When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follow these critical patterns:
+
+**Structure Pattern:**
+- **NEVER wrap content in `BottomSheetView`** - This breaks gesture handling and prevents proper scrolling
+- **Use `BottomSheetScrollView` as direct child** of `BottomSheetModal` - This ensures proper gesture detection
+- **Put header INSIDE the ScrollView** - Headers should be the first child of `BottomSheetScrollView` to enable sticky headers
+
+**Required Props:**
+```typescript
+<BottomSheetModal
+  ref={ref}
+  backdropComponent={renderBackdrop}
+  backgroundStyle={{ backgroundColor: colors.background }}
+  snapPoints={["90%"]}           // Use 90% to avoid full screen overlap
+  topInset={insets.top}          // Respect status bar/notch
+  index={0}                      // Start at first snap point
+>
+  <BottomSheetScrollView
+    contentContainerStyle={[
+      styles.scrollContent,
+      { paddingBottom: Math.max(insets.bottom, spacing.lg) },
+    ]}
+    stickyHeaderIndices={[0]}   // Make first child (header) sticky
+    showsVerticalScrollIndicator={false}
+  >
+    <View style={[styles.header, { backgroundColor: colors.background }]}>
+      {/* Header content */}
+    </View>
+    {/* Rest of scrollable content */}
+  </BottomSheetScrollView>
+</BottomSheetModal>
+```
+
+**Header Patterns:**
+
+1. **Centered Header (no buttons):**
+   ```typescript
+   header: {
+     flexDirection: "row",
+     justifyContent: "center",
+     alignItems: "center",
+     paddingHorizontal: spacing.md,
+     paddingTop: spacing.sm,
+     paddingBottom: spacing.md,
+   },
+   ```
+
+2. **Centered Header with Right Button (e.g., "Done"):**
+   ```typescript
+   header: {
+     flexDirection: "row",
+     justifyContent: "space-between",
+     alignItems: "center",
+     paddingHorizontal: spacing.md,
+     paddingTop: spacing.sm,
+     paddingBottom: spacing.md,
+   },
+   // In JSX:
+   <View style={[styles.header, { backgroundColor: colors.background }]}>
+     <View style={styles.headerLeft} />  {/* Spacer for centering */}
+     <ThemedText type="subtitle">Title</ThemedText>
+     <TouchableOpacity onPress={handleDone}>
+       <ThemedText type="label" style={{ color: colors.accent }}>
+         Done
+       </ThemedText>
+     </TouchableOpacity>
+   </View>
+   ```
+
+**Key Points:**
+- Always set `stickyHeaderIndices={[0]}` to make the header sticky
+- Always add `backgroundColor: colors.background` to the header View so it's opaque when sticky
+- Use `topInset={insets.top}` to prevent modal from overlapping status bar/notch
+- Use `snapPoints={["90%"]}` for optimal height without full screen coverage
+- Never use `BottomSheetView` wrapper - it interferes with gesture handling
+- Remove the empty `<View style={{ paddingBottom: insets.bottom }}></View>` hack - use proper `paddingBottom` in `contentContainerStyle` instead
+
 - **Color Usage** - Always use theme colors from `useAppTheme()` hook:
   - Never use hardcoded color literals (`"#444"`, `"white"`, `rgba(...)`)
   - Use `colors.text`, `colors.background`, `colors.card`, `colors.accent`, `colors.divider`, `colors.error`, `colors.success`, `colors.info` for semantic colors

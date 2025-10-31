@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
-  BottomSheetView,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
@@ -16,7 +15,6 @@ import {
   EXERCISE_CATEGORIES,
   ExerciseTemplate,
 } from "@/constants/Exercises";
-import { Ionicons } from "@expo/vector-icons";
 
 interface AddExerciseModalProps {
   onSelectExercise: (exercise: ExerciseTemplate) => void;
@@ -54,63 +52,55 @@ export const AddExerciseModal = forwardRef<
       ref={ref}
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: colors.background }}
-      snapPoints={["80%"]}
+      snapPoints={["90%"]}
+      topInset={insets.top}
+      index={0}
     >
-      <BottomSheetView style={styles.contentContainer}>
-        <View style={styles.header}>
-          <ThemedText type="subtitle">Add Exercise</ThemedText>
-          <TouchableOpacity
-            onPress={() => {
-              if (ref && typeof ref !== "function") {
-                ref.current?.dismiss();
-              }
-            }}
-          >
-            <Ionicons name="close" size={24} color={colors.text} />
-          </TouchableOpacity>
+      <BottomSheetScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: Math.max(insets.bottom, spacing.lg) },
+        ]}
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={[styles.header, { backgroundColor: colors.background }]}>
+          <ThemedText type="subtitle" style={styles.headerText}>
+            Add Exercise
+          </ThemedText>
         </View>
 
-        <BottomSheetScrollView
-          style={styles.scrollView}
-          contentContainerStyle={[
-            styles.scrollContent,
-            { paddingBottom: Math.max(insets.bottom, 30) },
-          ]}
-          showsVerticalScrollIndicator={false}
-        >
-          {categories.map((category) => {
-            const categoryExercises = EXERCISES.filter(
-              (ex) => ex.category === category
-            );
+        {categories.map((category) => {
+          const categoryExercises = EXERCISES.filter(
+            (ex) => ex.category === category
+          );
 
-            return (
-              <View key={category} style={styles.categorySection}>
-                <ThemedText type="defaultSemiBold" style={styles.categoryTitle}>
-                  {category}
-                </ThemedText>
-                {categoryExercises.map((exercise) => (
-                  <TouchableOpacity
-                    key={exercise.id}
-                    style={[
-                      styles.exerciseCard,
-                      { backgroundColor: colors.card },
-                    ]}
-                    onPress={() => handleSelectExercise(exercise)}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.exerciseCardContent}>
-                      <ThemedText type="label" style={styles.exerciseName}>
-                        {exercise.name}
-                      </ThemedText>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            );
-          })}
-          <View style={{ paddingBottom: insets.bottom }}></View>
-        </BottomSheetScrollView>
-      </BottomSheetView>
+          return (
+            <View key={category} style={styles.categorySection}>
+              <ThemedText type="defaultSemiBold" style={styles.categoryTitle}>
+                {category}
+              </ThemedText>
+              {categoryExercises.map((exercise) => (
+                <TouchableOpacity
+                  key={exercise.id}
+                  style={[
+                    styles.exerciseCard,
+                    { backgroundColor: colors.card },
+                  ]}
+                  onPress={() => handleSelectExercise(exercise)}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.exerciseCardContent}>
+                    <ThemedText type="label" style={styles.exerciseName}>
+                      {exercise.name}
+                    </ThemedText>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          );
+        })}
+      </BottomSheetScrollView>
     </BottomSheetModal>
   );
 });
@@ -118,19 +108,16 @@ export const AddExerciseModal = forwardRef<
 AddExerciseModal.displayName = "AddExerciseModal";
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-  },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
   },
-  scrollView: {
-    flex: 1,
+  headerText: {
+    textAlign: "center",
   },
   scrollContent: {
     paddingHorizontal: spacing.md,

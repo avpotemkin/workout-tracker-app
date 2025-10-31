@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
-  BottomSheetView,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
@@ -48,21 +47,24 @@ export const WorkoutSelectionModal = forwardRef<
       ref={ref}
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: colors.background }}
+      snapPoints={["90%"]}
+      topInset={insets.top}
+      index={0}
     >
-      <BottomSheetView style={styles.contentContainer}>
-        <View style={styles.header}>
+      <BottomSheetScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: Math.max(insets.bottom, spacing.lg) },
+        ]}
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={[styles.header, { backgroundColor: colors.background }]}>
           <ThemedText type="subtitle">Select Workout</ThemedText>
         </View>
 
         {program && program.workouts.length > 0 ? (
-          <BottomSheetScrollView
-            style={styles.scrollView}
-            contentContainerStyle={[
-              styles.scrollContent,
-              { paddingBottom: Math.max(insets.bottom, 30) },
-            ]}
-            showsVerticalScrollIndicator={false}
-          >
+          <>
             {program.workouts.map((workout) => (
               <TouchableOpacity
                 key={workout.id}
@@ -91,8 +93,7 @@ export const WorkoutSelectionModal = forwardRef<
                 </ThemedText>
               </TouchableOpacity>
             ))}
-            <View style={{ paddingBottom: insets.bottom }}></View>
-          </BottomSheetScrollView>
+          </>
         ) : (
           <View style={styles.emptyContainer}>
             <ThemedText type="body" style={styles.emptyText}>
@@ -100,7 +101,7 @@ export const WorkoutSelectionModal = forwardRef<
             </ThemedText>
           </View>
         )}
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </BottomSheetModal>
   );
 });
@@ -108,16 +109,13 @@ export const WorkoutSelectionModal = forwardRef<
 WorkoutSelectionModal.displayName = "WorkoutSelectionModal";
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-  },
   header: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
-  },
-  scrollView: {
-    flex: 1,
   },
   scrollContent: {
     padding: spacing.md,
