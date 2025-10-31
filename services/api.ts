@@ -9,9 +9,34 @@ import {
   WorkoutExercise,
   WorkoutId,
 } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL || "http://localhost:3001/api";
+const AUTH_STORAGE_KEY = "@auth_userId";
+
+// Helper to get userId from storage
+async function getUserId(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(AUTH_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+// Helper to create headers with userId
+async function createHeaders(): Promise<Record<string, string>> {
+  const userId = await getUserId();
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  
+  if (userId) {
+    headers["X-User-Id"] = userId;
+  }
+  
+  return headers;
+}
 
 interface ApiResponse<T> {
   data: T;
@@ -64,23 +89,28 @@ async function handleResponse<T>(response: globalThis.Response): Promise<T> {
 }
 
 export async function fetchPrograms(): Promise<Program[]> {
-  const response = await fetch(`${API_BASE_URL}/programs`);
+  const headers = await createHeaders();
+  const response = await fetch(`${API_BASE_URL}/programs`, {
+    headers,
+  });
   const programs = await handleResponse<ProgramDTO[]>(response);
   return programs.map(parseProgramDates);
 }
 
 export async function fetchProgram(id: ProgramId): Promise<Program> {
-  const response = await fetch(`${API_BASE_URL}/programs/${id}`);
+  const headers = await createHeaders();
+  const response = await fetch(`${API_BASE_URL}/programs/${id}`, {
+    headers,
+  });
   const program = await handleResponse<ProgramDTO>(response);
   return parseProgramDates(program);
 }
 
 export async function createProgram(program: Program): Promise<Program> {
+  const headers = await createHeaders();
   const response = await fetch(`${API_BASE_URL}/programs`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({
       ...program,
       createdAt: program.createdAt.toISOString(),
@@ -95,11 +125,10 @@ export async function updateProgram(
   id: ProgramId,
   program: Program
 ): Promise<Program> {
+  const headers = await createHeaders();
   const response = await fetch(`${API_BASE_URL}/programs/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({
       ...program,
       updatedAt: new Date().toISOString(),
@@ -110,8 +139,10 @@ export async function updateProgram(
 }
 
 export async function deleteProgram(id: ProgramId): Promise<void> {
+  const headers = await createHeaders();
   const response = await fetch(`${API_BASE_URL}/programs/${id}`, {
     method: "DELETE",
+    headers,
   });
   await handleResponse<{ success: boolean }>(response);
 }
@@ -161,8 +192,9 @@ export async function fetchWorkoutHistory(
 
   const queryString = buildQueryString(queryParams);
   const url = `${API_BASE_URL}/history${queryString}`;
+  const headers = await createHeaders();
 
-  const response = await fetch(url);
+  const response = await fetch(url, { headers });
   const history = await handleResponse<WorkoutHistoryDTO[]>(response);
   return history.map(parseWorkoutHistoryDates);
 }
@@ -170,7 +202,10 @@ export async function fetchWorkoutHistory(
 export async function fetchWorkoutHistoryById(
   id: WorkoutHistoryId
 ): Promise<WorkoutHistory> {
-  const response = await fetch(`${API_BASE_URL}/history/${id}`);
+  const headers = await createHeaders();
+  const response = await fetch(`${API_BASE_URL}/history/${id}`, {
+    headers,
+  });
   const history = await handleResponse<WorkoutHistoryDTO>(response);
   return parseWorkoutHistoryDates(history);
 }
@@ -178,11 +213,10 @@ export async function fetchWorkoutHistoryById(
 export async function createWorkoutHistory(
   history: WorkoutHistory
 ): Promise<WorkoutHistory> {
+  const headers = await createHeaders();
   const response = await fetch(`${API_BASE_URL}/history`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({
       ...history,
       exercises: JSON.stringify(history.exercises),
@@ -211,8 +245,9 @@ export async function getHistoryStats(
 
   const queryString = buildQueryString(queryParams);
   const url = `${API_BASE_URL}/history/stats${queryString}`;
+  const headers = await createHeaders();
 
-  const response = await fetch(url);
+  const response = await fetch(url, { headers });
   const stats = await handleResponse<HistoryStats>(response);
   // Parse dates in strongestLifts
   return {

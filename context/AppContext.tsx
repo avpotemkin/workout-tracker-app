@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Program } from "@/types";
 import * as api from "@/services/api";
+import { useAuth } from "./AuthContext";
 
 type AppContextType = {
   selectedProgram: Program | null;
@@ -26,9 +27,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
-  // Fetch programs on mount
+  // Fetch programs on mount and when auth state changes
   useEffect(() => {
+    if (!isAuthenticated) {
+      setIsLoading(false);
+      return;
+    }
+
     async function loadPrograms() {
       try {
         setIsLoading(true);
@@ -50,7 +57,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
 
     loadPrograms();
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <AppContext.Provider

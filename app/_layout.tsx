@@ -14,9 +14,40 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AppProvider } from "@/context/AppContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import LoginScreen from "./auth/login";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+function AppContent() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const colorScheme = useColorScheme();
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
+
+  return (
+    <ThemeProvider
+      value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
+      <BottomSheetModalProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="programs" />
+          <Stack.Screen name="(workout)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </BottomSheetModalProvider>
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -37,21 +68,11 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <BottomSheetModalProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="programs" />
-              <Stack.Screen name="(workout)" />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="auto" />
-          </BottomSheetModalProvider>
-        </ThemeProvider>
-      </AppProvider>
+      <AuthProvider>
+        <AppProvider>
+          <AppContent />
+        </AppProvider>
+      </AuthProvider>
     </GestureHandlerRootView>
   );
 }
