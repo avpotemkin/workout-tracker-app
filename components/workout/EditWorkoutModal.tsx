@@ -192,9 +192,9 @@ export const EditWorkoutModal = forwardRef<
             />
           </View>
 
-          {exercises.map((exercise) => (
+          {exercises.map((exercise, index) => (
             <View
-              key={exercise.id}
+              key={`exercise-${index}-${exercise.id}`}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
               <View style={styles.exerciseContent}>
