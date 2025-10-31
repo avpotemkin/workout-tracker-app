@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xs,
   },
   label: {
-    fontSize: 10,
     opacity: 0.7,
   },
 });

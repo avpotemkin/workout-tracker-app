@@ -279,10 +279,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
   },
-  nameInput: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
+  nameInput: {},
   exerciseCard: {
     padding: 16,
     borderRadius: 10,

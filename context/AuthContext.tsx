@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUserId(storedUserId);
         }
       } catch (error) {
-        console.error("Error checking auth:", error);
+        // Handle error silently
       } finally {
         setIsLoading(false);
       }
@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
       setUserId(MOCK_USER_ID);
     } catch (error) {
-      console.error("Error logging in:", error);
       throw error;
     }
   };
@@ -58,7 +57,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
       setUserId(null);
     } catch (error) {
-      console.error("Error logging out:", error);
       throw error;
     }
   };

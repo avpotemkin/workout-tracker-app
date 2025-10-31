@@ -20,7 +20,7 @@ export function WorkoutProgress({
 
   return (
     <View style={[styles.progressContainer, style]}>
-      <View style={styles.progressBarBackground}>
+      <View style={[styles.progressBarBackground, { backgroundColor: colors.card }]}>
         <View
           style={[
             styles.progressBarFill,
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: 8,
-    backgroundColor: '#333',
     borderRadius: 4,
     overflow: 'hidden',
   },

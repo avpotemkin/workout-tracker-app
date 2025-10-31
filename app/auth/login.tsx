@@ -28,8 +28,8 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       await login();
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      // Handle error silently
     }
   };
 
@@ -43,6 +43,7 @@ export default function LoginScreen() {
           {/* Logo */}
           <View style={styles.logoContainer}>
             <Image
+              // eslint-disable-next-line @typescript-eslint/no-require-imports
               source={require("@/assets/images/dumbbell-icon.png")}
               style={styles.logo}
               resizeMode="contain"
@@ -144,7 +145,7 @@ export default function LoginScreen() {
           {/* Email Support Link */}
           <TouchableOpacity style={styles.supportContainer}>
             <ThemedText type="body" style={styles.supportText}>
-              Still can't sign in?{" "}
+              Still can&apos;t sign in?{" "}
               <ThemedText
                 type="body"
                 style={[styles.linkText, { color: colors.accent }]}
@@ -194,7 +195,6 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
     borderWidth: 1,
-    fontSize: 16,
   },
   eyeIcon: {
     position: "absolute",
@@ -206,12 +206,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   forgotPasswordText: {
-    fontSize: 14,
     opacity: 0.7,
   },
-  linkText: {
-    fontWeight: "600",
-  },
+  linkText: {},
   button: {
     width: "100%",
     height: 48,
@@ -220,15 +217,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: spacing.lg,
   },
-  buttonText: {
-    fontWeight: "600",
-    fontSize: 16,
-  },
+  buttonText: {},
   supportContainer: {
     alignItems: "center",
   },
   supportText: {
-    fontSize: 14,
     opacity: 0.7,
     textAlign: "center",
   },

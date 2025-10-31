@@ -326,7 +326,6 @@ const styles = StyleSheet.create({
     marginRight: spacing.xs,
   },
   counterLabel: {
-    fontSize: 10,
     opacity: 0.7,
   },
 });

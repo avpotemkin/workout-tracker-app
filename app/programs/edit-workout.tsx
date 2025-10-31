@@ -295,9 +295,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  input: {
-    fontSize: 16,
-  },
+  input: {},
   exerciseCard: {
     flexDirection: "row",
     alignItems: "center",
