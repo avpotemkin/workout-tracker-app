@@ -28,9 +28,7 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       await login();
-    } catch {
-      // Ignore
-    }
+    } catch {}
   };
 
   return (
@@ -40,7 +38,6 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.card}>
-          {/* Logo */}
           <View style={styles.logoContainer}>
             <Image
               source={require("@/assets/images/dumbbell-icon.png")}
@@ -49,12 +46,10 @@ export default function LoginScreen() {
             />
           </View>
 
-          {/* Title */}
           <ThemedText type="title" style={styles.title}>
             Sign In
           </ThemedText>
 
-          {/* Email/Username Input */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[
@@ -75,7 +70,6 @@ export default function LoginScreen() {
             />
           </View>
 
-          {/* Password Input */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[
@@ -107,7 +101,6 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Forgot Password Link */}
           <TouchableOpacity style={styles.forgotPasswordContainer}>
             <ThemedText type="body" style={styles.forgotPasswordText}>
               Forgot{" "}
@@ -128,7 +121,6 @@ export default function LoginScreen() {
             </ThemedText>
           </TouchableOpacity>
 
-          {/* Continue Button */}
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.accent }]}
             onPress={handleLogin}
@@ -141,7 +133,6 @@ export default function LoginScreen() {
             </ThemedText>
           </TouchableOpacity>
 
-          {/* Email Support Link */}
           <TouchableOpacity style={styles.supportContainer}>
             <ThemedText type="body" style={styles.supportText}>
               Still can&apos;t sign in?{" "}

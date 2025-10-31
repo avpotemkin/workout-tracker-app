@@ -21,7 +21,6 @@ export function showWorkoutSplitPicker({ onSelect }: WorkoutSplitPickerProps) {
       }
     );
   } else {
-    // For Android, show a simple alert with options
     const buttons = [
       ...splits.map((split) => ({
         text: split,

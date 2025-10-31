@@ -4,7 +4,6 @@
  */
 import { Colors } from './Colors';
 
-// Base colors that work in both light and dark mode
 const baseColors = {
   accent: '#FF4500',
   success: '#4CAF50',
@@ -12,7 +11,6 @@ const baseColors = {
   error: '#F44336',
   info: '#2196F3',
   
-  // UI element colors
   card: {
     light: '#F5F5F5',
     dark: '#333333',
@@ -35,7 +33,6 @@ const baseColors = {
   },
 };
 
-// Function to get theme colors based on the color scheme
 export const getThemeColors = (colorScheme: 'light' | 'dark' = 'dark') => {
   return {
     ...Colors[colorScheme],
@@ -52,7 +49,6 @@ export const getThemeColors = (colorScheme: 'light' | 'dark' = 'dark') => {
   };
 };
 
-// Common spacing values
 export const spacing = {
   xs: 4,
   sm: 8,
@@ -62,17 +58,15 @@ export const spacing = {
   xxl: 48,
 };
 
-// Common border radius values
 export const borderRadius = {
   xs: 4,
   sm: 8,
   md: 12,
   lg: 16,
   xl: 24,
-  round: 9999, // For circular elements
+  round: 9999,
 };
 
-// Typography scale
 export const typography = {
   fontSizes: {
     xs: 12,
@@ -91,7 +85,6 @@ export const typography = {
   },
 };
 
-// Create a hook to use theme values
 export const useTheme = (colorScheme: 'light' | 'dark' = 'dark') => {
   return {
     colors: getThemeColors(colorScheme),

@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Mock user ID - hardcoded for now
 const MOCK_USER_ID = "mock-user-123";
 const AUTH_STORAGE_KEY = "@auth_userId";
 
@@ -25,7 +24,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing auth on mount
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUserId(storedUserId);
         }
       } catch {
-        // Ignore error
       } finally {
         setIsLoading(false);
       }
