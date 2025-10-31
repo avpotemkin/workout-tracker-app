@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, StyleSheet, ViewStyle } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useAppTheme } from '@/hooks/useAppTheme';
 import { WorkoutHistory } from '@/types';
 import { HistoryCard } from './HistoryCard';
 
@@ -15,8 +14,6 @@ export function HistoryList({
   workoutHistory, 
   style 
 }: HistoryListProps) {
-  const { colors } = useAppTheme();
-  
   const renderWorkoutItem = ({ item }: { item: WorkoutHistory }) => (
     <HistoryCard workout={item} />
   );

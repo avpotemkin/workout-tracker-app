@@ -1,81 +1,154 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
-  useState,
   useEffect,
-  ReactNode,
+  useMemo,
+  useState,
+  type ReactNode,
 } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+  signInWithPopup,
+  signOut,
+  type User as FirebaseUser,
+} from "firebase/auth";
 
-// Mock user ID - hardcoded for now
-const MOCK_USER_ID = "mock-user-123";
-const AUTH_STORAGE_KEY = "@auth_userId";
+import { getFirebaseAuth, getGoogleAuthProvider } from "@/services/firebase/app";
+import {
+  googleAuthClientIds,
+  hasGoogleClientIdForPlatform,
+} from "@/services/firebase/config";
+
+WebBrowser.maybeCompleteAuthSession();
+
+export interface AuthUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+}
 
 interface AuthContextType {
-  userId: string | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: () => Promise<void>;
+  isAuthenticating: boolean;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Check for existing auth on mount
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const storedUserId = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
-        if (storedUserId) {
-          setUserId(storedUserId);
-        }
-      } catch (error) {
-        console.error("Error checking auth:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    checkAuth();
-  }, []);
-
-  const login = async () => {
-    try {
-      await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
-      setUserId(MOCK_USER_ID);
-    } catch (error) {
-      console.error("Error logging in:", error);
-      throw error;
-    }
+function mapFirebaseUser(user: FirebaseUser): AuthUser {
+  return {
+    uid: user.uid,
+    email: user.email ?? null,
+    displayName: user.displayName ?? null,
+    photoURL: user.photoURL ?? null,
   };
+}
 
-  const logout = async () => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const auth = useMemo(() => getFirebaseAuth(), []);
+  const googleProvider = useMemo(() => getGoogleAuthProvider(), []);
+
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  const isNativePlatform = Platform.OS !== "web";
+  const googleConfigured = isNativePlatform
+    ? hasGoogleClientIdForPlatform("native")
+    : true;
+
+  const [request, , promptAsync] = Google.useAuthRequest({
+    expoClientId: googleAuthClientIds.expoClientId,
+    iosClientId: googleAuthClientIds.iosClientId,
+    androidClientId: googleAuthClientIds.androidClientId,
+    webClientId: googleAuthClientIds.webClientId,
+    responseType: "id_token",
+    scopes: ["openid", "profile", "email"],
+  });
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser ? mapFirebaseUser(firebaseUser) : null);
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+  }, [auth]);
+
+  const signIn = useCallback(async () => {
+    if (!googleConfigured) {
+      throw new Error(
+        "Google authentication is not configured. Please provide client IDs in your Expo environment."
+      );
+    }
+
+    setIsAuthenticating(true);
+
     try {
-      await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
-      setUserId(null);
+      if (Platform.OS === "web") {
+        await signInWithPopup(auth, googleProvider);
+        return;
+      }
+
+      if (!request) {
+        throw new Error("Google authentication request is not ready yet. Please try again.");
+      }
+
+      const result = await promptAsync({ useProxy: true });
+
+      if (result.type !== "success") {
+        throw new Error(result.type === "dismiss" ? "Google sign-in dismissed" : "Google sign-in cancelled");
+      }
+
+      const idToken = result.params?.id_token;
+      const accessToken = result.params?.access_token;
+
+      if (!idToken) {
+        throw new Error("Google sign-in did not return an ID token.");
+      }
+
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
+      await signInWithCredential(auth, credential);
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+      throw error;
+    } finally {
+      setIsAuthenticating(false);
+    }
+  }, [auth, googleConfigured, googleProvider, promptAsync, request]);
+
+  const logout = useCallback(async () => {
+    try {
+      await signOut(auth);
     } catch (error) {
       console.error("Error logging out:", error);
       throw error;
     }
-  };
+  }, [auth]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        userId,
-        isAuthenticated: !!userId,
-        isLoading,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated: Boolean(user),
+      isLoading,
+      isAuthenticating,
+      signInWithGoogle: signIn,
+      logout,
+    }),
+    [isAuthenticating, isLoading, logout, signIn, user]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {
