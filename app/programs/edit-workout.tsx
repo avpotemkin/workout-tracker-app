@@ -167,8 +167,12 @@ export default function EditWorkoutScreen() {
                     <SetsRepsCounter
                       sets={exercise.sets}
                       reps={exercise.reps}
-                      onSetsChange={(sets) => handleUpdateSets(exercise.id, sets)}
-                      onRepsChange={(reps) => handleUpdateReps(exercise.id, reps)}
+                      onSetsChange={(sets) =>
+                        handleUpdateSets(exercise.id, sets)
+                      }
+                      onRepsChange={(reps) =>
+                        handleUpdateReps(exercise.id, reps)
+                      }
                     />
                   </View>
                 </View>
@@ -176,7 +180,11 @@ export default function EditWorkoutScreen() {
                   style={styles.deleteButton}
                   onPress={() => handleRemoveExercise(exercise.id)}
                 >
-                  <Ionicons name="trash-outline" size={20} color={colors.error} />
+                  <Ionicons
+                    name="trash-outline"
+                    size={20}
+                    color={colors.error}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -232,7 +240,9 @@ function ExercisePicker({ visible, onSelect, onClose }: ExercisePickerProps) {
     >
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
-          <View style={[styles.modalHeader, { borderBottomColor: colors.divider }]}>
+          <View
+            style={[styles.modalHeader, { borderBottomColor: colors.divider }]}
+          >
             <ThemedText type="subtitle">Add Exercise</ThemedText>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={24} color={textColor} />
@@ -262,7 +272,7 @@ function ExercisePicker({ visible, onSelect, onClose }: ExercisePickerProps) {
                       ]}
                       onPress={() => onSelect(exercise)}
                     >
-                    <ThemedText type="default">{exercise.name}</ThemedText>
+                      <ThemedText type="default">{exercise.name}</ThemedText>
                     </TouchableOpacity>
                   ))}
                 </View>
