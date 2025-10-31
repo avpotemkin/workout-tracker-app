@@ -115,7 +115,7 @@ export default function CreateProgramScreen() {
         >
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
-              style={[styles.input, { color: textColor }]}
+              style={{ color: textColor }}
               placeholder="Program Name"
               placeholderTextColor={`${textColor}80`}
               value={programName}
@@ -203,7 +203,6 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  input: {},
   selector: {
     flexDirection: "row",
     justifyContent: "space-between",

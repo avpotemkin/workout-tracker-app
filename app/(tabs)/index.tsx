@@ -143,7 +143,7 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
+              <ThemedText type="defaultSemiBold" style={{ color: colors.background }}>
                 Start Workout
               </ThemedText>
             </TouchableOpacity>
@@ -154,7 +154,7 @@ export default function HomeScreen() {
             >
               <ThemedText
                 type="defaultSemiBold"
-                style={[styles.buttonText, { color: colors.text }]}
+                style={{ color: colors.text }}
               >
                 Browse Programs
               </ThemedText>
@@ -227,5 +227,4 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: "center",
   },
-  buttonText: {},
 });

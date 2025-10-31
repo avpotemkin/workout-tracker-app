@@ -17,7 +17,9 @@ export default function ProfileScreen() {
   const handleLogout = async () => {
     try {
       await logout();
-    } catch {}
+    } catch {
+      return;
+    }
   };
 
   return (

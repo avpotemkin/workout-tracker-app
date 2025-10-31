@@ -252,7 +252,7 @@ export function WorkoutSessionScreen({
           onPress={handleFinishWorkout}
           disabled={isSaving}
         >
-          <ThemedText type="subtitle" style={[styles.finishButtonText, { color: colors.background }]}>
+          <ThemedText type="subtitle" style={{ color: colors.background }}>
             {isSaving ? "Saving..." : "Finish Workout"}
           </ThemedText>
         </TouchableOpacity>
@@ -277,7 +277,6 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     alignItems: "center",
   },
-  finishButtonText: {},
   finishButtonDisabled: {
     opacity: 0.6,
   },

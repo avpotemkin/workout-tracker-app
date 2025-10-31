@@ -34,7 +34,7 @@ export function OutlinedButton({
     >
       <ThemedText
         type="defaultSemiBold"
-        style={[styles.buttonText, { color: colors.accent }]}
+        style={{ color: colors.accent }}
       >
         {children}
       </ThemedText>
@@ -51,9 +51,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  buttonText: {
-    // Color is set inline
   },
 });
 

@@ -28,7 +28,9 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       await login();
-    } catch {}
+    } catch {
+      return;
+    }
   };
 
   return (
@@ -106,14 +108,14 @@ export default function LoginScreen() {
               Forgot{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 password
               </ThemedText>{" "}
               or{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 username
               </ThemedText>
@@ -127,7 +129,7 @@ export default function LoginScreen() {
           >
             <ThemedText
               type="label"
-              style={[styles.buttonText, { color: colors.background }]}
+              style={{ color: colors.background }}
             >
               Continue
             </ThemedText>
@@ -138,7 +140,7 @@ export default function LoginScreen() {
               Still can&apos;t sign in?{" "}
               <ThemedText
                 type="body"
-                style={[styles.linkText, { color: colors.accent }]}
+                style={{ color: colors.accent }}
               >
                 Email us
               </ThemedText>
@@ -198,7 +200,6 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     opacity: 0.7,
   },
-  linkText: {},
   button: {
     width: "100%",
     height: 48,
@@ -207,7 +208,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: spacing.lg,
   },
-  buttonText: {},
   supportContainer: {
     alignItems: "center",
   },

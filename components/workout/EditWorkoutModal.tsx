@@ -183,7 +183,7 @@ export const EditWorkoutModal = forwardRef<
 
           <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
             <TextInput
-              style={[styles.nameInput, { color: colors.text }]}
+              style={{ color: colors.text }}
               placeholder="Workout Name"
               placeholderTextColor={`${colors.text}80`}
               value={workoutName}
@@ -200,7 +200,7 @@ export const EditWorkoutModal = forwardRef<
               <View style={styles.exerciseContent}>
                 <View style={styles.exerciseInfo}>
                   <View style={styles.exerciseHeader}>
-                    <ThemedText type="label" style={styles.exerciseName}>
+                    <ThemedText type="label">
                       {getExerciseNameById(exercise.templateId)}
                     </ThemedText>
                     <SetsRepsCounter
@@ -279,7 +279,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
   },
-  nameInput: {},
   exerciseCard: {
     padding: 16,
     borderRadius: 10,
@@ -298,7 +297,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  exerciseName: {},
   exerciseDetails: {
     opacity: 0.6,
   },
