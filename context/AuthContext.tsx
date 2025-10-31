@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (storedUserId) {
           setUserId(storedUserId);
         }
-      } catch (error) {
-        // Handle error silently
+      } catch {
+        // Ignore error
       } finally {
         setIsLoading(false);
       }

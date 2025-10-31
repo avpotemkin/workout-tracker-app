@@ -29,7 +29,7 @@ export default function LoginScreen() {
     try {
       await login();
     } catch {
-      // Handle error silently
+      // Ignore
     }
   };
 
@@ -43,7 +43,6 @@ export default function LoginScreen() {
           {/* Logo */}
           <View style={styles.logoContainer}>
             <Image
-              // eslint-disable-next-line @typescript-eslint/no-require-imports
               source={require("@/assets/images/dumbbell-icon.png")}
               style={styles.logo}
               resizeMode="contain"

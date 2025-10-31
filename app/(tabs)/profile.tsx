@@ -18,7 +18,7 @@ export default function ProfileScreen() {
     try {
       await logout();
     } catch {
-      // Handle error silently
+      // Ignore
     }
   };
 
