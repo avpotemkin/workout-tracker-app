@@ -928,36 +928,40 @@ export function useIntersectionObserver(
 ### Style Consistency and Header Standards
 
 - **Use spacing constants from `constants/Theme.ts`** for all padding, margins, and spacing values. Never use hardcoded numeric values (e.g., `16`, `20`, `24`) directly in StyleSheet definitions.
+
   - Available spacing values: `xs: 4`, `sm: 8`, `md: 16`, `lg: 24`, `xl: 32`, `xxl: 48`
   - Import spacing for StyleSheet: `import { spacing } from "@/constants/Theme"`
   - Use `useAppTheme()` hook for dynamic color values in inline styles
 
 - **Main Screen Headers (Tab Screens)** - All main tab screens must follow this consistent pattern:
+
   ```typescript
   // Container
   container: {
     flex: 1,
     paddingHorizontal: spacing.md, // 16px
   },
-  
+
   // Header
   header: {
     paddingVertical: spacing.md,   // 16px
     marginBottom: spacing.lg,      // 24px
   },
   ```
+
   - Use `ThemedText type="title"` for header text
   - Headers must be left-aligned (never centered)
   - All main screens (Home, Workout, Programs, History) must have identical header spacing
 
 - **Subscreen Headers (Edit/Create/Details)** - Secondary screens follow a slightly different pattern:
+
   ```typescript
   // Container
   container: {
     flex: 1,
     paddingHorizontal: spacing.md, // 16px
   },
-  
+
   // Header
   header: {
     flexDirection: "row",
@@ -967,6 +971,7 @@ export function useIntersectionObserver(
     marginBottom: spacing.md,      // 16px (smaller than main screens)
   },
   ```
+
   - Use `ThemedText type="subtitle"` for header text
   - Headers should have space-between layout for back/cancel buttons
 
@@ -989,26 +994,28 @@ export function useIntersectionObserver(
 When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follow these critical patterns:
 
 **Structure Pattern:**
+
 - **NEVER wrap content in `BottomSheetView`** - This breaks gesture handling and prevents proper scrolling
 - **Use `BottomSheetScrollView` as direct child** of `BottomSheetModal` - This ensures proper gesture detection
 - **Put header INSIDE the ScrollView** - Headers should be the first child of `BottomSheetScrollView` to enable sticky headers
 
 **Required Props:**
+
 ```typescript
 <BottomSheetModal
   ref={ref}
   backdropComponent={renderBackdrop}
   backgroundStyle={{ backgroundColor: colors.background }}
-  snapPoints={["90%"]}           // Use 90% to avoid full screen overlap
-  topInset={insets.top}          // Respect status bar/notch
-  index={0}                      // Start at first snap point
+  snapPoints={["90%"]} // Use 90% to avoid full screen overlap
+  topInset={insets.top} // Respect status bar/notch
+  index={0} // Start at first snap point
 >
   <BottomSheetScrollView
     contentContainerStyle={[
       styles.scrollContent,
       { paddingBottom: Math.max(insets.bottom, spacing.lg) },
     ]}
-    stickyHeaderIndices={[0]}   // Make first child (header) sticky
+    stickyHeaderIndices={[0]} // Make first child (header) sticky
     showsVerticalScrollIndicator={false}
   >
     <View style={[styles.header, { backgroundColor: colors.background }]}>
@@ -1022,6 +1029,7 @@ When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follo
 **Header Patterns:**
 
 1. **Centered Header (no buttons):**
+
    ```typescript
    header: {
      flexDirection: "row",
@@ -1056,6 +1064,7 @@ When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follo
    ```
 
 **Key Points:**
+
 - Always set `stickyHeaderIndices={[0]}` to make the header sticky
 - Always add `backgroundColor: colors.background` to the header View so it's opaque when sticky
 - Use `topInset={insets.top}` to prevent modal from overlapping status bar/notch
@@ -1064,6 +1073,7 @@ When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follo
 - Remove the empty `<View style={{ paddingBottom: insets.bottom }}></View>` hack - use proper `paddingBottom` in `contentContainerStyle` instead
 
 - **Color Usage** - Always use theme colors from `useAppTheme()` hook:
+
   - Never use hardcoded color literals (`"#444"`, `"white"`, `rgba(...)`)
   - Use `colors.text`, `colors.background`, `colors.card`, `colors.accent`, `colors.divider`, `colors.error`, `colors.success`, `colors.info` for semantic colors
   - Apply colors inline for dynamic values: `style={{ backgroundColor: colors.card }}`
@@ -1101,6 +1111,22 @@ When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follo
 - **Follow Supabase guidelines** for security and performance
 - **Use Zod schemas** to validate data exchanged with the backend
 - **Implement proper error handling** and user-friendly error messages
+
+### User Data and State Persistence
+
+- **Store user preferences in backend** - User-specific state like current program selection should be persisted in the backend database
+- **Fetch user data on app startup** - When the app loads, fetch user data to restore the user's previous state (e.g., selected program)
+- **Lazy initialization** - Create user data entries lazily on first access if they don't exist
+- **Graceful fallbacks** - If user data fetch fails or stored references are invalid, fall back to sensible defaults (e.g., first available program)
+- **Automatic persistence** - When users change preferences (e.g., select a different program), automatically persist changes to the backend without disrupting the user experience
+- **Silent error handling** - Background persistence failures should not disrupt the user experience; handle errors silently where appropriate
+
+### Logging and Debugging
+
+- **No console logs in frontend** - Avoid using `console.log`, `console.warn`, or `console.error` in frontend code
+- **Backend logging** - Use `console.error` in backend code only for error handling in try-catch blocks
+- **Error handling** - Use proper error boundaries and error states instead of console logging for user-facing errors
+- **Development tools** - Use React DevTools, network inspectors, and other development tools instead of console logs for debugging
 
 ### Internationalization and Accessibility
 

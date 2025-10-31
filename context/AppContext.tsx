@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 import { Program } from "@/types";
@@ -29,7 +30,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
 
-  // Fetch programs on mount and when auth state changes
   useEffect(() => {
     if (!isAuthenticated) {
       setIsLoading(false);
@@ -40,11 +40,34 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       try {
         setIsLoading(true);
         setHasError(false);
+
+        let userData;
+        try {
+          userData = await api.fetchUserData();
+        } catch {
+          // Continue with default behavior if user data fetch fails
+        }
+
         const fetchedPrograms = await api.fetchPrograms();
         setPrograms(fetchedPrograms);
-        // Default to the first program
-        if (fetchedPrograms.length > 0 && !selectedProgram) {
-          setSelectedProgram(fetchedPrograms[0]);
+
+        if (fetchedPrograms.length > 0) {
+          let programToSelect: Program | null = null;
+
+          if (userData?.currentProgramId) {
+            const foundProgram = fetchedPrograms.find(
+              (p) => p.id === userData.currentProgramId
+            );
+            if (foundProgram) {
+              programToSelect = foundProgram;
+            }
+          }
+
+          if (!programToSelect) {
+            programToSelect = fetchedPrograms[0];
+          }
+
+          setSelectedProgram(programToSelect);
         }
       } catch (error) {
         setHasError(true);
@@ -59,11 +82,28 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     loadPrograms();
   }, [isAuthenticated]);
 
+  const handleSetSelectedProgram = useCallback(
+    async (program: Program | null) => {
+      setSelectedProgram(program);
+
+      if (isAuthenticated) {
+        try {
+          await api.updateUserData({
+            currentProgramId: program?.id || null,
+          });
+        } catch {
+          // Silently fail - don't disrupt user experience
+        }
+      }
+    },
+    [isAuthenticated]
+  );
+
   return (
     <AppContext.Provider
       value={{
         selectedProgram,
-        setSelectedProgram,
+        setSelectedProgram: handleSetSelectedProgram,
         programs,
         setPrograms,
         isLoading,

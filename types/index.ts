@@ -100,3 +100,9 @@ export type HistoryStats = {
     date: Date;
   }>;
 };
+
+export type UserData = {
+  userId: string;
+  currentProgramId: ProgramId | null;
+  updatedAt: Date;
+};

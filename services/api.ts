@@ -8,6 +8,7 @@ import {
   HistoryStats,
   WorkoutExercise,
   WorkoutId,
+  UserData,
 } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -257,5 +258,45 @@ export async function getHistoryStats(
       date: new Date(lift.date),
     })),
   };
+}
+
+// User Data API functions
+
+interface UserDataDTO {
+  userId: string;
+  currentProgramId: string | null;
+  updatedAt: string;
+}
+
+// Helper to convert API response to proper UserData type with Date objects
+function parseUserDataDates(userData: UserDataDTO): UserData {
+  return {
+    ...userData,
+    currentProgramId: userData.currentProgramId ? (userData.currentProgramId as ProgramId) : null,
+    updatedAt: new Date(userData.updatedAt),
+  };
+}
+
+export async function fetchUserData(): Promise<UserData> {
+  const headers = await createHeaders();
+  const response = await fetch(`${API_BASE_URL}/user-data`, {
+    headers,
+  });
+  const userData = await handleResponse<UserDataDTO>(response);
+  return parseUserDataDates(userData);
+}
+
+export async function updateUserData(data: Partial<UserData>): Promise<UserData> {
+  const headers = await createHeaders();
+  const response = await fetch(`${API_BASE_URL}/user-data`, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({
+      ...data,
+      updatedAt: data.updatedAt?.toISOString(),
+    }),
+  });
+  const updated = await handleResponse<UserDataDTO>(response);
+  return parseUserDataDates(updated);
 }
 
