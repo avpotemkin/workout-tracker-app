@@ -28,11 +28,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [hasLoadedInitialData, setHasLoadedInitialData] = useState(false);
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated) {
       setIsLoading(false);
+      setHasLoadedInitialData(false);
+      setSelectedProgram(null);
+      setPrograms([]);
+      return;
+    }
+
+    if (hasLoadedInitialData) {
       return;
     }
 
@@ -41,6 +49,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(true);
         setHasError(false);
 
+        const fetchedPrograms = await api.fetchPrograms();
+        setPrograms(fetchedPrograms);
+
+        if (fetchedPrograms.length === 0) {
+          setIsLoading(false);
+          setHasLoadedInitialData(true);
+          return;
+        }
+
         let userData;
         try {
           userData = await api.fetchUserData();
@@ -48,27 +65,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           // Continue with default behavior if user data fetch fails
         }
 
-        const fetchedPrograms = await api.fetchPrograms();
-        setPrograms(fetchedPrograms);
+        let programToSelect: Program | null = null;
 
-        if (fetchedPrograms.length > 0) {
-          let programToSelect: Program | null = null;
-
-          if (userData?.currentProgramId) {
-            const foundProgram = fetchedPrograms.find(
-              (p) => p.id === userData.currentProgramId
-            );
-            if (foundProgram) {
-              programToSelect = foundProgram;
-            }
+        if (userData?.currentProgramId) {
+          const foundProgram = fetchedPrograms.find(
+            (p) => p.id === userData.currentProgramId
+          );
+          if (foundProgram) {
+            programToSelect = foundProgram;
           }
-
-          if (!programToSelect) {
-            programToSelect = fetchedPrograms[0];
-          }
-
-          setSelectedProgram(programToSelect);
         }
+
+        if (!programToSelect) {
+          programToSelect = fetchedPrograms[0];
+        }
+
+        setSelectedProgram(programToSelect);
+        setHasLoadedInitialData(true);
       } catch (error) {
         setHasError(true);
         setErrorMessage(
@@ -80,7 +93,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
 
     loadPrograms();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasLoadedInitialData]);
 
   const handleSetSelectedProgram = useCallback(
     async (program: Program | null) => {
