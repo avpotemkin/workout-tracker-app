@@ -141,32 +141,45 @@ export default function ProgramDetailsScreen() {
         >
           <ThemedText
             type="defaultSemiBold"
-            style={[styles.selectProgramButtonText, { color: colors.background }]}
+            style={[
+              styles.selectProgramButtonText,
+              { color: colors.background },
+            ]}
           >
             {isProgramSelected ? "Current Program" : "Set as Current Program"}
           </ThemedText>
         </TouchableOpacity>
 
-        <View style={styles.workoutTabs}>
-          {program.workouts.map((workout: Workout, index: number) => (
-            <TouchableOpacity
-              key={workout.id}
-              style={[
-                styles.workoutTab,
-                selectedWorkoutIndex === index
-                  ? { backgroundColor: colors.accent }
-                  : { backgroundColor: colors.card },
-              ]}
-              onPress={() => setSelectedWorkoutIndex(index)}
-            >
-              <ThemedText
-                type="body"
-                style={selectedWorkoutIndex === index ? { color: colors.background } : {}}
+        <View style={styles.workoutTabsContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.workoutTabs}
+          >
+            {program.workouts.map((workout: Workout, index: number) => (
+              <TouchableOpacity
+                key={workout.id}
+                style={[
+                  styles.workoutTab,
+                  selectedWorkoutIndex === index
+                    ? { backgroundColor: colors.accent }
+                    : { backgroundColor: colors.card },
+                ]}
+                onPress={() => setSelectedWorkoutIndex(index)}
               >
-                {workout.name}
-              </ThemedText>
-            </TouchableOpacity>
-          ))}
+                <ThemedText
+                  type="body"
+                  style={
+                    selectedWorkoutIndex === index
+                      ? { color: colors.background }
+                      : {}
+                  }
+                >
+                  {workout.name}
+                </ThemedText>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         <ScrollView style={styles.exerciseList}>
@@ -175,36 +188,50 @@ export default function ProgramDetailsScreen() {
               key={exercise.id}
               style={[styles.exerciseCard, { backgroundColor: colors.card }]}
             >
-              <ThemedText type="subtitle">
-                {getExerciseNameById(exercise.templateId)}
-              </ThemedText>
-              <View style={styles.exerciseDetails}>
-                <View style={styles.detailItem}>
-                  <ThemedText type="caption" style={styles.detailLabel}>
-                    Sets
-                  </ThemedText>
-                  <ThemedText type="defaultSemiBold">
-                    {exercise.sets}
-                  </ThemedText>
-                </View>
-                <View style={styles.detailItem}>
-                  <ThemedText type="caption" style={styles.detailLabel}>
-                    Reps
-                  </ThemedText>
-                  <ThemedText type="defaultSemiBold">
-                    {exercise.reps}
-                  </ThemedText>
-                </View>
-                {exercise.weight && (
-                  <View style={styles.detailItem}>
-                    <ThemedText type="caption" style={styles.detailLabel}>
-                      Weight
+              <View style={styles.exerciseContent}>
+                <View style={styles.exerciseInfo}>
+                  <View style={styles.exerciseHeader}>
+                    <ThemedText
+                      type="label"
+                      style={styles.exerciseName}
+                      numberOfLines={2}
+                    >
+                      {getExerciseNameById(exercise.templateId)}
                     </ThemedText>
-                    <ThemedText type="defaultSemiBold">
-                      {exercise.weight.value} {exercise.weight.unit}
-                    </ThemedText>
+                    <View style={styles.setsRepsContainer}>
+                      <View style={styles.counterGroup}>
+                        <View
+                          style={[
+                            styles.valueContainer,
+                            { backgroundColor: colors.card },
+                          ]}
+                        >
+                          <ThemedText type="defaultSemiBold">
+                            {exercise.sets}
+                          </ThemedText>
+                        </View>
+                        <ThemedText type="caption" style={styles.counterLabel}>
+                          Sets
+                        </ThemedText>
+                      </View>
+                      <View style={styles.counterGroup}>
+                        <View
+                          style={[
+                            styles.valueContainer,
+                            { backgroundColor: colors.card },
+                          ]}
+                        >
+                          <ThemedText type="defaultSemiBold">
+                            {exercise.reps}
+                          </ThemedText>
+                        </View>
+                        <ThemedText type="caption" style={styles.counterLabel}>
+                          Reps
+                        </ThemedText>
+                      </View>
+                    </View>
                   </View>
-                )}
+                </View>
               </View>
             </View>
           ))}
@@ -230,41 +257,76 @@ const styles = StyleSheet.create({
     marginRight: spacing.md,
   },
   selectProgramButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
     borderRadius: 8,
-    marginBottom: 16,
+    marginBottom: spacing.md,
     alignSelf: "center",
   },
   selectProgramButtonText: {},
+  workoutTabsContainer: {
+    marginBottom: spacing.md,
+    height: 44,
+  },
   workoutTabs: {
     flexDirection: "row",
-    paddingBottom: 10,
+    alignItems: "center",
+    paddingRight: spacing.md,
   },
   workoutTab: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
     borderRadius: 20,
-    marginRight: 8,
-    marginBottom: 8,
+    marginRight: spacing.sm,
+    minHeight: 36,
+    justifyContent: "center",
+    alignItems: "center",
   },
   exerciseList: {
     flex: 1,
   },
   exerciseCard: {
     borderRadius: 10,
-    padding: 16,
-    marginBottom: 16,
+    padding: spacing.md,
+    marginBottom: 12,
   },
-  exerciseDetails: {
+  exerciseContent: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
-  detailItem: {
+  exerciseInfo: {
+    flex: 1,
+  },
+  exerciseHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  exerciseName: {
+    flex: 1,
+    marginRight: spacing.md,
+  },
+  setsRepsContainer: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  detailLabel: {
+  counterGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: spacing.sm,
+  },
+  valueContainer: {
+    minWidth: 28,
+    height: 24,
+    borderRadius: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: spacing.xs,
+    marginRight: spacing.xs,
+  },
+  counterLabel: {
+    fontSize: 10,
     opacity: 0.7,
-    marginBottom: 4,
   },
 });
