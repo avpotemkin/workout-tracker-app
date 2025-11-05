@@ -1,5 +1,9 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, TouchableOpacityProps } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  TouchableOpacityProps,
+} from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
@@ -32,10 +36,7 @@ export function OutlinedButton({
       disabled={disabled}
       {...props}
     >
-      <ThemedText
-        type="defaultSemiBold"
-        style={{ color: colors.accent }}
-      >
+      <ThemedText type="defaultSemiBold" style={{ color: colors.accent }}>
         {children}
       </ThemedText>
     </TouchableOpacity>
@@ -53,4 +54,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUserId(storedUserId);
         }
       } catch {
+        // TODO: Error handling
       } finally {
         setIsLoading(false);
       }
@@ -41,21 +42,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async () => {
-    try {
-      await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
-      setUserId(MOCK_USER_ID);
-    } catch (error) {
-      throw error;
-    }
+    await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
+    setUserId(MOCK_USER_ID);
   };
 
   const logout = async () => {
-    try {
-      await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
-      setUserId(null);
-    } catch (error) {
-      throw error;
-    }
+    await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+    setUserId(null);
   };
 
   return (
