@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { WorkoutHistory, WorkoutSet } from "@/types";
 import { getExerciseNameById } from "@/constants/Exercises";

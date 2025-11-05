@@ -120,6 +120,54 @@ expo-app/
 └── tsconfig.json                  # TypeScript configuration
 ```
 
+### Component Organization
+
+Components should be organized by feature and responsibility to maintain clear separation of concerns:
+
+```
+components/
+├── common/                        # Generic reusable components
+│   ├── ThemedText.tsx            # Themed text component
+│   ├── ThemedView.tsx            # Themed view component
+│   ├── OutlinedButton.tsx        # Button component
+│   └── index.ts                  # Barrel exports
+├── session/                       # Active workout session components
+│   ├── SessionHeader.tsx         # Session screen header
+│   ├── SessionProgress.tsx       # Progress indicator
+│   ├── ExerciseList.tsx          # List of exercises
+│   ├── ExerciseCard/             # Exercise card components
+│   │   ├── ExerciseCard.tsx      # Main card component
+│   │   ├── SetList.tsx           # List of sets
+│   │   └── SetRow.tsx            # Individual set row
+│   └── index.ts                  # Barrel exports
+├── programs/                      # Program building/editing components
+│   ├── EditWorkoutModal.tsx      # Modal for editing workouts
+│   ├── AddExerciseModal.tsx      # Modal for adding exercises
+│   ├── SetsRepsCounter.tsx       # Sets/reps counter control
+│   ├── WorkoutSelectionModal.tsx # Workout selection modal
+│   ├── WorkoutSplitPicker.tsx    # Workout split picker
+│   └── index.ts                  # Barrel exports
+├── history/                       # Workout history components
+│   ├── HistoryCard.tsx           # History entry card
+│   ├── HistoryFilters.tsx        # History filters
+│   ├── HistoryHeader.tsx         # History screen header
+│   ├── HistoryList.tsx           # History list
+│   ├── HistoryStats.tsx          # Statistics display
+│   └── index.ts                  # Barrel exports
+└── ui/                           # Low-level UI primitives
+    ├── IconSymbol.tsx            # Icon symbol component
+    └── TabBarBackground.tsx      # Tab bar background
+```
+
+**Organization Principles:**
+
+- **common/**: Shared, generic components used across multiple features
+- **session/**: Components specific to active workout session execution
+- **programs/**: Components for creating and editing workout programs
+- **history/**: Components for displaying workout history and statistics
+- **ui/**: Lowest-level UI primitives and platform-specific implementations
+- Each feature folder includes an `index.ts` for clean barrel exports
+
 ## Core Development Principles
 
 ### Code Style and Structure

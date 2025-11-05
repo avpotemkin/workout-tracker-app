@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { OutlinedButton } from "@/components/OutlinedButton";
+import { ThemedText } from "@/components/common/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { OutlinedButton } from "@/components/common/OutlinedButton";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";

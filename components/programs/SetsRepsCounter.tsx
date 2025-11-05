@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { spacing } from "@/constants/Theme";

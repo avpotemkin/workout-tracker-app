@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Alert, Vibration } from "react-native";
+import { StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import {
   WorkoutSession,
@@ -19,9 +19,9 @@ import { spacing } from "@/constants/Theme";
 import { convertSessionToHistory } from "@/utils/workoutHistory";
 import { createWorkoutHistory } from "@/services/api";
 
-import { WorkoutHeader } from "@/components/workout/WorkoutHeader";
-import { WorkoutProgress } from "@/components/workout/WorkoutProgress";
-import { ExerciseList } from "@/components/workout/ExerciseList";
+import { SessionHeader } from "@/components/session/SessionHeader";
+import { SessionProgress } from "@/components/session/SessionProgress";
+import { ExerciseList } from "@/components/session/ExerciseList";
 
 type WorkoutSessionScreenProps = {
   programId?: string;
@@ -97,7 +97,6 @@ export function WorkoutSessionScreen({
     });
 
     if (currentSet.isCompleted) {
-      Vibration.vibrate();
       moveToNextSet(exerciseIndex, setIndex);
     }
   };
@@ -222,12 +221,12 @@ export function WorkoutSessionScreen({
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ThemedView style={styles.container}>
-        <WorkoutHeader
+        <SessionHeader
           onBackPress={() => router.back()}
           title={workoutSession.workoutName}
         />
 
-        <WorkoutProgress
+        <SessionProgress
           completed={progress.completed}
           total={progress.total}
           percentage={progress.percentage}

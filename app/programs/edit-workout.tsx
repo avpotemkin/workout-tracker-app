@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
@@ -25,7 +25,7 @@ import {
 } from "@/constants/Exercises";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { generateId } from "@/utils/ids";
-import { SetsRepsCounter } from "@/components/workout/SetsRepsCounter";
+import { SetsRepsCounter } from "@/components/programs/SetsRepsCounter";
 
 export default function EditWorkoutScreen() {
   const params = useLocalSearchParams();

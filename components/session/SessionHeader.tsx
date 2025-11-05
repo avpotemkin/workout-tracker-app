@@ -1,21 +1,21 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { spacing } from "@/constants/Theme";
 
-type WorkoutHeaderProps = {
+type SessionHeaderProps = {
   onBackPress: () => void;
   title: string;
   style?: ViewStyle;
 };
 
-export function WorkoutHeader({
+export function SessionHeader({
   onBackPress,
   title,
   style,
-}: WorkoutHeaderProps) {
+}: SessionHeaderProps) {
   const textColor = useThemeColor({}, "text");
 
   return (
@@ -47,3 +47,4 @@ const styles = StyleSheet.create({
     marginRight: spacing.xl,
   },
 });
+

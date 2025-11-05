@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 export function HistoryHeader() {

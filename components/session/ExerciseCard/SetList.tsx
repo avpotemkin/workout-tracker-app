@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { WorkoutExercise, WorkoutSet } from "@/types";
 import { SetRow } from "./SetRow";
 

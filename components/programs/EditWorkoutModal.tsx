@@ -19,7 +19,7 @@ import {
   BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
 import { useProgramDraft } from "@/context/ProgramDraftContext";

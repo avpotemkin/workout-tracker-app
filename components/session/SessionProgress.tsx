@@ -1,21 +1,21 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/components/common/ThemedText';
 import { useAppTheme } from '@/hooks/useAppTheme';
 
-type WorkoutProgressProps = {
+type SessionProgressProps = {
   completed: number;
   total: number;
   percentage: number;
   style?: ViewStyle;
 };
 
-export function WorkoutProgress({ 
+export function SessionProgress({ 
   completed, 
   total, 
   percentage, 
   style 
-}: WorkoutProgressProps) {
+}: SessionProgressProps) {
   const { colors } = useAppTheme();
 
   return (
@@ -55,3 +55,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

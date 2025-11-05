@@ -10,8 +10,8 @@ import {
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
@@ -21,8 +21,8 @@ import { usePrograms } from "@/hooks/usePrograms";
 import { useProgramDraft } from "@/context/ProgramDraftContext";
 import { Program, Workout, ProgramId, WorkoutId } from "@/types";
 import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
-import { showWorkoutSplitPicker } from "@/components/WorkoutSplitPicker";
-import { EditWorkoutModal } from "@/components/workout";
+import { showWorkoutSplitPicker } from "@/components/programs/WorkoutSplitPicker";
+import { EditWorkoutModal } from "@/components/programs";
 import { generateId } from "@/utils/ids";
 
 export default function EditProgramScreen() {

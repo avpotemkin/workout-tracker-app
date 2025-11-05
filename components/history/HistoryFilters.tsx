@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/common/ThemedText';
+import { ThemedView } from '@/components/common/ThemedView';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { WorkoutHistory } from '@/types';
 

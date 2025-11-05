@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, ViewStyle } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/common/ThemedText';
+import { ThemedView } from '@/components/common/ThemedView';
 import { WorkoutHistory } from '@/types';
 import { HistoryCard } from './HistoryCard';
 

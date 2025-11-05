@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/common/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { HistoryStats as HistoryStatsType } from "@/types";
 

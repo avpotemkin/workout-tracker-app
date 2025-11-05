@@ -3,14 +3,14 @@ import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
-import { WorkoutSelectionModal } from "@/components/workout";
+import { WorkoutSelectionModal } from "@/components/programs";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function WorkoutScreen() {

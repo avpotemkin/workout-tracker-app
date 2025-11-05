@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacityProps,
 } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { ThemedText } from "./ThemedText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
 
