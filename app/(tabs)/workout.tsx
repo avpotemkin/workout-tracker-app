@@ -1,64 +1,64 @@
-import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { useAppContext } from "@/context/AppContext";
-import { WorkoutSelectionModal } from "@/components/programs";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import React, { useState, useEffect, useRef } from 'react'
+import { StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { ThemedView } from '@/components/common/ThemedView'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { useAppContext } from '@/context/AppContext'
+import { WorkoutSelectionModal } from '@/components/programs'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 export default function WorkoutScreen() {
-  const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
-  const router = useRouter();
-  const [activeSession, setActiveSession] = useState(null);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const { selectedProgram } = useAppContext();
+  const backgroundColor = useThemeColor({}, 'background')
+  const { colors } = useAppTheme()
+  const router = useRouter()
+  const [activeSession, setActiveSession] = useState(null)
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { selectedProgram } = useAppContext()
 
-  const defaultProgram = selectedProgram;
+  const defaultProgram = selectedProgram
 
   useEffect(() => {
     const checkActiveSession = () => {
-      setActiveSession(null);
-    };
+      setActiveSession(null)
+    }
 
-    checkActiveSession();
-  }, []);
+    checkActiveSession()
+  }, [])
 
   const handleStartWorkout = () => {
     if (defaultProgram && defaultProgram.workouts.length > 0) {
-      bottomSheetModalRef.current?.present();
+      bottomSheetModalRef.current?.present()
     } else {
-      router.push("/(tabs)/programs");
+      router.push('/(tabs)/programs')
     }
-  };
+  }
 
   const handleSelectWorkout = (workoutId: string) => {
     if (defaultProgram) {
       router.push({
-        pathname: "/(workout)/session",
+        pathname: '/(workout)/session',
         params: {
           programId: defaultProgram.id,
           workoutId: workoutId,
         },
-      });
+      })
     }
-  };
+  }
 
   const handleResumeWorkout = () => {
     router.push({
-      pathname: "/(workout)/session",
-    });
-  };
+      pathname: '/(workout)/session',
+    })
+  }
 
   const handleSelectProgram = () => {
-    router.push("/(tabs)/programs");
-  };
+    router.push('/(tabs)/programs')
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -67,7 +67,7 @@ export default function WorkoutScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          <ThemedText type="title" style={styles.header}>
+          <ThemedText type='title' style={styles.header}>
             Workout
           </ThemedText>
 
@@ -77,17 +77,17 @@ export default function WorkoutScreen() {
                 <View style={styles.cardHeader}>
                   <View style={styles.cardHeaderLeft}>
                     <Ionicons
-                      name="fitness"
+                      name='fitness'
                       size={24}
                       color={colors.accent}
                       style={styles.cardIcon}
                     />
-                    <ThemedText type="defaultSemiBold">
+                    <ThemedText type='defaultSemiBold'>
                       Active Workout
                     </ThemedText>
                   </View>
                 </View>
-                <ThemedText type="body" style={styles.cardDescription}>
+                <ThemedText type='body' style={styles.cardDescription}>
                   You have an active workout session. Resume to continue where
                   you left off.
                 </ThemedText>
@@ -95,9 +95,9 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleResumeWorkout}
                 >
-                  <Ionicons name="play" size={20} color={colors.background} />
+                  <Ionicons name='play' size={20} color={colors.background} />
                   <ThemedText
-                    type="defaultSemiBold"
+                    type='defaultSemiBold'
                     style={[styles.buttonText, { color: colors.background }]}
                   >
                     Resume Workout
@@ -108,7 +108,7 @@ export default function WorkoutScreen() {
           ) : (
             <>
               <View style={styles.section}>
-                <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+                <ThemedText type='defaultSemiBold' style={styles.sectionTitle}>
                   Current Program
                 </ThemedText>
 
@@ -117,12 +117,12 @@ export default function WorkoutScreen() {
                     <View style={styles.cardHeader}>
                       <View style={styles.cardHeaderLeft}>
                         <Ionicons
-                          name="barbell"
+                          name='barbell'
                           size={24}
                           color={colors.accent}
                           style={styles.cardIcon}
                         />
-                        <ThemedText type="label" style={styles.programName}>
+                        <ThemedText type='label' style={styles.programName}>
                           {selectedProgram.name}
                         </ThemedText>
                       </View>
@@ -135,12 +135,12 @@ export default function WorkoutScreen() {
                         ]}
                       >
                         <ThemedText
-                          type="caption"
+                          type='caption'
                           style={styles.nextWorkoutLabel}
                         >
                           Next Workout:
                         </ThemedText>
-                        <ThemedText type="defaultSemiBold">
+                        <ThemedText type='defaultSemiBold'>
                           {selectedProgram.workouts[0].name}
                         </ThemedText>
                       </View>
@@ -153,13 +153,13 @@ export default function WorkoutScreen() {
                     >
                       <View style={styles.statItem}>
                         <Ionicons
-                          name="calendar-outline"
+                          name='calendar-outline'
                           size={16}
                           color={colors.text}
                         />
-                        <ThemedText type="caption" style={styles.statText}>
+                        <ThemedText type='caption' style={styles.statText}>
                           {selectedProgram.workouts.length} workout
-                          {selectedProgram.workouts.length !== 1 ? "s" : ""}
+                          {selectedProgram.workouts.length !== 1 ? 's' : ''}
                         </ThemedText>
                       </View>
                     </View>
@@ -168,12 +168,12 @@ export default function WorkoutScreen() {
                   <View style={[styles.card, { backgroundColor: colors.card }]}>
                     <View style={styles.emptyCardContent}>
                       <Ionicons
-                        name="clipboard-outline"
+                        name='clipboard-outline'
                         size={32}
                         color={colors.text}
                         style={styles.emptyIcon}
                       />
-                      <ThemedText type="body" style={styles.emptyText}>
+                      <ThemedText type='body' style={styles.emptyText}>
                         No program selected. Select a program to get started
                         with your workouts.
                       </ThemedText>
@@ -183,7 +183,7 @@ export default function WorkoutScreen() {
               </View>
 
               <View style={styles.section}>
-                <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+                <ThemedText type='defaultSemiBold' style={styles.sectionTitle}>
                   Quick Actions
                 </ThemedText>
 
@@ -192,17 +192,17 @@ export default function WorkoutScreen() {
                   onPress={handleStartWorkout}
                 >
                   <Ionicons
-                    name="play-circle"
+                    name='play-circle'
                     size={24}
                     color={colors.background}
                   />
                   <ThemedText
-                    type="defaultSemiBold"
+                    type='defaultSemiBold'
                     style={[styles.buttonText, { color: colors.background }]}
                   >
                     {selectedProgram
                       ? `Quick Start: ${selectedProgram.name}`
-                      : "Quick Start"}
+                      : 'Quick Start'}
                   </ThemedText>
                 </TouchableOpacity>
 
@@ -210,9 +210,9 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.card }]}
                   onPress={handleSelectProgram}
                 >
-                  <Ionicons name="list" size={24} color={colors.text} />
+                  <Ionicons name='list' size={24} color={colors.text} />
                   <ThemedText
-                    type="defaultSemiBold"
+                    type='defaultSemiBold'
                     style={[styles.buttonText, { color: colors.text }]}
                   >
                     Select Program
@@ -230,7 +230,7 @@ export default function WorkoutScreen() {
         onSelectWorkout={handleSelectWorkout}
       />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -260,14 +260,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   cardHeaderLeft: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   cardIcon: {
@@ -291,15 +291,15 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   statItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statText: {
     marginLeft: 6,
     opacity: 0.8,
   },
   emptyCardContent: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 8,
   },
   emptyIcon: {
@@ -308,22 +308,22 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     opacity: 0.7,
-    textAlign: "center",
+    textAlign: 'center',
   },
   cardDescription: {
     opacity: 0.8,
     marginBottom: 16,
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 15,
     borderRadius: 10,
     marginBottom: 12,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
     marginLeft: 8,
   },
-});
+})

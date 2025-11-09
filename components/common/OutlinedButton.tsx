@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
   TouchableOpacity,
   StyleSheet,
   TouchableOpacityProps,
-} from "react-native";
-import { ThemedText } from "./ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
+} from 'react-native'
+import { ThemedText } from './ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
 
 interface OutlinedButtonProps extends TouchableOpacityProps {
-  children: React.ReactNode;
-  onPress: () => void;
+  children: React.ReactNode
+  onPress: () => void
 }
 
 export function OutlinedButton({
@@ -20,7 +20,7 @@ export function OutlinedButton({
   disabled,
   ...props
 }: OutlinedButtonProps) {
-  const { colors } = useAppTheme();
+  const { colors } = useAppTheme()
 
   return (
     <TouchableOpacity
@@ -36,21 +36,21 @@ export function OutlinedButton({
       disabled={disabled}
       {...props}
     >
-      <ThemedText type="defaultSemiBold" style={{ color: colors.accent }}>
+      <ThemedText type='defaultSemiBold' style={{ color: colors.accent }}>
         {children}
       </ThemedText>
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     borderRadius: 10,
     borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-});
+})

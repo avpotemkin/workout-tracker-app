@@ -1,21 +1,21 @@
 ---
-name: "TypeScript React Native Expo Development Guide"
-description: "A comprehensive development guide for building cross-platform mobile and web applications using TypeScript, React Native, Expo, Tamagui, Supabase, and modern development tools"
-category: "Cross-Platform Framework"
-author: "Agents.md Collection"
-authorUrl: "https://github.com/gakeez/agents_md_collection"
+name: 'TypeScript React Native Expo Development Guide'
+description: 'A comprehensive development guide for building cross-platform mobile and web applications using TypeScript, React Native, Expo, Tamagui, Supabase, and modern development tools'
+category: 'Cross-Platform Framework'
+author: 'Agents.md Collection'
+authorUrl: 'https://github.com/gakeez/agents_md_collection'
 tags:
   [
-    "typescript",
-    "react-native",
-    "expo",
-    "tamagui",
-    "supabase",
-    "cross-platform",
-    "mobile-development",
-    "monorepo",
+    'typescript',
+    'react-native',
+    'expo',
+    'tamagui',
+    'supabase',
+    'cross-platform',
+    'mobile-development',
+    'monorepo',
   ]
-lastUpdated: "2025-06-16"
+lastUpdated: '2025-06-16'
 ---
 
 # TypeScript React Native Expo Development Guide
@@ -176,36 +176,36 @@ components/
 // Use functional and declarative programming patterns
 // Prefer interfaces over types for object shapes
 interface UserProfile {
-  id: string;
-  email: string;
-  name: string;
-  avatarUrl?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 // Use descriptive variable names with auxiliary verbs
 interface AuthState {
-  isLoading: boolean;
-  hasError: boolean;
-  isAuthenticated: boolean;
-  user: UserProfile | null;
+  isLoading: boolean
+  hasError: boolean
+  isAuthenticated: boolean
+  user: UserProfile | null
 }
 
 // Use function keyword for pure functions
 function formatUserDisplayName(user: UserProfile): string {
-  return user.name || user.email.split("@")[0];
+  return user.name || user.email.split('@')[0]
 }
 
 // Favor named exports
-export { UserProfile, AuthState, formatUserDisplayName };
+export { UserProfile, AuthState, formatUserDisplayName }
 ```
 
 ### TypeScript and Zod Integration
 
 ```typescript
 // packages/api/src/types.ts
-import { z } from "zod";
+import { z } from 'zod'
 
 // Zod schemas for validation and type inference
 export const UserProfileSchema = z.object({
@@ -215,31 +215,31 @@ export const UserProfileSchema = z.object({
   avatarUrl: z.string().url().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+})
 
 export const CreateUserSchema = z.object({
   email: z.string().email(),
   name: z.string().min(2).max(100),
   password: z.string().min(8),
-});
+})
 
 export const UpdateUserSchema = CreateUserSchema.partial().omit({
   password: true,
-});
+})
 
 // Type inference from Zod schemas
-export type UserProfile = z.infer<typeof UserProfileSchema>;
-export type CreateUserRequest = z.infer<typeof CreateUserSchema>;
-export type UpdateUserRequest = z.infer<typeof UpdateUserSchema>;
+export type UserProfile = z.infer<typeof UserProfileSchema>
+export type CreateUserRequest = z.infer<typeof CreateUserSchema>
+export type UpdateUserRequest = z.infer<typeof UpdateUserSchema>
 
 // Avoid enums; use literal types instead
 export const UserRole = {
-  ADMIN: "admin",
-  USER: "user",
-  MODERATOR: "moderator",
-} as const;
+  ADMIN: 'admin',
+  USER: 'user',
+  MODERATOR: 'moderator',
+} as const
 
-export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
+export type UserRoleType = (typeof UserRole)[keyof typeof UserRole]
 ```
 
 ### Tamagui UI Components
@@ -370,33 +370,33 @@ export function Screen({
 
 ```typescript
 // packages/store/src/auth-store.ts
-import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
-import { UserProfile } from "@repo/api";
+import { create } from 'zustand'
+import { devtools, persist } from 'zustand/middleware'
+import { UserProfile } from '@repo/api'
 
 interface AuthState {
-  user: UserProfile | null;
-  isLoading: boolean;
-  hasError: boolean;
-  isAuthenticated: boolean;
+  user: UserProfile | null
+  isLoading: boolean
+  hasError: boolean
+  isAuthenticated: boolean
 }
 
 interface AuthActions {
-  setUser: (user: UserProfile | null) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: boolean) => void;
-  signOut: () => void;
-  reset: () => void;
+  setUser: (user: UserProfile | null) => void
+  setLoading: (loading: boolean) => void
+  setError: (error: boolean) => void
+  signOut: () => void
+  reset: () => void
 }
 
-type AuthStore = AuthState & AuthActions;
+type AuthStore = AuthState & AuthActions
 
 const initialState: AuthState = {
   user: null,
   isLoading: false,
   hasError: false,
   isAuthenticated: false,
-};
+}
 
 export const useAuthStore = create<AuthStore>()(
   devtools(
@@ -408,107 +408,107 @@ export const useAuthStore = create<AuthStore>()(
           set(
             { user, isAuthenticated: !!user, hasError: false },
             false,
-            "auth/setUser"
+            'auth/setUser'
           ),
 
-        setLoading: (isLoading) => set({ isLoading }, false, "auth/setLoading"),
+        setLoading: (isLoading) => set({ isLoading }, false, 'auth/setLoading'),
 
         setError: (hasError) =>
-          set({ hasError, isLoading: false }, false, "auth/setError"),
+          set({ hasError, isLoading: false }, false, 'auth/setError'),
 
-        signOut: () => set({ ...initialState }, false, "auth/signOut"),
+        signOut: () => set({ ...initialState }, false, 'auth/signOut'),
 
-        reset: () => set({ ...initialState }, false, "auth/reset"),
+        reset: () => set({ ...initialState }, false, 'auth/reset'),
       }),
       {
-        name: "auth-store",
+        name: 'auth-store',
         partialize: (state) => ({
           user: state.user,
           isAuthenticated: state.isAuthenticated,
         }),
       }
     ),
-    { name: "AuthStore" }
+    { name: 'AuthStore' }
   )
-);
+)
 
 // Selectors for optimized re-renders
-export const useUser = () => useAuthStore((state) => state.user);
+export const useUser = () => useAuthStore((state) => state.user)
 export const useIsAuthenticated = () =>
-  useAuthStore((state) => state.isAuthenticated);
-export const useAuthLoading = () => useAuthStore((state) => state.isLoading);
+  useAuthStore((state) => state.isAuthenticated)
+export const useAuthLoading = () => useAuthStore((state) => state.isLoading)
 ```
 
 ### TanStack React Query Integration
 
 ```typescript
 // packages/api/src/hooks/use-user-queries.ts
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "../client";
-import { UserProfile, UpdateUserRequest, UpdateUserSchema } from "../types";
-import { useAuthStore } from "@repo/store";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { supabase } from '../client'
+import { UserProfile, UpdateUserRequest, UpdateUserSchema } from '../types'
+import { useAuthStore } from '@repo/store'
 
 // Query keys factory
 export const userKeys = {
-  all: ["users"] as const,
-  profile: (id: string) => [...userKeys.all, "profile", id] as const,
-  profiles: () => [...userKeys.all, "profiles"] as const,
-};
+  all: ['users'] as const,
+  profile: (id: string) => [...userKeys.all, 'profile', id] as const,
+  profiles: () => [...userKeys.all, 'profiles'] as const,
+}
 
 // Get current user profile
 export function useUserProfile() {
-  const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user)
 
   return useQuery({
-    queryKey: userKeys.profile(user?.id || ""),
+    queryKey: userKeys.profile(user?.id || ''),
     queryFn: async () => {
-      if (!user?.id) throw new Error("No user ID");
+      if (!user?.id) throw new Error('No user ID')
 
       const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
 
-      if (error) throw error;
-      return data as UserProfile;
+      if (error) throw error
+      return data as UserProfile
     },
     enabled: !!user?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
-  });
+  })
 }
 
 // Update user profile
 export function useUpdateUserProfile() {
-  const queryClient = useQueryClient();
-  const setUser = useAuthStore((state) => state.setUser);
+  const queryClient = useQueryClient()
+  const setUser = useAuthStore((state) => state.setUser)
 
   return useMutation({
     mutationFn: async (data: UpdateUserRequest) => {
       // Validate data with Zod
-      const validatedData = UpdateUserSchema.parse(data);
+      const validatedData = UpdateUserSchema.parse(data)
 
       const { data: updatedUser, error } = await supabase
-        .from("profiles")
+        .from('profiles')
         .update(validatedData)
-        .eq("id", data.id)
+        .eq('id', data.id)
         .select()
-        .single();
+        .single()
 
-      if (error) throw error;
-      return updatedUser as UserProfile;
+      if (error) throw error
+      return updatedUser as UserProfile
     },
     onSuccess: (updatedUser) => {
       // Update cache
-      queryClient.setQueryData(userKeys.profile(updatedUser.id), updatedUser);
+      queryClient.setQueryData(userKeys.profile(updatedUser.id), updatedUser)
 
       // Update auth store
-      setUser(updatedUser);
+      setUser(updatedUser)
     },
     onError: (error) => {
-      console.error("Failed to update profile:", error);
+      console.error('Failed to update profile:', error)
     },
-  });
+  })
 }
 ```
 
@@ -516,14 +516,14 @@ export function useUpdateUserProfile() {
 
 ```typescript
 // packages/api/src/auth.ts
-import { supabase } from "./client";
-import { CreateUserRequest, CreateUserSchema } from "./types";
-import { useAuthStore } from "@repo/store";
+import { supabase } from './client'
+import { CreateUserRequest, CreateUserSchema } from './types'
+import { useAuthStore } from '@repo/store'
 
 export class AuthService {
   static async signUp(data: CreateUserRequest) {
     // Validate input
-    const validatedData = CreateUserSchema.parse(data);
+    const validatedData = CreateUserSchema.parse(data)
 
     const { data: authData, error } = await supabase.auth.signUp({
       email: validatedData.email,
@@ -533,68 +533,68 @@ export class AuthService {
           name: validatedData.name,
         },
       },
-    });
+    })
 
-    if (error) throw error;
-    return authData;
+    if (error) throw error
+    return authData
   }
 
   static async signIn(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
-    });
+    })
 
-    if (error) throw error;
-    return data;
+    if (error) throw error
+    return data
   }
 
   static async signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    const { error } = await supabase.auth.signOut()
+    if (error) throw error
 
     // Clear auth store
-    useAuthStore.getState().signOut();
+    useAuthStore.getState().signOut()
   }
 
   static async resetPassword(email: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/reset-password`,
-    });
+    })
 
-    if (error) throw error;
+    if (error) throw error
   }
 }
 
 // Auth state listener
 export function setupAuthListener() {
-  const { setUser, setLoading } = useAuthStore.getState();
+  const { setUser, setLoading } = useAuthStore.getState()
 
   supabase.auth.onAuthStateChange(async (event, session) => {
-    setLoading(true);
+    setLoading(true)
 
     try {
       if (session?.user) {
         // Fetch user profile
         const { data: profile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
 
         if (profile) {
-          setUser(profile);
+          setUser(profile)
         }
       } else {
-        setUser(null);
+        setUser(null)
       }
     } catch (error) {
-      console.error("Auth state change error:", error);
-      setUser(null);
+      console.error('Auth state change error:', error)
+      setUser(null)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  });
+  })
 }
 ```
 
@@ -649,142 +649,142 @@ export function HomeScreen() {
 
 ```typescript
 // packages/config/src/i18n.ts
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import * as Localization from "expo-localization";
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import * as Localization from 'expo-localization'
 
 // Translation resources
 const resources = {
   en: {
     translation: {
-      welcome: "Welcome",
-      login: "Sign In",
-      logout: "Sign Out",
-      email: "Email",
-      password: "Password",
-      profile: "Profile",
-      settings: "Settings",
+      welcome: 'Welcome',
+      login: 'Sign In',
+      logout: 'Sign Out',
+      email: 'Email',
+      password: 'Password',
+      profile: 'Profile',
+      settings: 'Settings',
       errors: {
-        required: "This field is required",
-        invalidEmail: "Please enter a valid email",
-        passwordTooShort: "Password must be at least 8 characters",
+        required: 'This field is required',
+        invalidEmail: 'Please enter a valid email',
+        passwordTooShort: 'Password must be at least 8 characters',
       },
     },
   },
   es: {
     translation: {
-      welcome: "Bienvenido",
-      login: "Iniciar Sesión",
-      logout: "Cerrar Sesión",
-      email: "Correo Electrónico",
-      password: "Contraseña",
-      profile: "Perfil",
-      settings: "Configuración",
+      welcome: 'Bienvenido',
+      login: 'Iniciar Sesión',
+      logout: 'Cerrar Sesión',
+      email: 'Correo Electrónico',
+      password: 'Contraseña',
+      profile: 'Perfil',
+      settings: 'Configuración',
       errors: {
-        required: "Este campo es obligatorio",
-        invalidEmail: "Por favor ingrese un email válido",
-        passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
+        required: 'Este campo es obligatorio',
+        invalidEmail: 'Por favor ingrese un email válido',
+        passwordTooShort: 'La contraseña debe tener al menos 8 caracteres',
       },
     },
   },
-};
+}
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: Localization.locale.split("-")[0], // Get language code
-  fallbackLng: "en",
+  lng: Localization.locale.split('-')[0], // Get language code
+  fallbackLng: 'en',
   interpolation: {
     escapeValue: false,
   },
-});
+})
 
-export default i18n;
+export default i18n
 
 // Hook for translations
-export { useTranslation } from "react-i18next";
+export { useTranslation } from 'react-i18next'
 ```
 
 ### Stripe Integration
 
 ```typescript
 // packages/api/src/stripe.ts
-import { supabase } from "./client";
+import { supabase } from './client'
 
 export interface SubscriptionPlan {
-  id: string;
-  name: string;
-  price: number;
-  interval: "month" | "year";
-  features: string[];
-  stripePriceId: string;
+  id: string
+  name: string
+  price: number
+  interval: 'month' | 'year'
+  features: string[]
+  stripePriceId: string
 }
 
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
-    id: "basic",
-    name: "Basic",
+    id: 'basic',
+    name: 'Basic',
     price: 9.99,
-    interval: "month",
-    features: ["Feature 1", "Feature 2"],
-    stripePriceId: "price_basic_monthly",
+    interval: 'month',
+    features: ['Feature 1', 'Feature 2'],
+    stripePriceId: 'price_basic_monthly',
   },
   {
-    id: "pro",
-    name: "Pro",
+    id: 'pro',
+    name: 'Pro',
     price: 19.99,
-    interval: "month",
-    features: ["All Basic features", "Feature 3", "Feature 4"],
-    stripePriceId: "price_pro_monthly",
+    interval: 'month',
+    features: ['All Basic features', 'Feature 3', 'Feature 4'],
+    stripePriceId: 'price_pro_monthly',
   },
-];
+]
 
 export class StripeService {
   static async createCheckoutSession(priceId: string, userId: string) {
     const { data, error } = await supabase.functions.invoke(
-      "create-checkout-session",
+      'create-checkout-session',
       {
         body: { priceId, userId },
       }
-    );
+    )
 
-    if (error) throw error;
-    return data;
+    if (error) throw error
+    return data
   }
 
   static async createPortalSession(customerId: string) {
     const { data, error } = await supabase.functions.invoke(
-      "create-portal-session",
+      'create-portal-session',
       {
         body: { customerId },
       }
-    );
+    )
 
-    if (error) throw error;
-    return data;
+    if (error) throw error
+    return data
   }
 
   static async getSubscriptionStatus(userId: string) {
     const { data, error } = await supabase
-      .from("subscriptions")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("status", "active")
-      .single();
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .single()
 
-    if (error && error.code !== "PGRST116") throw error;
-    return data;
+    if (error && error.code !== 'PGRST116') throw error
+    return data
   }
 }
 
 // Subscription hook
 export function useSubscription() {
-  const user = useUser();
+  const user = useUser()
 
   return useQuery({
-    queryKey: ["subscription", user?.id],
+    queryKey: ['subscription', user?.id],
     queryFn: () => StripeService.getSubscriptionStatus(user!.id),
     enabled: !!user?.id,
-  });
+  })
 }
 ```
 
@@ -917,46 +917,46 @@ export class ErrorBoundary extends Component<Props, State> {
 
 ```typescript
 // packages/ui/src/hooks/use-debounce.ts
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+      setDebouncedValue(value)
+    }, delay)
 
     return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
+      clearTimeout(handler)
+    }
+  }, [value, delay])
 
-  return debouncedValue;
+  return debouncedValue
 }
 
 // packages/ui/src/hooks/use-intersection-observer.ts
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react'
 
 export function useIntersectionObserver(
   options: IntersectionObserverInit = {}
 ) {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const ref = useRef<any>(null);
+  const [isIntersecting, setIsIntersecting] = useState(false)
+  const ref = useRef<any>(null)
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current) return
 
     const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
-    }, options);
+      setIsIntersecting(entry.isIntersecting)
+    }, options)
 
-    observer.observe(ref.current);
+    observer.observe(ref.current)
 
-    return () => observer.disconnect();
-  }, [options]);
+    return () => observer.disconnect()
+  }, [options])
 
-  return { ref, isIntersecting };
+  return { ref, isIntersecting }
 }
 ```
 
@@ -976,7 +976,6 @@ export function useIntersectionObserver(
 ### Style Consistency and Header Standards
 
 - **Use spacing constants from `constants/Theme.ts`** for all padding, margins, and spacing values. Never use hardcoded numeric values (e.g., `16`, `20`, `24`) directly in StyleSheet definitions.
-
   - Available spacing values: `xs: 4`, `sm: 8`, `md: 16`, `lg: 24`, `xl: 32`, `xxl: 48`
   - Import spacing for StyleSheet: `import { spacing } from "@/constants/Theme"`
   - Use `useAppTheme()` hook for dynamic color values in inline styles
@@ -1024,6 +1023,7 @@ export function useIntersectionObserver(
   - Headers should have space-between layout for back/cancel buttons
 
 - **Modal Headers** - Bottom sheet modals use consistent header spacing:
+
   ```typescript
   header: {
     flexDirection: "row",
@@ -1034,6 +1034,7 @@ export function useIntersectionObserver(
     paddingBottom: spacing.md,      // 16px
   },
   ```
+
   - Use `ThemedText type="subtitle"` for modal titles
   - Headers should accommodate close/cancel buttons on the right
 
@@ -1121,7 +1122,6 @@ When creating scrollable bottom sheet modals using `@gorhom/bottom-sheet`, follo
 - Remove the empty `<View style={{ paddingBottom: insets.bottom }}></View>` hack - use proper `paddingBottom` in `contentContainerStyle` instead
 
 - **Color Usage** - Always use theme colors from `useAppTheme()` hook:
-
   - Never use hardcoded color literals (`"#444"`, `"white"`, `rgba(...)`)
   - Use `colors.text`, `colors.background`, `colors.card`, `colors.accent`, `colors.divider`, `colors.error`, `colors.success`, `colors.info` for semantic colors
   - Apply colors inline for dynamic values: `style={{ backgroundColor: colors.card }}`

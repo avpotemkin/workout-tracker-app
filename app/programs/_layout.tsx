@@ -1,42 +1,42 @@
-import { Stack } from "expo-router";
-import { ProgramDraftProvider } from "@/context/ProgramDraftContext";
+import { Stack } from 'expo-router'
+import { ProgramDraftProvider } from '@/context/ProgramDraftContext'
 
 export default function ProgramsLayout() {
   return (
     <ProgramDraftProvider>
       <Stack>
         <Stack.Screen
-          name="index"
+          name='index'
           options={{
-            title: "Programs",
+            title: 'Programs',
           }}
         />
         <Stack.Screen
-          name="[id]"
+          name='[id]'
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="create"
+          name='create'
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="edit"
+          name='edit'
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="edit-workout"
+          name='edit-workout'
           options={{
             headerShown: false,
-            presentation: "modal",
+            presentation: 'modal',
           }}
         />
       </Stack>
     </ProgramDraftProvider>
-  );
+  )
 }

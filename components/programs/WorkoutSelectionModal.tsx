@@ -1,28 +1,28 @@
-import React, { forwardRef, useCallback } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { forwardRef, useCallback } from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
-} from "@gorhom/bottom-sheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { Program } from "@/types";
+} from '@gorhom/bottom-sheet'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { Program } from '@/types'
 
 interface WorkoutSelectionModalProps {
-  program: Program | null;
-  onSelectWorkout: (workoutId: string) => void;
+  program: Program | null
+  onSelectWorkout: (workoutId: string) => void
 }
 
 export const WorkoutSelectionModal = forwardRef<
   BottomSheetModal,
   WorkoutSelectionModalProps
 >(({ program, onSelectWorkout }, ref) => {
-  const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
+  const { colors } = useAppTheme()
+  const insets = useSafeAreaInsets()
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -33,21 +33,21 @@ export const WorkoutSelectionModal = forwardRef<
       />
     ),
     []
-  );
+  )
 
   const handleSelectWorkout = (workoutId: string) => {
-    onSelectWorkout(workoutId);
-    if (ref && typeof ref !== "function") {
-      ref.current?.dismiss();
+    onSelectWorkout(workoutId)
+    if (ref && typeof ref !== 'function') {
+      ref.current?.dismiss()
     }
-  };
+  }
 
   return (
     <BottomSheetModal
       ref={ref}
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: colors.background }}
-      snapPoints={["90%"]}
+      snapPoints={['90%']}
       topInset={insets.top}
       index={0}
     >
@@ -60,7 +60,7 @@ export const WorkoutSelectionModal = forwardRef<
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.header, { backgroundColor: colors.background }]}>
-          <ThemedText type="subtitle">Select Workout</ThemedText>
+          <ThemedText type='subtitle'>Select Workout</ThemedText>
         </View>
 
         {program && program.workouts.length > 0 ? (
@@ -73,20 +73,20 @@ export const WorkoutSelectionModal = forwardRef<
                 activeOpacity={0.7}
               >
                 <View style={styles.workoutCardContent}>
-                  <ThemedText type="label" style={styles.workoutName}>
+                  <ThemedText type='label' style={styles.workoutName}>
                     {workout.name}
                   </ThemedText>
                   <View style={styles.exerciseCountContainer}>
-                    <ThemedText type="caption" style={styles.exerciseCount}>
-                      {workout.exercises.length}{" "}
+                    <ThemedText type='caption' style={styles.exerciseCount}>
+                      {workout.exercises.length}{' '}
                       {workout.exercises.length === 1
-                        ? "exercise"
-                        : "exercises"}
+                        ? 'exercise'
+                        : 'exercises'}
                     </ThemedText>
                   </View>
                 </View>
                 <ThemedText
-                  type="title"
+                  type='title'
                   style={[styles.chevron, { color: colors.accent }]}
                 >
                   ›
@@ -96,23 +96,23 @@ export const WorkoutSelectionModal = forwardRef<
           </>
         ) : (
           <View style={styles.emptyContainer}>
-            <ThemedText type="body" style={styles.emptyText}>
+            <ThemedText type='body' style={styles.emptyText}>
               No workouts available in this program.
             </ThemedText>
           </View>
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>
-  );
-});
+  )
+})
 
-WorkoutSelectionModal.displayName = "WorkoutSelectionModal";
+WorkoutSelectionModal.displayName = 'WorkoutSelectionModal'
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
@@ -121,9 +121,9 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   workoutCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderRadius: 10,
     marginBottom: 12,
@@ -145,10 +145,10 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     padding: 40,
-    alignItems: "center",
+    alignItems: 'center',
   },
   emptyText: {
     opacity: 0.7,
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})

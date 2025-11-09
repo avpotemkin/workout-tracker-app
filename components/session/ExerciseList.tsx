@@ -1,22 +1,22 @@
-import React from "react";
-import { ScrollView, StyleSheet, ViewStyle } from "react-native";
-import { WorkoutExercise, WorkoutSet, WorkoutExerciseId } from "@/types";
-import { ExerciseCard } from "./ExerciseCard/ExerciseCard";
+import React from 'react'
+import { ScrollView, StyleSheet, ViewStyle } from 'react-native'
+import { WorkoutExercise, WorkoutSet, WorkoutExerciseId } from '@/types'
+import { ExerciseCard } from './ExerciseCard/ExerciseCard'
 
 type ExerciseListProps = {
-  exercises: WorkoutExercise[];
-  expandedExercises: Record<string, boolean>;
-  toggleExerciseExpansion: (exerciseId: WorkoutExerciseId) => void;
-  toggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
+  exercises: WorkoutExercise[]
+  expandedExercises: Record<string, boolean>
+  toggleExerciseExpansion: (exerciseId: WorkoutExerciseId) => void
+  toggleSetCompletion: (exerciseIndex: number, setIndex: number) => void
   onUpdateSet: (
     exerciseIndex: number,
     setIndex: number,
     updates: Partial<WorkoutSet>
-  ) => void;
-  currentExerciseIndex: number;
-  currentSetIndex: number;
-  style?: ViewStyle;
-};
+  ) => void
+  currentExerciseIndex: number
+  currentSetIndex: number
+  style?: ViewStyle
+}
 
 export function ExerciseList({
   exercises,
@@ -43,11 +43,11 @@ export function ExerciseList({
         />
       ))}
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   exerciseList: {
     flex: 1,
   },
-});
+})

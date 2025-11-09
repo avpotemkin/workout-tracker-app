@@ -4,52 +4,52 @@ import React, {
   useState,
   useEffect,
   ReactNode,
-} from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const MOCK_USER_ID = "mock-user-123";
-const AUTH_STORAGE_KEY = "@auth_userId";
+const MOCK_USER_ID = 'mock-user-123'
+const AUTH_STORAGE_KEY = '@auth_userId'
 
 interface AuthContextType {
-  userId: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: () => Promise<void>;
-  logout: () => Promise<void>;
+  userId: string | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  login: () => Promise<void>
+  logout: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function checkAuth() {
       try {
-        const storedUserId = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
+        const storedUserId = await AsyncStorage.getItem(AUTH_STORAGE_KEY)
         if (storedUserId) {
-          setUserId(storedUserId);
+          setUserId(storedUserId)
         }
       } catch {
         // TODO: Error handling
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
 
-    checkAuth();
-  }, []);
+    checkAuth()
+  }, [])
 
   const login = async () => {
-    await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID);
-    setUserId(MOCK_USER_ID);
-  };
+    await AsyncStorage.setItem(AUTH_STORAGE_KEY, MOCK_USER_ID)
+    setUserId(MOCK_USER_ID)
+  }
 
   const logout = async () => {
-    await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
-    setUserId(null);
-  };
+    await AsyncStorage.removeItem(AUTH_STORAGE_KEY)
+    setUserId(null)
+  }
 
   return (
     <AuthContext.Provider
@@ -63,13 +63,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     >
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
 export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider')
   }
-  return context;
-};
+  return context
+}

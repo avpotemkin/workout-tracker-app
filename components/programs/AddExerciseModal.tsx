@@ -1,31 +1,31 @@
-import React, { forwardRef, useCallback } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { forwardRef, useCallback } from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
-} from "@gorhom/bottom-sheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
+} from '@gorhom/bottom-sheet'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
 import {
   EXERCISES,
   EXERCISE_CATEGORIES,
   ExerciseTemplate,
-} from "@/constants/Exercises";
+} from '@/constants/Exercises'
 
 interface AddExerciseModalProps {
-  onSelectExercise: (exercise: ExerciseTemplate) => void;
+  onSelectExercise: (exercise: ExerciseTemplate) => void
 }
 
 export const AddExerciseModal = forwardRef<
   BottomSheetModal,
   AddExerciseModalProps
 >(({ onSelectExercise }, ref) => {
-  const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
+  const { colors } = useAppTheme()
+  const insets = useSafeAreaInsets()
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -36,23 +36,23 @@ export const AddExerciseModal = forwardRef<
       />
     ),
     []
-  );
+  )
 
   const handleSelectExercise = (exercise: ExerciseTemplate) => {
-    onSelectExercise(exercise);
-    if (ref && typeof ref !== "function") {
-      ref.current?.dismiss();
+    onSelectExercise(exercise)
+    if (ref && typeof ref !== 'function') {
+      ref.current?.dismiss()
     }
-  };
+  }
 
-  const categories = Object.values(EXERCISE_CATEGORIES);
+  const categories = Object.values(EXERCISE_CATEGORIES)
 
   return (
     <BottomSheetModal
       ref={ref}
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: colors.background }}
-      snapPoints={["90%"]}
+      snapPoints={['90%']}
       topInset={insets.top}
       index={0}
     >
@@ -65,7 +65,7 @@ export const AddExerciseModal = forwardRef<
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.header, { backgroundColor: colors.background }]}>
-          <ThemedText type="subtitle" style={styles.headerText}>
+          <ThemedText type='subtitle' style={styles.headerText}>
             Add Exercise
           </ThemedText>
         </View>
@@ -73,11 +73,11 @@ export const AddExerciseModal = forwardRef<
         {categories.map((category) => {
           const categoryExercises = EXERCISES.filter(
             (ex) => ex.category === category
-          );
+          )
 
           return (
             <View key={category} style={styles.categorySection}>
-              <ThemedText type="defaultSemiBold" style={styles.categoryTitle}>
+              <ThemedText type='defaultSemiBold' style={styles.categoryTitle}>
                 {category}
               </ThemedText>
               {categoryExercises.map((exercise) => (
@@ -91,33 +91,33 @@ export const AddExerciseModal = forwardRef<
                   activeOpacity={0.7}
                 >
                   <View style={styles.exerciseCardContent}>
-                    <ThemedText type="label" style={styles.exerciseName}>
+                    <ThemedText type='label' style={styles.exerciseName}>
                       {exercise.name}
                     </ThemedText>
                   </View>
                 </TouchableOpacity>
               ))}
             </View>
-          );
+          )
         })}
       </BottomSheetScrollView>
     </BottomSheetModal>
-  );
-});
+  )
+})
 
-AddExerciseModal.displayName = "AddExerciseModal";
+AddExerciseModal.displayName = 'AddExerciseModal'
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
   },
   headerText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   scrollContent: {
     paddingHorizontal: spacing.md,
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   exerciseInfo: {
     opacity: 0.6,
   },
-});
+})

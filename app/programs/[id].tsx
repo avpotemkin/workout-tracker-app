@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { Ionicons } from "@expo/vector-icons";
-import { useAppContext } from "@/context/AppContext";
-import { Workout, ProgramExercise } from "@/types";
-import { getExerciseNameById } from "@/constants/Exercises";
+import React, { useState } from 'react'
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ThemedView } from '@/components/common/ThemedView'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { Ionicons } from '@expo/vector-icons'
+import { useAppContext } from '@/context/AppContext'
+import { Workout, ProgramExercise } from '@/types'
+import { getExerciseNameById } from '@/constants/Exercises'
 
 export default function ProgramDetailsScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
-  const router = useRouter();
-  const { programs } = useAppContext();
-  const program = programs.find((p) => p.id === id);
-  const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(0);
-  const { selectedProgram, setSelectedProgram } = useAppContext();
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const backgroundColor = useThemeColor({}, 'background')
+  const { colors } = useAppTheme()
+  const router = useRouter()
+  const { programs } = useAppContext()
+  const program = programs.find((p) => p.id === id)
+  const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(0)
+  const { selectedProgram, setSelectedProgram } = useAppContext()
 
   if (!program) {
     return (
@@ -31,24 +31,24 @@ export default function ProgramDetailsScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color={colors.text} />
+              <Ionicons name='arrow-back' size={24} color={colors.text} />
             </TouchableOpacity>
 
-            <ThemedText type="subtitle">Not Found</ThemedText>
+            <ThemedText type='subtitle'>Not Found</ThemedText>
           </View>
           <ThemedText>Program not found</ThemedText>
         </ThemedView>
       </SafeAreaView>
-    );
+    )
   }
 
-  const selectedWorkout = program.workouts[selectedWorkoutIndex];
-  const isProgramSelected = selectedProgram?.id === program.id;
+  const selectedWorkout = program.workouts[selectedWorkoutIndex]
+  const isProgramSelected = selectedProgram?.id === program.id
 
   const handleSelectProgram = () => {
-    setSelectedProgram(program);
-    alert(`${program.name} has been set as your active program`);
-  };
+    setSelectedProgram(program)
+    alert(`${program.name} has been set as your active program`)
+  }
 
   if (!program.workouts || program.workouts.length === 0) {
     return (
@@ -59,15 +59,15 @@ export default function ProgramDetailsScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color={colors.text} />
+              <Ionicons name='arrow-back' size={24} color={colors.text} />
             </TouchableOpacity>
 
-            <ThemedText type="subtitle">{program.name}</ThemedText>
+            <ThemedText type='subtitle'>{program.name}</ThemedText>
 
             <TouchableOpacity
               onPress={() => router.push(`/programs/edit?id=${program.id}`)}
             >
-              <ThemedText type="label" style={{ color: colors.accent }}>
+              <ThemedText type='label' style={{ color: colors.accent }}>
                 Edit
               </ThemedText>
             </TouchableOpacity>
@@ -75,7 +75,7 @@ export default function ProgramDetailsScreen() {
           <ThemedText>No workouts in this program</ThemedText>
         </ThemedView>
       </SafeAreaView>
-    );
+    )
   }
 
   if (!selectedWorkout) {
@@ -87,15 +87,15 @@ export default function ProgramDetailsScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color={colors.text} />
+              <Ionicons name='arrow-back' size={24} color={colors.text} />
             </TouchableOpacity>
 
-            <ThemedText type="subtitle">{program.name}</ThemedText>
+            <ThemedText type='subtitle'>{program.name}</ThemedText>
 
             <TouchableOpacity
               onPress={() => router.push(`/programs/edit?id=${program.id}`)}
             >
-              <ThemedText type="label" style={{ color: colors.accent }}>
+              <ThemedText type='label' style={{ color: colors.accent }}>
                 Edit
               </ThemedText>
             </TouchableOpacity>
@@ -103,7 +103,7 @@ export default function ProgramDetailsScreen() {
           <ThemedText>Workout not found</ThemedText>
         </ThemedView>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
@@ -114,15 +114,15 @@ export default function ProgramDetailsScreen() {
             style={styles.backButton}
             onPress={() => router.back()}
           >
-            <Ionicons name="arrow-back" size={24} color={colors.text} />
+            <Ionicons name='arrow-back' size={24} color={colors.text} />
           </TouchableOpacity>
 
-          <ThemedText type="subtitle">{program.name}</ThemedText>
+          <ThemedText type='subtitle'>{program.name}</ThemedText>
 
           <TouchableOpacity
             onPress={() => router.push(`/programs/edit?id=${program.id}`)}
           >
-            <ThemedText type="label" style={{ color: colors.accent }}>
+            <ThemedText type='label' style={{ color: colors.accent }}>
               Edit
             </ThemedText>
           </TouchableOpacity>
@@ -140,10 +140,10 @@ export default function ProgramDetailsScreen() {
           onPress={handleSelectProgram}
         >
           <ThemedText
-            type="defaultSemiBold"
+            type='defaultSemiBold'
             style={{ color: colors.background }}
           >
-            {isProgramSelected ? "Current Program" : "Set as Current Program"}
+            {isProgramSelected ? 'Current Program' : 'Set as Current Program'}
           </ThemedText>
         </TouchableOpacity>
 
@@ -165,7 +165,7 @@ export default function ProgramDetailsScreen() {
                 onPress={() => setSelectedWorkoutIndex(index)}
               >
                 <ThemedText
-                  type="body"
+                  type='body'
                   style={
                     selectedWorkoutIndex === index
                       ? { color: colors.background }
@@ -189,7 +189,7 @@ export default function ProgramDetailsScreen() {
                 <View style={styles.exerciseInfo}>
                   <View style={styles.exerciseHeader}>
                     <ThemedText
-                      type="label"
+                      type='label'
                       style={styles.exerciseName}
                       numberOfLines={2}
                     >
@@ -203,11 +203,11 @@ export default function ProgramDetailsScreen() {
                             { backgroundColor: colors.card },
                           ]}
                         >
-                          <ThemedText type="defaultSemiBold">
+                          <ThemedText type='defaultSemiBold'>
                             {exercise.sets}
                           </ThemedText>
                         </View>
-                        <ThemedText type="caption" style={styles.counterLabel}>
+                        <ThemedText type='caption' style={styles.counterLabel}>
                           Sets
                         </ThemedText>
                       </View>
@@ -218,11 +218,11 @@ export default function ProgramDetailsScreen() {
                             { backgroundColor: colors.card },
                           ]}
                         >
-                          <ThemedText type="defaultSemiBold">
+                          <ThemedText type='defaultSemiBold'>
                             {exercise.reps}
                           </ThemedText>
                         </View>
-                        <ThemedText type="caption" style={styles.counterLabel}>
+                        <ThemedText type='caption' style={styles.counterLabel}>
                           Reps
                         </ThemedText>
                       </View>
@@ -235,7 +235,7 @@ export default function ProgramDetailsScreen() {
         </ScrollView>
       </ThemedView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -244,9 +244,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: spacing.md,
     marginBottom: spacing.md,
   },
@@ -258,15 +258,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     borderRadius: 8,
     marginBottom: spacing.md,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   workoutTabsContainer: {
     marginBottom: spacing.md,
     height: 44,
   },
   workoutTabs: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingRight: spacing.md,
   },
   workoutTab: {
@@ -275,8 +275,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: spacing.sm,
     minHeight: 36,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   exerciseList: {
     flex: 1,
@@ -287,41 +287,41 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   exerciseContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   exerciseInfo: {
     flex: 1,
   },
   exerciseHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   exerciseName: {
     flex: 1,
     marginRight: spacing.md,
   },
   setsRepsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   counterGroup: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: spacing.sm,
   },
   valueContainer: {
     minWidth: 28,
     height: 24,
     borderRadius: 4,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: spacing.xs,
     marginRight: spacing.xs,
   },
   counterLabel: {
     opacity: 0.7,
   },
-});
+})

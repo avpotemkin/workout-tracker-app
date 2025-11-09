@@ -1,64 +1,64 @@
-import React, { useState, useCallback } from "react";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "@react-navigation/native";
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { WorkoutHistory, HistoryStats } from "@/types";
-import { fetchWorkoutHistory, getHistoryStats } from "@/services/api";
+import React, { useState, useCallback } from 'react'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useFocusEffect } from '@react-navigation/native'
+import { ThemedView } from '@/components/common/ThemedView'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { WorkoutHistory, HistoryStats } from '@/types'
+import { fetchWorkoutHistory, getHistoryStats } from '@/services/api'
 
-import { HistoryHeader } from "@/components/history/HistoryHeader";
-import { HistoryStats as HistoryStatsComponent } from "@/components/history/HistoryStats";
-import { HistoryList } from "@/components/history/HistoryList";
+import { HistoryHeader } from '@/components/history/HistoryHeader'
+import { HistoryStats as HistoryStatsComponent } from '@/components/history/HistoryStats'
+import { HistoryList } from '@/components/history/HistoryList'
 
 export function HistoryScreen() {
-  const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
+  const backgroundColor = useThemeColor({}, 'background')
+  const { colors } = useAppTheme()
 
-  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
-  const [historyStats, setHistoryStats] = useState<HistoryStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([])
+  const [historyStats, setHistoryStats] = useState<HistoryStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const loadHistory = useCallback(async () => {
     try {
-      setIsLoading(true);
-      setHasError(false);
+      setIsLoading(true)
+      setHasError(false)
 
-      const history = await fetchWorkoutHistory();
-      setWorkoutHistory(history);
+      const history = await fetchWorkoutHistory()
+      setWorkoutHistory(history)
 
       try {
-        const stats = await getHistoryStats();
-        setHistoryStats(stats);
+        const stats = await getHistoryStats()
+        setHistoryStats(stats)
       } catch {
         setHistoryStats({
           totalWorkouts: history.length,
           totalDuration: history.reduce((sum, h) => sum + h.duration, 0),
           strongestLifts: [],
-        });
+        })
       }
     } catch (error) {
-      setHasError(true);
+      setHasError(true)
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "Failed to load workout history"
-      );
+          : 'Failed to load workout history'
+      )
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, []);
+  }, [])
 
   useFocusEffect(
     useCallback(() => {
-      loadHistory();
+      loadHistory()
     }, [loadHistory])
-  );
+  )
 
   if (isLoading) {
     return (
@@ -70,7 +70,7 @@ export function HistoryScreen() {
           </ThemedView>
         </ThemedView>
       </SafeAreaView>
-    );
+    )
   }
 
   if (hasError) {
@@ -80,12 +80,12 @@ export function HistoryScreen() {
           <HistoryHeader />
           <ThemedView style={styles.centerContent}>
             <ThemedText style={{ color: colors.error }}>
-              {errorMessage || "Failed to load workout history"}
+              {errorMessage || 'Failed to load workout history'}
             </ThemedText>
           </ThemedView>
         </ThemedView>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
@@ -99,7 +99,7 @@ export function HistoryScreen() {
         />
       </ThemedView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   centerContent: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-});
+})

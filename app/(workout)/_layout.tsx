@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router'
 
 export default function WorkoutLayout() {
   return (
@@ -7,7 +7,7 @@ export default function WorkoutLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="session" />
+      <Stack.Screen name='session' />
     </Stack>
-  );
+  )
 }

@@ -2,7 +2,7 @@
  * App theme constants that can be used across the application
  * This extends the base Colors.ts with additional theme values
  */
-import { Colors } from './Colors';
+import { Colors } from './Colors'
 
 const baseColors = {
   accent: '#FF4500',
@@ -10,7 +10,7 @@ const baseColors = {
   warning: '#FFC107',
   error: '#F44336',
   info: '#2196F3',
-  
+
   card: {
     light: '#F5F5F5',
     dark: '#333333',
@@ -31,7 +31,7 @@ const baseColors = {
     light: '#E3F2FD',
     dark: '#3A3A3A',
   },
-};
+}
 
 export const getThemeColors = (colorScheme: 'light' | 'dark' = 'dark') => {
   return {
@@ -46,8 +46,8 @@ export const getThemeColors = (colorScheme: 'light' | 'dark' = 'dark') => {
     input: baseColors.input[colorScheme],
     divider: baseColors.divider[colorScheme],
     highlight: baseColors.highlight[colorScheme],
-  };
-};
+  }
+}
 
 export const spacing = {
   xs: 4,
@@ -56,7 +56,7 @@ export const spacing = {
   lg: 24,
   xl: 32,
   xxl: 48,
-};
+}
 
 export const borderRadius = {
   xs: 4,
@@ -65,7 +65,7 @@ export const borderRadius = {
   lg: 16,
   xl: 24,
   round: 9999,
-};
+}
 
 export const typography = {
   fontSizes: {
@@ -83,7 +83,7 @@ export const typography = {
     semibold: '600',
     bold: '700',
   },
-};
+}
 
 export const useTheme = (colorScheme: 'light' | 'dark' = 'dark') => {
   return {
@@ -91,5 +91,5 @@ export const useTheme = (colorScheme: 'light' | 'dark' = 'dark') => {
     spacing,
     borderRadius,
     typography,
-  };
-};
+  }
+}

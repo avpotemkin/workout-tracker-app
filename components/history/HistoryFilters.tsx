@@ -1,86 +1,93 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { ThemedText } from '@/components/common/ThemedText';
-import { ThemedView } from '@/components/common/ThemedView';
-import { useAppTheme } from '@/hooks/useAppTheme';
-import { WorkoutHistory } from '@/types';
+import React, { useState, useEffect } from 'react'
+import { View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { ThemedView } from '@/components/common/ThemedView'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { WorkoutHistory } from '@/types'
 
 type HistoryFiltersProps = {
-  workoutHistory: WorkoutHistory[];
-  onFilterChange: (filteredData: WorkoutHistory[]) => void;
-};
+  workoutHistory: WorkoutHistory[]
+  onFilterChange: (filteredData: WorkoutHistory[]) => void
+}
 
-export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFiltersProps) {
-  const { colors } = useAppTheme();
-  const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
-  const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
+export function HistoryFilters({
+  workoutHistory,
+  onFilterChange,
+}: HistoryFiltersProps) {
+  const { colors } = useAppTheme()
+  const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('all')
 
-  const programs = [...new Set(workoutHistory.map(w => w.programName))];
+  const programs = [...new Set(workoutHistory.map((w) => w.programName))]
 
   const periods = [
     { key: 'all', label: 'All Time' },
     { key: 'week', label: 'This Week' },
     { key: 'month', label: 'This Month' },
     { key: '3months', label: 'Last 3 Months' },
-  ];
+  ]
 
   useEffect(() => {
-    applyFilters();
-  }, [selectedProgram, selectedPeriod]);
+    applyFilters()
+  }, [selectedProgram, selectedPeriod])
 
   const applyFilters = () => {
-    let filtered = [...workoutHistory];
+    let filtered = [...workoutHistory]
 
     if (selectedProgram) {
-      filtered = filtered.filter(w => w.programName === selectedProgram);
+      filtered = filtered.filter((w) => w.programName === selectedProgram)
     }
 
     if (selectedPeriod !== 'all') {
-      const now = new Date();
-      const startDate = new Date();
+      const now = new Date()
+      const startDate = new Date()
 
       switch (selectedPeriod) {
         case 'week':
-          startDate.setDate(now.getDate() - 7);
-          break;
+          startDate.setDate(now.getDate() - 7)
+          break
         case 'month':
-          startDate.setMonth(now.getMonth() - 1);
-          break;
+          startDate.setMonth(now.getMonth() - 1)
+          break
         case '3months':
-          startDate.setMonth(now.getMonth() - 3);
-          break;
+          startDate.setMonth(now.getMonth() - 3)
+          break
       }
 
-      filtered = filtered.filter(w => w.startedAt >= startDate);
+      filtered = filtered.filter((w) => w.startedAt >= startDate)
     }
 
-    onFilterChange(filtered);
-  };
+    onFilterChange(filtered)
+  }
 
   const clearFilters = () => {
-    setSelectedProgram(null);
-    setSelectedPeriod('all');
-  };
+    setSelectedProgram(null)
+    setSelectedPeriod('all')
+  }
 
-  const hasActiveFilters = selectedProgram || selectedPeriod !== 'all';
+  const hasActiveFilters = selectedProgram || selectedPeriod !== 'all'
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.card }]}>
       <View style={styles.header}>
-        <ThemedText type="defaultSemiBold">Filters</ThemedText>
+        <ThemedText type='defaultSemiBold'>Filters</ThemedText>
         {hasActiveFilters && (
           <TouchableOpacity onPress={clearFilters}>
-            <ThemedText type="body" style={{ color: colors.info }}>Clear All</ThemedText>
+            <ThemedText type='body' style={{ color: colors.info }}>
+              Clear All
+            </ThemedText>
           </TouchableOpacity>
         )}
       </View>
 
       <View style={styles.filterSection}>
-        <ThemedText type="body" style={styles.sectionTitle}>Program</ThemedText>
+        <ThemedText type='body' style={styles.sectionTitle}>
+          Program
+        </ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
-            {programs.map(program => {
-              const isSelected = selectedProgram === program;
+            {programs.map((program) => {
+              const isSelected = selectedProgram === program
               return (
                 <TouchableOpacity
                   key={program}
@@ -91,29 +98,30 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                       borderColor: isSelected ? colors.info : colors.cardBorder,
                     },
                   ]}
-                  onPress={() => setSelectedProgram(
-                    selectedProgram === program ? null : program
-                  )}
+                  onPress={() =>
+                    setSelectedProgram(
+                      selectedProgram === program ? null : program
+                    )
+                  }
                 >
-                  <ThemedText
-                    type="caption"
-                    style={{ color: colors.text }}
-                  >
+                  <ThemedText type='caption' style={{ color: colors.text }}>
                     {program}
                   </ThemedText>
                 </TouchableOpacity>
-              );
+              )
             })}
           </View>
         </ScrollView>
       </View>
 
       <View style={styles.filterSection}>
-        <ThemedText type="body" style={styles.sectionTitle}>Period</ThemedText>
+        <ThemedText type='body' style={styles.sectionTitle}>
+          Period
+        </ThemedText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterRow}>
-            {periods.map(period => {
-              const isSelected = selectedPeriod === period.key;
+            {periods.map((period) => {
+              const isSelected = selectedPeriod === period.key
               return (
                 <TouchableOpacity
                   key={period.key}
@@ -126,20 +134,17 @@ export function HistoryFilters({ workoutHistory, onFilterChange }: HistoryFilter
                   ]}
                   onPress={() => setSelectedPeriod(period.key)}
                 >
-                  <ThemedText
-                    type="caption"
-                    style={{ color: colors.text }}
-                  >
+                  <ThemedText type='caption' style={{ color: colors.text }}>
                     {period.label}
                   </ThemedText>
                 </TouchableOpacity>
-              );
+              )
             })}
           </View>
         </ScrollView>
       </View>
     </ThemedView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -170,4 +175,4 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
   },
-}); 
+})

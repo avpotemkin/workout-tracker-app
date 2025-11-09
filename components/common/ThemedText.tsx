@@ -1,50 +1,50 @@
-import { Text, type TextProps, StyleSheet } from "react-native";
+import { Text, type TextProps, StyleSheet } from 'react-native'
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from '@/hooks/useThemeColor'
 
 export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
+  lightColor?: string
+  darkColor?: string
   type?:
-    | "default"
-    | "title"
-    | "defaultSemiBold"
-    | "subtitle"
-    | "link"
-    | "label"
-    | "caption"
-    | "largeTitle"
-    | "body";
-};
+    | 'default'
+    | 'title'
+    | 'defaultSemiBold'
+    | 'subtitle'
+    | 'link'
+    | 'label'
+    | 'caption'
+    | 'largeTitle'
+    | 'body'
+}
 
 export function ThemedText({
   style,
   lightColor,
   darkColor,
-  type = "default",
+  type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-  const linkColor = useThemeColor({}, "tint");
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text')
+  const linkColor = useThemeColor({}, 'tint')
 
   return (
     <Text
       style={[
-        { color: type === "link" ? linkColor : color },
-        type === "default" ? styles.default : undefined,
-        type === "title" ? styles.title : undefined,
-        type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
-        type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? styles.link : undefined,
-        type === "label" ? styles.label : undefined,
-        type === "caption" ? styles.caption : undefined,
-        type === "largeTitle" ? styles.largeTitle : undefined,
-        type === "body" ? styles.body : undefined,
+        { color: type === 'link' ? linkColor : color },
+        type === 'default' ? styles.default : undefined,
+        type === 'title' ? styles.title : undefined,
+        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
+        type === 'subtitle' ? styles.subtitle : undefined,
+        type === 'link' ? styles.link : undefined,
+        type === 'label' ? styles.label : undefined,
+        type === 'caption' ? styles.caption : undefined,
+        type === 'largeTitle' ? styles.largeTitle : undefined,
+        type === 'body' ? styles.body : undefined,
         style,
       ]}
       {...rest}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -55,21 +55,21 @@ const styles = StyleSheet.create({
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   largeTitle: {
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     lineHeight: 38,
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     lineHeight: 28,
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   link: {
     lineHeight: 30,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   caption: {
     fontSize: 12,
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-});
+})

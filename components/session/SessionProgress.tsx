@@ -1,26 +1,28 @@
-import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
-import { ThemedText } from '@/components/common/ThemedText';
-import { useAppTheme } from '@/hooks/useAppTheme';
+import React from 'react'
+import { View, StyleSheet, ViewStyle } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
 
 type SessionProgressProps = {
-  completed: number;
-  total: number;
-  percentage: number;
-  style?: ViewStyle;
-};
+  completed: number
+  total: number
+  percentage: number
+  style?: ViewStyle
+}
 
-export function SessionProgress({ 
-  completed, 
-  total, 
-  percentage, 
-  style 
+export function SessionProgress({
+  completed,
+  total,
+  percentage,
+  style,
 }: SessionProgressProps) {
-  const { colors } = useAppTheme();
+  const { colors } = useAppTheme()
 
   return (
     <View style={[styles.progressContainer, style]}>
-      <View style={[styles.progressBarBackground, { backgroundColor: colors.card }]}>
+      <View
+        style={[styles.progressBarBackground, { backgroundColor: colors.card }]}
+      >
         <View
           style={[
             styles.progressBarFill,
@@ -31,11 +33,11 @@ export function SessionProgress({
           ]}
         />
       </View>
-      <ThemedText type="body" style={styles.progressText}>
+      <ThemedText type='body' style={styles.progressText}>
         {completed} of {total} sets completed ({percentage}%)
       </ThemedText>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -54,5 +56,4 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
   },
-});
-
+})

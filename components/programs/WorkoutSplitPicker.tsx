@@ -1,12 +1,12 @@
-import { ActionSheetIOS, Platform, Alert } from 'react-native';
-import { WORKOUT_SPLITS, WorkoutSplitType } from '@/constants/WorkoutPresets';
+import { ActionSheetIOS, Platform, Alert } from 'react-native'
+import { WORKOUT_SPLITS, WorkoutSplitType } from '@/constants/WorkoutPresets'
 
 interface WorkoutSplitPickerProps {
-  onSelect: (split: WorkoutSplitType) => void;
+  onSelect: (split: WorkoutSplitType) => void
 }
 
 export function showWorkoutSplitPicker({ onSelect }: WorkoutSplitPickerProps) {
-  const splits = Object.values(WORKOUT_SPLITS);
+  const splits = Object.values(WORKOUT_SPLITS)
 
   if (Platform.OS === 'ios') {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -16,10 +16,10 @@ export function showWorkoutSplitPicker({ onSelect }: WorkoutSplitPickerProps) {
       },
       (buttonIndex) => {
         if (buttonIndex < splits.length) {
-          onSelect(splits[buttonIndex]);
+          onSelect(splits[buttonIndex])
         }
       }
-    );
+    )
   } else {
     const buttons = [
       ...splits.map((split) => ({
@@ -27,8 +27,7 @@ export function showWorkoutSplitPicker({ onSelect }: WorkoutSplitPickerProps) {
         onPress: () => onSelect(split),
       })),
       { text: 'Cancel', style: 'cancel' as const },
-    ];
-    Alert.alert('Select Workout Split', '', buttons);
+    ]
+    Alert.alert('Select Workout Split', '', buttons)
   }
 }
-

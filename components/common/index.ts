@@ -1,4 +1,3 @@
-export { ThemedText } from './ThemedText';
-export { ThemedView } from './ThemedView';
-export { OutlinedButton } from './OutlinedButton';
-
+export { ThemedText } from './ThemedText'
+export { ThemedView } from './ThemedView'
+export { OutlinedButton } from './OutlinedButton'

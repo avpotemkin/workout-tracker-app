@@ -4,57 +4,57 @@ import React, {
   useRef,
   useState,
   useEffect,
-} from "react";
+} from 'react'
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   Alert,
-} from "react-native";
+} from 'react-native'
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
-} from "@gorhom/bottom-sheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { useProgramDraft } from "@/context/ProgramDraftContext";
-import { Ionicons } from "@expo/vector-icons";
-import { AddExerciseModal } from "./AddExerciseModal";
-import { ExerciseTemplate, getExerciseNameById } from "@/constants/Exercises";
-import { ProgramExercise, ProgramExerciseId, WorkoutId } from "@/types";
-import { generateId } from "@/utils/ids";
-import { SetsRepsCounter } from "./SetsRepsCounter";
+} from '@gorhom/bottom-sheet'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { useProgramDraft } from '@/context/ProgramDraftContext'
+import { Ionicons } from '@expo/vector-icons'
+import { AddExerciseModal } from './AddExerciseModal'
+import { ExerciseTemplate, getExerciseNameById } from '@/constants/Exercises'
+import { ProgramExercise, ProgramExerciseId, WorkoutId } from '@/types'
+import { generateId } from '@/utils/ids'
+import { SetsRepsCounter } from './SetsRepsCounter'
 
 interface EditWorkoutModalProps {
-  workoutId: string | null;
+  workoutId: string | null
 }
 
 export const EditWorkoutModal = forwardRef<
   BottomSheetModal,
   EditWorkoutModalProps
 >(({ workoutId }, ref) => {
-  const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
-  const addExerciseModalRef = useRef<BottomSheetModal>(null);
-  const { getWorkout, updateWorkout, removeWorkout } = useProgramDraft();
+  const { colors } = useAppTheme()
+  const insets = useSafeAreaInsets()
+  const addExerciseModalRef = useRef<BottomSheetModal>(null)
+  const { getWorkout, updateWorkout, removeWorkout } = useProgramDraft()
 
-  const workout = workoutId ? getWorkout(workoutId as WorkoutId) : null;
-  const [workoutName, setWorkoutName] = useState(workout?.name || "");
+  const workout = workoutId ? getWorkout(workoutId as WorkoutId) : null
+  const [workoutName, setWorkoutName] = useState(workout?.name || '')
   const [exercises, setExercises] = useState<ProgramExercise[]>(
     workout?.exercises || []
-  );
+  )
 
   useEffect(() => {
     if (workout) {
-      setWorkoutName(workout.name);
-      setExercises(workout.exercises);
+      setWorkoutName(workout.name)
+      setExercises(workout.exercises)
     }
-  }, [workout]);
+  }, [workout])
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -65,17 +65,17 @@ export const EditWorkoutModal = forwardRef<
       />
     ),
     []
-  );
+  )
 
   const handleWorkoutNameChange = (text: string) => {
-    setWorkoutName(text);
+    setWorkoutName(text)
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
         name: text,
-      });
+      })
     }
-  };
+  }
 
   const handleAddExercise = (exerciseTemplate: ExerciseTemplate) => {
     const newExercise: ProgramExercise = {
@@ -83,79 +83,79 @@ export const EditWorkoutModal = forwardRef<
       templateId: exerciseTemplate.id,
       sets: 3,
       reps: 12,
-    };
-    const updatedExercises = [...exercises, newExercise];
-    setExercises(updatedExercises);
+    }
+    const updatedExercises = [...exercises, newExercise]
+    setExercises(updatedExercises)
 
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
-      });
+      })
     }
-  };
+  }
 
   const handleUpdateSets = (exerciseId: ProgramExerciseId, sets: number) => {
     const updatedExercises = exercises.map((ex) =>
       ex.id === exerciseId ? { ...ex, sets } : ex
-    );
-    setExercises(updatedExercises);
+    )
+    setExercises(updatedExercises)
 
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
-      });
+      })
     }
-  };
+  }
 
   const handleUpdateReps = (exerciseId: ProgramExerciseId, reps: number) => {
     const updatedExercises = exercises.map((ex) =>
       ex.id === exerciseId ? { ...ex, reps } : ex
-    );
-    setExercises(updatedExercises);
+    )
+    setExercises(updatedExercises)
 
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
-      });
+      })
     }
-  };
+  }
 
   const handleRemoveExercise = (exerciseId: ProgramExerciseId) => {
-    const updatedExercises = exercises.filter((ex) => ex.id !== exerciseId);
-    setExercises(updatedExercises);
+    const updatedExercises = exercises.filter((ex) => ex.id !== exerciseId)
+    setExercises(updatedExercises)
 
     if (workoutId && workout) {
       updateWorkout(workoutId as WorkoutId, {
         ...workout,
         exercises: updatedExercises,
-      });
+      })
     }
-  };
+  }
 
   const handleRemoveWorkout = () => {
     Alert.alert(
-      "Remove Workout",
-      "Are you sure you want to remove this workout?",
+      'Remove Workout',
+      'Are you sure you want to remove this workout?',
       [
-        { text: "Cancel", style: "cancel" },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: "Remove",
-          style: "destructive",
+          text: 'Remove',
+          style: 'destructive',
           onPress: () => {
             if (workoutId) {
-              removeWorkout(workoutId as WorkoutId);
-              if (ref && typeof ref !== "function") {
-                ref.current?.dismiss();
+              removeWorkout(workoutId as WorkoutId)
+              if (ref && typeof ref !== 'function') {
+                ref.current?.dismiss()
               }
             }
           },
         },
       ]
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -163,7 +163,7 @@ export const EditWorkoutModal = forwardRef<
         ref={ref}
         backdropComponent={renderBackdrop}
         backgroundStyle={{ backgroundColor: colors.background }}
-        snapPoints={["90%"]}
+        snapPoints={['90%']}
         topInset={insets.top}
         index={0}
       >
@@ -176,7 +176,7 @@ export const EditWorkoutModal = forwardRef<
           showsVerticalScrollIndicator={false}
         >
           <View style={[styles.header, { backgroundColor: colors.background }]}>
-            <ThemedText type="subtitle" style={styles.headerText}>
+            <ThemedText type='subtitle' style={styles.headerText}>
               Edit Workout
             </ThemedText>
           </View>
@@ -184,11 +184,11 @@ export const EditWorkoutModal = forwardRef<
           <View style={[styles.nameCard, { backgroundColor: colors.card }]}>
             <TextInput
               style={{ color: colors.text }}
-              placeholder="Workout Name"
+              placeholder='Workout Name'
               placeholderTextColor={`${colors.text}80`}
               value={workoutName}
               onChangeText={handleWorkoutNameChange}
-              autoCapitalize="words"
+              autoCapitalize='words'
             />
           </View>
 
@@ -200,7 +200,7 @@ export const EditWorkoutModal = forwardRef<
               <View style={styles.exerciseContent}>
                 <View style={styles.exerciseInfo}>
                   <View style={styles.exerciseHeader}>
-                    <ThemedText type="label">
+                    <ThemedText type='label'>
                       {getExerciseNameById(exercise.templateId)}
                     </ThemedText>
                     <SetsRepsCounter
@@ -220,7 +220,7 @@ export const EditWorkoutModal = forwardRef<
                   style={styles.deleteButton}
                 >
                   <Ionicons
-                    name="trash-outline"
+                    name='trash-outline'
                     size={20}
                     color={colors.error}
                   />
@@ -233,7 +233,7 @@ export const EditWorkoutModal = forwardRef<
             style={styles.addButton}
             onPress={() => addExerciseModalRef.current?.present()}
           >
-            <ThemedText type="label" style={{ color: colors.accent }}>
+            <ThemedText type='label' style={{ color: colors.accent }}>
               Add Exercise
             </ThemedText>
           </TouchableOpacity>
@@ -242,7 +242,7 @@ export const EditWorkoutModal = forwardRef<
             style={styles.removeButton}
             onPress={handleRemoveWorkout}
           >
-            <ThemedText type="label" style={{ color: colors.error }}>
+            <ThemedText type='label' style={{ color: colors.error }}>
               Remove Workout
             </ThemedText>
           </TouchableOpacity>
@@ -254,22 +254,22 @@ export const EditWorkoutModal = forwardRef<
         onSelectExercise={handleAddExercise}
       />
     </>
-  );
-});
+  )
+})
 
-EditWorkoutModal.displayName = "EditWorkoutModal";
+EditWorkoutModal.displayName = 'EditWorkoutModal'
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
   },
   headerText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   scrollContent: {
     padding: spacing.md,
@@ -285,17 +285,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   exerciseContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   exerciseInfo: {
     flex: 1,
   },
   exerciseHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   exerciseDetails: {
     opacity: 0.6,
@@ -306,12 +306,12 @@ const styles = StyleSheet.create({
   },
   addButton: {
     paddingVertical: 16,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 8,
   },
   removeButton: {
     paddingVertical: 16,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 32,
   },
-});
+})

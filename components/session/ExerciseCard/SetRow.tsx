@@ -1,57 +1,57 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, TextInput } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "@/components/common/ThemedText";
-import { WorkoutSet } from "@/types";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import React, { useState } from 'react'
+import { View, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { ThemedText } from '@/components/common/ThemedText'
+import { WorkoutSet } from '@/types'
+import { useAppTheme } from '@/hooks/useAppTheme'
 
 type SetRowProps = {
-  set: WorkoutSet;
-  onToggle: () => void;
-  onUpdateSet: (updates: Partial<WorkoutSet>) => void;
-};
+  set: WorkoutSet
+  onToggle: () => void
+  onUpdateSet: (updates: Partial<WorkoutSet>) => void
+}
 
 export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
-  const { colors } = useAppTheme();
-  const [isEditingWeight, setIsEditingWeight] = useState(false);
-  const [isEditingReps, setIsEditingReps] = useState(false);
-  const [tempWeight, setTempWeight] = useState(set.weight.value.toString());
-  const [tempReps, setTempReps] = useState(set.reps.toString());
+  const { colors } = useAppTheme()
+  const [isEditingWeight, setIsEditingWeight] = useState(false)
+  const [isEditingReps, setIsEditingReps] = useState(false)
+  const [tempWeight, setTempWeight] = useState(set.weight.value.toString())
+  const [tempReps, setTempReps] = useState(set.reps.toString())
 
   const handleWeightSubmit = () => {
-    const newWeightValue = parseFloat(tempWeight);
+    const newWeightValue = parseFloat(tempWeight)
     if (!isNaN(newWeightValue) && newWeightValue > 0) {
       onUpdateSet({
         weight: { value: newWeightValue, unit: set.weight.unit },
-      });
+      })
     } else {
-      setTempWeight(set.weight.value.toString());
+      setTempWeight(set.weight.value.toString())
     }
-    setIsEditingWeight(false);
-  };
+    setIsEditingWeight(false)
+  }
 
   const handleRepsSubmit = () => {
-    const newReps = parseInt(tempReps);
+    const newReps = parseInt(tempReps)
     if (!isNaN(newReps) && newReps > 0) {
-      onUpdateSet({ reps: newReps });
+      onUpdateSet({ reps: newReps })
     } else {
-      setTempReps(set.reps.toString());
+      setTempReps(set.reps.toString())
     }
-    setIsEditingReps(false);
-  };
+    setIsEditingReps(false)
+  }
 
   const handleWeightBlur = () => {
-    handleWeightSubmit();
-  };
+    handleWeightSubmit()
+  }
 
   const handleRepsBlur = () => {
-    handleRepsSubmit();
-  };
+    handleRepsSubmit()
+  }
 
   return (
     <View style={[styles.setRow, { borderBottomColor: colors.divider }]}>
       <View style={styles.setNumberContainer}>
-        <ThemedText type="defaultSemiBold">{set.setNumber}</ThemedText>
+        <ThemedText type='defaultSemiBold'>{set.setNumber}</ThemedText>
       </View>
 
       <TouchableOpacity
@@ -60,19 +60,22 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
       >
         {isEditingWeight ? (
           <TextInput
-            style={[styles.input, { color: colors.text, borderBottomColor: colors.divider }]}
+            style={[
+              styles.input,
+              { color: colors.text, borderBottomColor: colors.divider },
+            ]}
             value={tempWeight}
             onChangeText={setTempWeight}
             onBlur={handleWeightBlur}
             onSubmitEditing={handleWeightSubmit}
-            keyboardType="numeric"
+            keyboardType='numeric'
             autoFocus
             selectTextOnFocus
           />
         ) : (
-          <ThemedText type="defaultSemiBold">{set.weight.value}</ThemedText>
+          <ThemedText type='defaultSemiBold'>{set.weight.value}</ThemedText>
         )}
-        <ThemedText type="body">{set.weight.unit}</ThemedText>
+        <ThemedText type='body'>{set.weight.unit}</ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -81,19 +84,22 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
       >
         {isEditingReps ? (
           <TextInput
-            style={[styles.input, { color: colors.text, borderBottomColor: colors.divider }]}
+            style={[
+              styles.input,
+              { color: colors.text, borderBottomColor: colors.divider },
+            ]}
             value={tempReps}
             onChangeText={setTempReps}
             onBlur={handleRepsBlur}
             onSubmitEditing={handleRepsSubmit}
-            keyboardType="numeric"
+            keyboardType='numeric'
             autoFocus
             selectTextOnFocus
           />
         ) : (
-          <ThemedText type="defaultSemiBold">{set.reps}</ThemedText>
+          <ThemedText type='defaultSemiBold'>{set.reps}</ThemedText>
         )}
-        <ThemedText type="body">reps</ThemedText>
+        <ThemedText type='body'>reps</ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -105,40 +111,44 @@ export function SetRow({ set, onToggle, onUpdateSet }: SetRowProps) {
         ]}
         onPress={onToggle}
       >
-        <Ionicons name="checkmark" size={20} color={set.isCompleted ? colors.background : colors.text} />
+        <Ionicons
+          name='checkmark'
+          size={20}
+          color={set.isCompleted ? colors.background : colors.text}
+        />
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   setRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
   },
   setNumberContainer: {
     width: 30,
-    alignItems: "center",
+    alignItems: 'center',
   },
   weightContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   repsContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     marginRight: 4,
     minWidth: 30,
-    textAlign: "center",
+    textAlign: 'center',
     borderBottomWidth: 1,
     paddingVertical: 2,
   },
@@ -146,8 +156,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 10,
   },
-});
+})

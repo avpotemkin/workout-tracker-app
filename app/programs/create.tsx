@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   StyleSheet,
@@ -6,68 +6,68 @@ import {
   TextInput,
   ScrollView,
   Alert,
-} from "react-native";
-import { useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { Ionicons } from "@expo/vector-icons";
-import { usePrograms } from "@/hooks/usePrograms";
-import { useProgramDraft } from "@/context/ProgramDraftContext";
-import { Program, Workout, ProgramId, WorkoutId } from "@/types";
-import { WORKOUT_SPLITS, WorkoutSplitType } from "@/constants/WorkoutPresets";
-import { showWorkoutSplitPicker } from "@/components/programs/WorkoutSplitPicker";
-import { EditWorkoutModal } from "@/components/programs";
-import { generateId } from "@/utils/ids";
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { ThemedView } from '@/components/common/ThemedView'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { Ionicons } from '@expo/vector-icons'
+import { usePrograms } from '@/hooks/usePrograms'
+import { useProgramDraft } from '@/context/ProgramDraftContext'
+import { Program, Workout, ProgramId, WorkoutId } from '@/types'
+import { WORKOUT_SPLITS, WorkoutSplitType } from '@/constants/WorkoutPresets'
+import { showWorkoutSplitPicker } from '@/components/programs/WorkoutSplitPicker'
+import { EditWorkoutModal } from '@/components/programs'
+import { generateId } from '@/utils/ids'
 
 export default function CreateProgramScreen() {
-  const [programName, setProgramName] = useState("");
+  const [programName, setProgramName] = useState('')
   const [selectedSplit, setSelectedSplit] = useState<WorkoutSplitType>(
     WORKOUT_SPLITS.FULL_BODY
-  );
-  const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null);
-  const editWorkoutModalRef = useRef<BottomSheetModal>(null);
+  )
+  const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null)
+  const editWorkoutModalRef = useRef<BottomSheetModal>(null)
 
-  const backgroundColor = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
-  const { colors } = useAppTheme();
-  const router = useRouter();
-  const { addProgram } = usePrograms();
-  const { workouts, resetWithPreset, addWorkout } = useProgramDraft();
+  const backgroundColor = useThemeColor({}, 'background')
+  const textColor = useThemeColor({}, 'text')
+  const { colors } = useAppTheme()
+  const router = useRouter()
+  const { addProgram } = usePrograms()
+  const { workouts, resetWithPreset, addWorkout } = useProgramDraft()
 
   useEffect(() => {
-    resetWithPreset(selectedSplit);
-  }, [selectedSplit]);
+    resetWithPreset(selectedSplit)
+  }, [selectedSplit])
 
   function handleAddWorkout() {
     const newWorkout: Workout = {
       id: generateId() as WorkoutId,
       name: `Workout ${String.fromCharCode(65 + workouts.length)}`,
       exercises: [],
-    };
-    addWorkout(newWorkout);
-    setEditingWorkoutId(newWorkout.id as string);
-    editWorkoutModalRef.current?.present();
+    }
+    addWorkout(newWorkout)
+    setEditingWorkoutId(newWorkout.id as string)
+    editWorkoutModalRef.current?.present()
   }
 
   function handleEditWorkout(workoutId: string) {
-    setEditingWorkoutId(workoutId);
-    editWorkoutModalRef.current?.present();
+    setEditingWorkoutId(workoutId)
+    editWorkoutModalRef.current?.present()
   }
 
   async function handleSave() {
     if (!programName.trim()) {
-      Alert.alert("Error", "Please enter a program name");
-      return;
+      Alert.alert('Error', 'Please enter a program name')
+      return
     }
 
     if (workouts.length === 0) {
-      Alert.alert("Error", "Please add at least one workout");
-      return;
+      Alert.alert('Error', 'Please add at least one workout')
+      return
     }
 
     const program: Program = {
@@ -77,16 +77,16 @@ export default function CreateProgramScreen() {
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
-    };
+    }
 
     try {
-      await addProgram(program);
-      router.back();
+      await addProgram(program)
+      router.back()
     } catch {
       Alert.alert(
-        "Error",
-        "Failed to create program. Please check your connection and try again."
-      );
+        'Error',
+        'Failed to create program. Please check your connection and try again.'
+      )
     }
   }
 
@@ -95,15 +95,15 @@ export default function CreateProgramScreen() {
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <ThemedText type="default" style={{ color: colors.error }}>
+            <ThemedText type='default' style={{ color: colors.error }}>
               Cancel
             </ThemedText>
           </TouchableOpacity>
 
-          <ThemedText type="subtitle">Create Program</ThemedText>
+          <ThemedText type='subtitle'>Create Program</ThemedText>
 
           <TouchableOpacity onPress={handleSave}>
-            <ThemedText type="default" style={{ color: colors.accent }}>
+            <ThemedText type='default' style={{ color: colors.accent }}>
               Done
             </ThemedText>
           </TouchableOpacity>
@@ -116,7 +116,7 @@ export default function CreateProgramScreen() {
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <TextInput
               style={{ color: textColor }}
-              placeholder="Program Name"
+              placeholder='Program Name'
               placeholderTextColor={`${textColor}80`}
               value={programName}
               onChangeText={setProgramName}
@@ -135,12 +135,12 @@ export default function CreateProgramScreen() {
             }
           >
             <View>
-              <ThemedText type="caption" style={{ opacity: 0.6 }}>
+              <ThemedText type='caption' style={{ opacity: 0.6 }}>
                 Workout Split
               </ThemedText>
-              <ThemedText type="default">{selectedSplit}</ThemedText>
+              <ThemedText type='default'>{selectedSplit}</ThemedText>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={textColor} />
+            <Ionicons name='chevron-forward' size={20} color={textColor} />
           </TouchableOpacity>
 
           {workouts.map((workout) => (
@@ -154,21 +154,21 @@ export default function CreateProgramScreen() {
               onPress={() => handleEditWorkout(workout.id)}
             >
               <View style={styles.workoutInfo}>
-                <ThemedText type="default">{workout.name}</ThemedText>
-                <ThemedText type="caption" style={{ opacity: 0.6 }}>
+                <ThemedText type='default'>{workout.name}</ThemedText>
+                <ThemedText type='caption' style={{ opacity: 0.6 }}>
                   {workout.exercises.length === 0
-                    ? "No exercises"
+                    ? 'No exercises'
                     : `${workout.exercises.length} exercise${
-                        workout.exercises.length !== 1 ? "s" : ""
+                        workout.exercises.length !== 1 ? 's' : ''
                       }`}
                 </ThemedText>
               </View>
-              <Ionicons name="chevron-forward" size={20} color={textColor} />
+              <Ionicons name='chevron-forward' size={20} color={textColor} />
             </TouchableOpacity>
           ))}
 
           <TouchableOpacity style={styles.addButton} onPress={handleAddWorkout}>
-            <ThemedText type="default" style={{ color: colors.error }}>
+            <ThemedText type='default' style={{ color: colors.error }}>
               Add Workout
             </ThemedText>
           </TouchableOpacity>
@@ -180,7 +180,7 @@ export default function CreateProgramScreen() {
         workoutId={editingWorkoutId}
       />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -189,9 +189,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: spacing.md,
     marginBottom: spacing.md,
   },
@@ -204,20 +204,20 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   selector: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   workoutCard: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   workoutInfo: {
     flex: 1,
   },
   addButton: {
     paddingVertical: 16,
-    alignItems: "center",
+    alignItems: 'center',
   },
-});
+})

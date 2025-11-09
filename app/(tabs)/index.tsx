@@ -1,74 +1,74 @@
-import { ThemedText } from "@/components/common/ThemedText";
-import { ThemedView } from "@/components/common/ThemedView";
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { useFocusEffect } from "@react-navigation/native";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { spacing } from "@/constants/Theme";
-import { useAppContext } from "@/context/AppContext";
-import { fetchWorkoutHistory } from "@/services/api";
-import { WorkoutHistory } from "@/types";
-import { HistoryCard } from "@/components/history/HistoryCard";
-import { WorkoutSelectionModal } from "@/components/programs";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { ThemedText } from '@/components/common/ThemedText'
+import { ThemedView } from '@/components/common/ThemedView'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
+import { StyleSheet, ScrollView, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
+import { useFocusEffect } from '@react-navigation/native'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { spacing } from '@/constants/Theme'
+import { useAppContext } from '@/context/AppContext'
+import { fetchWorkoutHistory } from '@/services/api'
+import { WorkoutHistory } from '@/types'
+import { HistoryCard } from '@/components/history/HistoryCard'
+import { WorkoutSelectionModal } from '@/components/programs'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 export default function HomeScreen() {
-  const backgroundColor = useThemeColor({}, "background");
-  const { colors } = useAppTheme();
-  const router = useRouter();
-  const { selectedProgram } = useAppContext();
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const [lastWorkout, setLastWorkout] = useState<WorkoutHistory | null>(null);
+  const backgroundColor = useThemeColor({}, 'background')
+  const { colors } = useAppTheme()
+  const router = useRouter()
+  const { selectedProgram } = useAppContext()
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const [lastWorkout, setLastWorkout] = useState<WorkoutHistory | null>(null)
 
   const loadRecentHistory = useCallback(async () => {
     try {
-      const workoutHistory = await fetchWorkoutHistory();
-      setLastWorkout(workoutHistory.length > 0 ? workoutHistory[0] : null);
+      const workoutHistory = await fetchWorkoutHistory()
+      setLastWorkout(workoutHistory.length > 0 ? workoutHistory[0] : null)
     } catch {
-      setLastWorkout(null);
+      setLastWorkout(null)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    loadRecentHistory();
-  }, [loadRecentHistory]);
+    loadRecentHistory()
+  }, [loadRecentHistory])
 
   useFocusEffect(
     useCallback(() => {
-      loadRecentHistory();
+      loadRecentHistory()
     }, [loadRecentHistory])
-  );
+  )
 
   const handleStartWorkout = () => {
     if (selectedProgram && selectedProgram.workouts.length > 0) {
-      bottomSheetModalRef.current?.present();
+      bottomSheetModalRef.current?.present()
     } else {
-      router.push("/(tabs)/programs");
+      router.push('/(tabs)/programs')
     }
-  };
+  }
 
   const handleSelectWorkout = (workoutId: string) => {
     if (selectedProgram) {
       router.push({
-        pathname: "/(workout)/session",
+        pathname: '/(workout)/session',
         params: {
           programId: selectedProgram.id,
           workoutId: workoutId,
         },
-      });
+      })
     }
-  };
+  }
 
   const handleBrowsePrograms = () => {
-    router.push("/(tabs)/programs");
-  };
+    router.push('/(tabs)/programs')
+  }
 
   const handleViewAllHistory = () => {
-    router.push("/(tabs)/history");
-  };
+    router.push('/(tabs)/history')
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -77,26 +77,31 @@ export default function HomeScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.container}>
-          <ThemedText type="title" style={styles.header}>
+          <ThemedText type='title' style={styles.header}>
             Home
           </ThemedText>
 
           <View style={styles.section}>
-            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+            <ThemedText type='defaultSemiBold' style={styles.sectionTitle}>
               Active Program
             </ThemedText>
 
             {selectedProgram ? (
               <View style={[styles.card, { backgroundColor: colors.card }]}>
-                <ThemedText type="label" style={styles.programName}>
+                <ThemedText type='label' style={styles.programName}>
                   {selectedProgram.name}
                 </ThemedText>
                 {selectedProgram.workouts.length > 0 && (
-                  <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
-                    <ThemedText type="caption" style={styles.nextWorkoutLabel}>
+                  <View
+                    style={[
+                      styles.nextWorkoutContainer,
+                      { borderTopColor: colors.divider },
+                    ]}
+                  >
+                    <ThemedText type='caption' style={styles.nextWorkoutLabel}>
                       Next Workout:
                     </ThemedText>
-                    <ThemedText type="defaultSemiBold">
+                    <ThemedText type='defaultSemiBold'>
                       {selectedProgram.workouts[0].name}
                     </ThemedText>
                   </View>
@@ -104,7 +109,7 @@ export default function HomeScreen() {
               </View>
             ) : (
               <View style={[styles.card, { backgroundColor: colors.card }]}>
-                <ThemedText type="body" style={styles.emptyText}>
+                <ThemedText type='body' style={styles.emptyText}>
                   No program selected. Browse programs to get started.
                 </ThemedText>
               </View>
@@ -113,12 +118,12 @@ export default function HomeScreen() {
 
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+              <ThemedText type='defaultSemiBold' style={styles.sectionTitle}>
                 Recent Activity
               </ThemedText>
               {lastWorkout && (
                 <TouchableOpacity onPress={handleViewAllHistory}>
-                  <ThemedText type="link">View All</ThemedText>
+                  <ThemedText type='link'>View All</ThemedText>
                 </TouchableOpacity>
               )}
             </View>
@@ -127,7 +132,7 @@ export default function HomeScreen() {
               <HistoryCard workout={lastWorkout} />
             ) : (
               <View style={[styles.card, { backgroundColor: colors.card }]}>
-                <ThemedText type="body" style={styles.emptyText}>
+                <ThemedText type='body' style={styles.emptyText}>
                   No workouts yet. Start your first workout!
                 </ThemedText>
               </View>
@@ -135,7 +140,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.section}>
-            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+            <ThemedText type='defaultSemiBold' style={styles.sectionTitle}>
               Quick Actions
             </ThemedText>
 
@@ -143,7 +148,10 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.accent }]}
               onPress={handleStartWorkout}
             >
-              <ThemedText type="defaultSemiBold" style={{ color: colors.background }}>
+              <ThemedText
+                type='defaultSemiBold'
+                style={{ color: colors.background }}
+              >
                 Start Workout
               </ThemedText>
             </TouchableOpacity>
@@ -152,10 +160,7 @@ export default function HomeScreen() {
               style={[styles.button, { backgroundColor: colors.card }]}
               onPress={handleBrowsePrograms}
             >
-              <ThemedText
-                type="defaultSemiBold"
-                style={{ color: colors.text }}
-              >
+              <ThemedText type='defaultSemiBold' style={{ color: colors.text }}>
                 Browse Programs
               </ThemedText>
             </TouchableOpacity>
@@ -169,7 +174,7 @@ export default function HomeScreen() {
         onSelectWorkout={handleSelectWorkout}
       />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -191,9 +196,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 12,
   },
   sectionTitle: {
@@ -218,13 +223,13 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     opacity: 0.7,
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 15,
     borderRadius: 10,
     marginBottom: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
-});
+})

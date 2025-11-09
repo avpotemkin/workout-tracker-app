@@ -1,15 +1,15 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Ionicons } from "@expo/vector-icons";
-import { spacing } from "@/constants/Theme";
+import React from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { Ionicons } from '@expo/vector-icons'
+import { spacing } from '@/constants/Theme'
 
 interface SetsRepsCounterProps {
-  sets: number;
-  reps: number;
-  onSetsChange: (sets: number) => void;
-  onRepsChange: (reps: number) => void;
+  sets: number
+  reps: number
+  onSetsChange: (sets: number) => void
+  onRepsChange: (reps: number) => void
 }
 
 export function SetsRepsCounter({
@@ -18,27 +18,27 @@ export function SetsRepsCounter({
   onSetsChange,
   onRepsChange,
 }: SetsRepsCounterProps) {
-  const { colors } = useAppTheme();
+  const { colors } = useAppTheme()
 
   const handleSetsIncrement = () => {
-    onSetsChange(sets + 1);
-  };
+    onSetsChange(sets + 1)
+  }
 
   const handleSetsDecrement = () => {
     if (sets > 1) {
-      onSetsChange(sets - 1);
+      onSetsChange(sets - 1)
     }
-  };
+  }
 
   const handleRepsIncrement = () => {
-    onRepsChange(reps + 1);
-  };
+    onRepsChange(reps + 1)
+  }
 
   const handleRepsDecrement = () => {
     if (reps > 1) {
-      onRepsChange(reps - 1);
+      onRepsChange(reps - 1)
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -48,12 +48,12 @@ export function SetsRepsCounter({
             onPress={handleSetsIncrement}
             style={[styles.button, { backgroundColor: colors.card }]}
           >
-            <Ionicons name="chevron-up" size={14} color={colors.text} />
+            <Ionicons name='chevron-up' size={14} color={colors.text} />
           </TouchableOpacity>
           <View
             style={[styles.valueContainer, { backgroundColor: colors.card }]}
           >
-            <ThemedText type="defaultSemiBold">{sets}</ThemedText>
+            <ThemedText type='defaultSemiBold'>{sets}</ThemedText>
           </View>
           <TouchableOpacity
             onPress={handleSetsDecrement}
@@ -61,13 +61,13 @@ export function SetsRepsCounter({
             disabled={sets <= 1}
           >
             <Ionicons
-              name="chevron-down"
+              name='chevron-down'
               size={14}
               color={sets <= 1 ? colors.divider : colors.text}
             />
           </TouchableOpacity>
         </View>
-        <ThemedText type="caption" style={styles.label}>
+        <ThemedText type='caption' style={styles.label}>
           Sets
         </ThemedText>
       </View>
@@ -78,12 +78,12 @@ export function SetsRepsCounter({
             onPress={handleRepsIncrement}
             style={[styles.button, { backgroundColor: colors.card }]}
           >
-            <Ionicons name="chevron-up" size={14} color={colors.text} />
+            <Ionicons name='chevron-up' size={14} color={colors.text} />
           </TouchableOpacity>
           <View
             style={[styles.valueContainer, { backgroundColor: colors.card }]}
           >
-            <ThemedText type="defaultSemiBold">{reps}</ThemedText>
+            <ThemedText type='defaultSemiBold'>{reps}</ThemedText>
           </View>
           <TouchableOpacity
             onPress={handleRepsDecrement}
@@ -91,52 +91,52 @@ export function SetsRepsCounter({
             disabled={reps <= 1}
           >
             <Ionicons
-              name="chevron-down"
+              name='chevron-down'
               size={14}
               color={reps <= 1 ? colors.divider : colors.text}
             />
           </TouchableOpacity>
         </View>
-        <ThemedText type="caption" style={styles.label}>
+        <ThemedText type='caption' style={styles.label}>
           Reps
         </ThemedText>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: spacing.sm,
   },
   counterGroup: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: spacing.xs,
   },
   counterContent: {
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     gap: 2,
   },
   button: {
     width: 24,
     height: 20,
     borderRadius: 4,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   valueContainer: {
     minWidth: 28,
     height: 24,
     borderRadius: 4,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: spacing.xs,
   },
   label: {
     opacity: 0.7,
   },
-});
+})

@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { WorkoutHistory, WorkoutSet } from "@/types";
-import { getExerciseNameById } from "@/constants/Exercises";
-import { useChevronRotation } from "@/animations/chevronRotation";
-import Animated from "react-native-reanimated";
+import React, { useState } from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { WorkoutHistory, WorkoutSet } from '@/types'
+import { getExerciseNameById } from '@/constants/Exercises'
+import { useChevronRotation } from '@/animations/chevronRotation'
+import Animated from 'react-native-reanimated'
 
 type HistoryCardProps = {
-  workout: WorkoutHistory;
-};
+  workout: WorkoutHistory
+}
 
 export function HistoryCard({ workout }: HistoryCardProps) {
-  const { colors } = useAppTheme();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const rotationStyle = useChevronRotation(isExpanded);
+  const { colors } = useAppTheme()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const rotationStyle = useChevronRotation(isExpanded)
 
   const formatDuration = (minutes: number): string => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
     if (hours > 0) {
-      return `${hours}h ${remainingMinutes}m`;
+      return `${hours}h ${remainingMinutes}m`
     }
-    return `${remainingMinutes}m`;
-  };
+    return `${remainingMinutes}m`
+  }
 
   const formatWeight = (weight: { value: number; unit: string }): string => {
-    return `${weight.value} ${weight.unit}`;
-  };
+    return `${weight.value} ${weight.unit}`
+  }
 
   return (
     <View style={[styles.card, { backgroundColor: colors.card }]}>
@@ -38,62 +38,75 @@ export function HistoryCard({ workout }: HistoryCardProps) {
       >
         <View style={styles.cardHeader}>
           <View style={styles.programInfo}>
-            <ThemedText type="defaultSemiBold">
+            <ThemedText type='defaultSemiBold'>
               {workout.programName}
             </ThemedText>
-            <ThemedText type="default" style={{ color: colors.text }}>
+            <ThemedText type='default' style={{ color: colors.text }}>
               {workout.workoutName}
             </ThemedText>
           </View>
           <Animated.View style={rotationStyle}>
-            <Ionicons name="chevron-down" size={20} color={colors.text} />
+            <Ionicons name='chevron-down' size={20} color={colors.text} />
           </Animated.View>
         </View>
 
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
-            <Ionicons name="time-outline" size={16} color={colors.text} />
-            <ThemedText type="caption" style={styles.statText}>
+            <Ionicons name='time-outline' size={16} color={colors.text} />
+            <ThemedText type='caption' style={styles.statText}>
               {formatDuration(workout.duration)}
             </ThemedText>
           </View>
 
           <View style={styles.statItem}>
-            <Ionicons name="fitness-outline" size={16} color={colors.text} />
-            <ThemedText type="caption" style={styles.statText}>
+            <Ionicons name='fitness-outline' size={16} color={colors.text} />
+            <ThemedText type='caption' style={styles.statText}>
               {workout.totalSets} sets
             </ThemedText>
           </View>
         </View>
 
-        <View style={[styles.exercisesList, { borderTopColor: colors.divider }]}>
-          <ThemedText type="caption" style={[styles.exercisesText, { opacity: 0.7 }]}>
+        <View
+          style={[styles.exercisesList, { borderTopColor: colors.divider }]}
+        >
+          <ThemedText
+            type='caption'
+            style={[styles.exercisesText, { opacity: 0.7 }]}
+          >
             {workout.exercises
               .map((ex) => getExerciseNameById(ex.templateId))
-              .join(", ")}
+              .join(', ')}
           </ThemedText>
         </View>
       </TouchableOpacity>
 
       {isExpanded && (
-        <View style={[styles.expandedContent, { borderTopColor: colors.divider }]}>
+        <View
+          style={[styles.expandedContent, { borderTopColor: colors.divider }]}
+        >
           {workout.exercises.map((exercise) => (
             <View key={exercise.id} style={styles.exerciseSection}>
-              <ThemedText type="defaultSemiBold" style={styles.exerciseName}>
+              <ThemedText type='defaultSemiBold' style={styles.exerciseName}>
                 {getExerciseNameById(exercise.templateId)}
               </ThemedText>
               <View style={styles.setsContainer}>
                 {exercise.sets
                   .filter((set) => set.isCompleted)
                   .map((set: WorkoutSet) => (
-                    <View key={set.id} style={[styles.setRow, { borderBottomColor: colors.divider }]}>
-                      <ThemedText type="body" style={styles.setNumber}>
+                    <View
+                      key={set.id}
+                      style={[
+                        styles.setRow,
+                        { borderBottomColor: colors.divider },
+                      ]}
+                    >
+                      <ThemedText type='body' style={styles.setNumber}>
                         Set {set.setNumber}
                       </ThemedText>
-                      <ThemedText type="body" style={styles.setWeight}>
+                      <ThemedText type='body' style={styles.setWeight}>
                         {formatWeight(set.weight)}
                       </ThemedText>
-                      <ThemedText type="body" style={styles.setReps}>
+                      <ThemedText type='body' style={styles.setReps}>
                         {set.reps} reps
                       </ThemedText>
                     </View>
@@ -104,7 +117,7 @@ export function HistoryCard({ workout }: HistoryCardProps) {
         </View>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -113,28 +126,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
     elevation: 2,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   programInfo: {
     flex: 1,
   },
   statsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 8,
   },
   statItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   statText: {
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   setRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 6,
     borderBottomWidth: 1,
   },
@@ -171,10 +184,10 @@ const styles = StyleSheet.create({
   },
   setWeight: {
     flex: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
   setReps: {
     flex: 1,
-    textAlign: "right",
+    textAlign: 'right',
   },
-});
+})

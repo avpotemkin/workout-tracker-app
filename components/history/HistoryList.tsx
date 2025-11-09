@@ -1,33 +1,30 @@
-import React from 'react';
-import { FlatList, StyleSheet, ViewStyle } from 'react-native';
-import { ThemedText } from '@/components/common/ThemedText';
-import { ThemedView } from '@/components/common/ThemedView';
-import { WorkoutHistory } from '@/types';
-import { HistoryCard } from './HistoryCard';
+import React from 'react'
+import { FlatList, StyleSheet, ViewStyle } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { ThemedView } from '@/components/common/ThemedView'
+import { WorkoutHistory } from '@/types'
+import { HistoryCard } from './HistoryCard'
 
 type HistoryListProps = {
-  workoutHistory: WorkoutHistory[];
-  style?: ViewStyle;
-};
+  workoutHistory: WorkoutHistory[]
+  style?: ViewStyle
+}
 
-export function HistoryList({ 
-  workoutHistory, 
-  style 
-}: HistoryListProps) {
+export function HistoryList({ workoutHistory, style }: HistoryListProps) {
   const renderWorkoutItem = ({ item }: { item: WorkoutHistory }) => (
     <HistoryCard workout={item} />
-  );
+  )
 
   const renderEmptyState = () => (
     <ThemedView style={styles.emptyState}>
-      <ThemedText type="subtitle" style={styles.emptyText}>
+      <ThemedText type='subtitle' style={styles.emptyText}>
         No workout history found
       </ThemedText>
-      <ThemedText type="body" style={styles.emptySubtext}>
+      <ThemedText type='body' style={styles.emptySubtext}>
         Complete your first workout to see your history here
       </ThemedText>
     </ThemedView>
-  );
+  )
 
   return (
     <FlatList
@@ -39,7 +36,7 @@ export function HistoryList({
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={renderEmptyState}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -64,4 +61,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     opacity: 0.7,
   },
-}); 
+})

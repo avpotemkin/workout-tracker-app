@@ -1,19 +1,19 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { ThemedText } from "@/components/common/ThemedText";
-import { WorkoutExercise, WorkoutSet } from "@/types";
-import { SetRow } from "./SetRow";
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { WorkoutExercise, WorkoutSet } from '@/types'
+import { SetRow } from './SetRow'
 
 type SetListProps = {
-  exercise: WorkoutExercise;
-  onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void;
+  exercise: WorkoutExercise
+  onToggleSetCompletion: (exerciseIndex: number, setIndex: number) => void
   onUpdateSet: (
     exerciseIndex: number,
     setIndex: number,
     updates: Partial<WorkoutSet>
-  ) => void;
-  exerciseIndex: number;
-};
+  ) => void
+  exerciseIndex: number
+}
 
 export function SetList({
   exercise,
@@ -24,16 +24,16 @@ export function SetList({
   return (
     <View style={styles.setsContainer}>
       <View style={styles.setHeaderRow}>
-        <ThemedText type="body" style={styles.setHeaderText}>
+        <ThemedText type='body' style={styles.setHeaderText}>
           Set
         </ThemedText>
-        <ThemedText type="body" style={styles.setHeaderText}>
+        <ThemedText type='body' style={styles.setHeaderText}>
           Weight
         </ThemedText>
-        <ThemedText type="body" style={styles.setHeaderText}>
+        <ThemedText type='body' style={styles.setHeaderText}>
           Reps
         </ThemedText>
-        <ThemedText type="body" style={styles.setHeaderText}>
+        <ThemedText type='body' style={styles.setHeaderText}>
           Done
         </ThemedText>
       </View>
@@ -49,22 +49,22 @@ export function SetList({
         />
       ))}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   setsContainer: {
     borderTopWidth: 1,
-    borderTopColor: "#444",
+    borderTopColor: '#444',
   },
   setHeaderRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: "#444",
+    borderBottomColor: '#444',
   },
   setHeaderText: {
     flex: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})

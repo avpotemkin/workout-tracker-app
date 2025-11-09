@@ -1,22 +1,22 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import { ThemedView } from '@/components/common/ThemedView'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useThemeColor } from '@/hooks/useThemeColor'
 
 export default function ProgramsIndexScreen() {
-  const backgroundColor = useThemeColor({}, "background");
+  const backgroundColor = useThemeColor({}, 'background')
 
   return (
     <ThemedView style={[styles.container, { backgroundColor }]}>
       <View style={styles.header}>
-        <ThemedText type="title">Programs</ThemedText>
+        <ThemedText type='title'>Programs</ThemedText>
       </View>
-      <ThemedText type="default" style={styles.description}>
+      <ThemedText type='default' style={styles.description}>
         Select or create a workout program to get started.
       </ThemedText>
     </ThemedView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 16,
-    alignItems: "center",
+    alignItems: 'center',
   },
   description: {
-    textAlign: "center",
+    textAlign: 'center',
     opacity: 0.7,
   },
-});
+})
