@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/components/common/ThemedView";
 import { ThemedText } from "@/components/common/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { PROGRAMS } from "@/mockdata/programs";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
 import { useAppContext } from "@/context/AppContext";
@@ -21,9 +20,7 @@ export default function WorkoutScreen() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { selectedProgram } = useAppContext();
 
-  const defaultProgram =
-    selectedProgram ||
-    PROGRAMS.find((p) => p.workouts && p.workouts.length > 0);
+  const defaultProgram = selectedProgram;
 
   useEffect(() => {
     const checkActiveSession = () => {
@@ -99,7 +96,10 @@ export default function WorkoutScreen() {
                   onPress={handleResumeWorkout}
                 >
                   <Ionicons name="play" size={20} color={colors.background} />
-                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
+                  <ThemedText
+                    type="defaultSemiBold"
+                    style={[styles.buttonText, { color: colors.background }]}
+                  >
                     Resume Workout
                   </ThemedText>
                 </TouchableOpacity>
@@ -128,7 +128,12 @@ export default function WorkoutScreen() {
                       </View>
                     </View>
                     {selectedProgram.workouts.length > 0 && (
-                      <View style={[styles.nextWorkoutContainer, { borderTopColor: colors.divider }]}>
+                      <View
+                        style={[
+                          styles.nextWorkoutContainer,
+                          { borderTopColor: colors.divider },
+                        ]}
+                      >
                         <ThemedText
                           type="caption"
                           style={styles.nextWorkoutLabel}
@@ -140,7 +145,12 @@ export default function WorkoutScreen() {
                         </ThemedText>
                       </View>
                     )}
-                    <View style={[styles.workoutStats, { borderTopColor: colors.divider }]}>
+                    <View
+                      style={[
+                        styles.workoutStats,
+                        { borderTopColor: colors.divider },
+                      ]}
+                    >
                       <View style={styles.statItem}>
                         <Ionicons
                           name="calendar-outline"
@@ -181,8 +191,15 @@ export default function WorkoutScreen() {
                   style={[styles.button, { backgroundColor: colors.accent }]}
                   onPress={handleStartWorkout}
                 >
-                  <Ionicons name="play-circle" size={24} color={colors.background} />
-                  <ThemedText type="defaultSemiBold" style={[styles.buttonText, { color: colors.background }]}>
+                  <Ionicons
+                    name="play-circle"
+                    size={24}
+                    color={colors.background}
+                  />
+                  <ThemedText
+                    type="defaultSemiBold"
+                    style={[styles.buttonText, { color: colors.background }]}
+                  >
                     {selectedProgram
                       ? `Quick Start: ${selectedProgram.name}`
                       : "Quick Start"}

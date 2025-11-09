@@ -13,10 +13,12 @@ import {
   WorkoutId,
   ProgramId,
 } from "@/types";
-import { createWorkoutSessionFromProgram } from "@/mockdata/workoutSessions";
+import {
+  createWorkoutSessionFromProgram,
+  convertSessionToHistory,
+} from "@/utils/workoutHistory";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { spacing } from "@/constants/Theme";
-import { convertSessionToHistory } from "@/utils/workoutHistory";
 import { createWorkoutHistory } from "@/services/api";
 
 import { SessionHeader } from "@/components/session/SessionHeader";

@@ -2,6 +2,14 @@ import {
   WorkoutSession,
   WorkoutHistory,
   WorkoutHistoryId,
+  WorkoutExercise,
+  WorkoutSet,
+  Program,
+  Workout,
+  ProgramExercise,
+  WorkoutSessionId,
+  WorkoutExerciseId,
+  WorkoutSetId,
 } from "@/types";
 import { generateId } from "./ids";
 
@@ -41,6 +49,40 @@ export function convertSessionToHistory(
     duration,
     totalSets,
     totalReps,
+  };
+}
+
+export function createWorkoutSessionFromProgram(
+  program: Program,
+  workout: Workout
+): WorkoutSession {
+  const workoutExercises: WorkoutExercise[] = workout.exercises.map(
+    (exercise: ProgramExercise) => {
+      const sets: WorkoutSet[] = Array.from({ length: exercise.sets }, (_, i) => ({
+        id: generateId() as WorkoutSetId,
+        setNumber: i + 1,
+        weight: exercise.weight || { value: 0, unit: "kg" },
+        reps: exercise.reps,
+        isCompleted: false,
+      }));
+
+      return {
+        id: generateId() as WorkoutExerciseId,
+        templateId: exercise.templateId,
+        sets,
+      };
+    }
+  );
+
+  return {
+    id: generateId() as WorkoutSessionId,
+    programId: program.id,
+    programName: program.name,
+    workoutId: workout.id,
+    workoutName: workout.name,
+    exercises: workoutExercises,
+    startedAt: new Date(),
+    isFinished: false,
   };
 }
 
