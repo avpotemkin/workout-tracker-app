@@ -12,11 +12,9 @@ import {
 } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api'
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
 const AUTH_STORAGE_KEY = '@auth_userId'
 
-// Helper to get userId from storage
 async function getUserId(): Promise<string | null> {
   try {
     return await AsyncStorage.getItem(AUTH_STORAGE_KEY)
