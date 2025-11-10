@@ -168,6 +168,397 @@ components/
 - **ui/**: Lowest-level UI primitives and platform-specific implementations
 - Each feature folder includes an `index.ts` for clean barrel exports
 
+## Screen Component Architecture Pattern
+
+All main feature screens should follow a consistent modular pattern that separates routing concerns from screen logic and breaks down the UI into composable components.
+
+### Architecture Layers
+
+1. **Router File** (`app/(tabs)/feature.tsx`) - Minimal wrapper that imports and renders the screen component
+2. **Screen Component** (`screens/Feature/FeatureScreen.tsx`) - Main orchestration component that handles state, data fetching, and composition
+3. **Feature Components** (`components/feature/`) - Reusable UI components specific to the feature
+
+### Pattern Structure
+
+```
+app/(tabs)/
+├── history.tsx              # Router file (6-7 lines)
+└── programs.tsx             # Router file (6-7 lines)
+
+screens/
+├── History/
+│   └── HistoryScreen.tsx    # Main screen logic
+└── Programs/
+    └── ProgramsScreen.tsx   # Main screen logic
+
+components/
+├── history/
+│   ├── HistoryHeader.tsx    # Header component
+│   ├── HistoryList.tsx      # List component
+│   ├── HistoryCard.tsx      # Card component
+│   ├── HistoryStats.tsx     # Stats component
+│   └── index.ts             # Barrel exports
+└── programs/
+    ├── ProgramsHeader.tsx   # Header component
+    ├── ProgramsList.tsx     # List component
+    ├── ProgramCard.tsx      # Card component
+    └── index.ts             # Barrel exports
+```
+
+### Implementation Example
+
+#### 1. Router File (Minimal)
+
+```typescript
+// app/(tabs)/programs.tsx
+import React from 'react'
+import { ProgramsScreen } from '@/screens/Programs/ProgramsScreen'
+
+export default function ProgramsTab() {
+  return <ProgramsScreen />
+}
+```
+
+**Key Points:**
+
+- Should be 6-7 lines maximum
+- Only imports and renders the screen component
+- No logic, styling, or state management
+- Uses named export for the screen component
+
+#### 2. Screen Component (Orchestration)
+
+```typescript
+// screens/Programs/ProgramsScreen.tsx
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ThemedView } from '@/components/common/ThemedView'
+import { useThemeColor } from '@/hooks/useThemeColor'
+import { spacing } from '@/constants/Theme'
+import { useAppContext } from '@/context/AppContext'
+
+import { ProgramsHeader } from '@/components/programs/ProgramsHeader'
+import { ProgramsList } from '@/components/programs/ProgramsList'
+
+export function ProgramsScreen() {
+  const backgroundColor = useThemeColor({}, 'background')
+  const { selectedProgram, programs } = useAppContext()
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor }}>
+      <ThemedView style={styles.container}>
+        <ProgramsHeader />
+        <ProgramsList
+          programs={programs}
+          selectedProgramId={selectedProgram?.id}
+          style={styles.programsList}
+        />
+      </ThemedView>
+    </SafeAreaView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.md,
+  },
+  programsList: {
+    flex: 1,
+  },
+})
+```
+
+**Key Points:**
+
+- Handles data fetching and state management
+- Composes feature-specific components
+- Manages screen-level layout and styling
+- Handles loading and error states
+- Uses SafeAreaView for proper screen boundaries
+
+#### 3. Header Component
+
+```typescript
+// components/programs/ProgramsHeader.tsx
+import React from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
+import { spacing } from '@/constants/Theme'
+
+export function ProgramsHeader() {
+  const { colors } = useAppTheme()
+  const router = useRouter()
+
+  return (
+    <View style={styles.header}>
+      <ThemedText type='title'>Programs</ThemedText>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => router.push('/programs/create')}
+      >
+        <Ionicons name='add' size={24} color={colors.text} />
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    marginBottom: spacing.lg,
+    position: 'relative',
+  },
+  addButton: {
+    position: 'absolute',
+    right: 0,
+    padding: 8,
+  },
+})
+```
+
+**Key Points:**
+
+- Self-contained with its own logic and styling
+- Handles its own navigation/actions
+- Follows spacing constants
+- Uses theme colors
+
+#### 4. List Component
+
+```typescript
+// components/programs/ProgramsList.tsx
+import React from 'react'
+import { FlatList, StyleSheet, ViewStyle } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { ThemedView } from '@/components/common/ThemedView'
+import { Program } from '@/types'
+import { ProgramCard } from './ProgramCard'
+
+type ProgramsListProps = {
+  programs: Program[]
+  selectedProgramId: string | undefined
+  style?: ViewStyle
+}
+
+export function ProgramsList({
+  programs,
+  selectedProgramId,
+  style,
+}: ProgramsListProps) {
+  const renderProgramItem = ({ item }: { item: Program }) => (
+    <ProgramCard program={item} isSelected={selectedProgramId === item.id} />
+  )
+
+  const renderEmptyState = () => (
+    <ThemedView style={styles.emptyState}>
+      <ThemedText type='subtitle' style={styles.emptyText}>
+        No programs found
+      </ThemedText>
+      <ThemedText type='body' style={styles.emptySubtext}>
+        Create your first program to get started
+      </ThemedText>
+    </ThemedView>
+  )
+
+  return (
+    <FlatList
+      data={programs}
+      renderItem={renderProgramItem}
+      keyExtractor={(item) => item.id}
+      style={[styles.list, style]}
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
+      ListEmptyComponent={renderEmptyState}
+    />
+  )
+}
+
+const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: 32,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 32,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  emptySubtext: {
+    textAlign: 'center',
+    paddingHorizontal: 32,
+    opacity: 0.7,
+  },
+})
+```
+
+**Key Points:**
+
+- Accepts data via props
+- Renders child components (ProgramCard)
+- Handles empty states
+- Manages list-specific styling
+
+#### 5. Card Component
+
+```typescript
+// components/programs/ProgramCard.tsx
+import React from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ThemedText } from '@/components/common/ThemedText'
+import { useAppTheme } from '@/hooks/useAppTheme'
+import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
+import { Program } from '@/types'
+
+interface ProgramCardProps {
+  program: Program
+  isSelected: boolean
+}
+
+export function ProgramCard({ program, isSelected }: ProgramCardProps) {
+  const { colors } = useAppTheme()
+  const router = useRouter()
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.programCard,
+        { backgroundColor: colors.card },
+        isSelected && [
+          styles.selectedProgramCard,
+          { borderColor: colors.success },
+        ],
+      ]}
+      onPress={() => router.push(`/programs/${program.id}`)}
+    >
+      <View style={styles.programHeader}>
+        <ThemedText type='subtitle'>{program.name}</ThemedText>
+        {isSelected && (
+          <View
+            style={[styles.selectedBadge, { backgroundColor: colors.accent }]}
+          >
+            <Ionicons
+              name='checkmark-circle'
+              size={16}
+              color={colors.background}
+            />
+            <ThemedText
+              type='caption'
+              style={[styles.selectedText, { color: colors.background }]}
+            >
+              Active
+            </ThemedText>
+          </View>
+        )}
+      </View>
+
+      <View
+        style={[
+          styles.exerciseCount,
+          { backgroundColor: `${colors.accent}20` },
+        ]}
+      >
+        <ThemedText type='caption' style={{ color: colors.accent }}>
+          {program.workouts.length}{' '}
+          {program.workouts.length === 1 ? 'workout' : 'workouts'}
+        </ThemedText>
+      </View>
+    </TouchableOpacity>
+  )
+}
+
+const styles = StyleSheet.create({
+  programCard: {
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
+  },
+  selectedProgramCard: {
+    borderWidth: 2,
+  },
+  programHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  selectedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    marginLeft: 8,
+  },
+  selectedText: {
+    marginLeft: 4,
+  },
+  exerciseCount: {
+    alignSelf: 'flex-start',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+  },
+})
+```
+
+**Key Points:**
+
+- Accepts specific props with TypeScript interfaces
+- Self-contained with own logic and styling
+- Handles item-level interactions
+- Reusable across different contexts
+
+#### 6. Barrel Export
+
+```typescript
+// components/programs/index.ts
+export { ProgramsHeader } from './ProgramsHeader'
+export { ProgramCard } from './ProgramCard'
+export { ProgramsList } from './ProgramsList'
+export { EditWorkoutModal } from './EditWorkoutModal'
+export { AddExerciseModal } from './AddExerciseModal'
+// ... other exports
+```
+
+### Benefits of This Pattern
+
+1. **Separation of Concerns**: Routing, logic, and UI are cleanly separated
+2. **Reusability**: Components can be reused in different contexts
+3. **Testability**: Each component can be tested in isolation
+4. **Maintainability**: Changes to one component don't affect others
+5. **Readability**: Clear structure makes it easy to understand the screen
+6. **Consistency**: All screens follow the same pattern
+
+### When to Apply This Pattern
+
+- **Always** for main tab screens (Programs, History, Profile, etc.)
+- **Consider** for complex subscreens with multiple components
+- **Skip** for simple screens with minimal UI (single form, basic settings)
+
+### Anti-Patterns to Avoid
+
+- ❌ Putting all logic in the router file
+- ❌ Creating massive screen components with inline render functions
+- ❌ Mixing component logic across multiple files without clear boundaries
+- ❌ Duplicating components instead of making them reusable
+- ❌ Skipping barrel exports for feature components
+
 ## Core Development Principles
 
 ### Code Style and Structure
