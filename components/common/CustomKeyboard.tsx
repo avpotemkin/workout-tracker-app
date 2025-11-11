@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  Platform,
-} from 'react-native'
+import { View, StyleSheet, Pressable, Platform } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { Ionicons } from '@expo/vector-icons'
 import { ThemedText } from './ThemedText'
@@ -126,7 +121,7 @@ export function CustomKeyboard({
         <View style={styles.leftArrowColumn}>
           <ArrowButton
             onPress={handleDecrement}
-            icon="chevron-down"
+            icon='chevron-down'
             disabled={isAtMinimum}
           />
         </View>
@@ -135,39 +130,39 @@ export function CustomKeyboard({
           {/* Row 1: 7, 8, 9 */}
           <View style={styles.row}>
             <KeyButton onPress={() => handleNumberPress('7')}>
-              <ThemedText type="subtitle">7</ThemedText>
+              <ThemedText type='subtitle'>7</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('8')}>
-              <ThemedText type="subtitle">8</ThemedText>
+              <ThemedText type='subtitle'>8</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('9')}>
-              <ThemedText type="subtitle">9</ThemedText>
+              <ThemedText type='subtitle'>9</ThemedText>
             </KeyButton>
           </View>
 
           {/* Row 2: 4, 5, 6 */}
           <View style={styles.row}>
             <KeyButton onPress={() => handleNumberPress('4')}>
-              <ThemedText type="subtitle">4</ThemedText>
+              <ThemedText type='subtitle'>4</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('5')}>
-              <ThemedText type="subtitle">5</ThemedText>
+              <ThemedText type='subtitle'>5</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('6')}>
-              <ThemedText type="subtitle">6</ThemedText>
+              <ThemedText type='subtitle'>6</ThemedText>
             </KeyButton>
           </View>
 
           {/* Row 3: 1, 2, 3 */}
           <View style={styles.row}>
             <KeyButton onPress={() => handleNumberPress('1')}>
-              <ThemedText type="subtitle">1</ThemedText>
+              <ThemedText type='subtitle'>1</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('2')}>
-              <ThemedText type="subtitle">2</ThemedText>
+              <ThemedText type='subtitle'>2</ThemedText>
             </KeyButton>
             <KeyButton onPress={() => handleNumberPress('3')}>
-              <ThemedText type="subtitle">3</ThemedText>
+              <ThemedText type='subtitle'>3</ThemedText>
             </KeyButton>
           </View>
 
@@ -175,16 +170,20 @@ export function CustomKeyboard({
           <View style={styles.row}>
             {showDecimal ? (
               <KeyButton onPress={handleDecimalPress}>
-                <ThemedText type="subtitle">.</ThemedText>
+                <ThemedText type='subtitle'>.</ThemedText>
               </KeyButton>
             ) : (
               <View style={styles.keyButton} />
             )}
             <KeyButton onPress={() => handleNumberPress('0')}>
-              <ThemedText type="subtitle">0</ThemedText>
+              <ThemedText type='subtitle'>0</ThemedText>
             </KeyButton>
             <KeyButton onPress={handleBackspace}>
-              <Ionicons name="backspace-outline" size={24} color={colors.text} />
+              <Ionicons
+                name='backspace-outline'
+                size={24}
+                color={colors.text}
+              />
             </KeyButton>
           </View>
 
@@ -200,14 +199,14 @@ export function CustomKeyboard({
               onDone()
             }}
           >
-            <ThemedText type="subtitle" style={{ color: colors.background }}>
+            <ThemedText type='subtitle' style={{ color: colors.background }}>
               Done
             </ThemedText>
           </Pressable>
         </View>
 
         <View style={styles.rightArrowColumn}>
-          <ArrowButton onPress={handleIncrement} icon="chevron-up" />
+          <ArrowButton onPress={handleIncrement} icon='chevron-up' />
         </View>
       </View>
     </View>
@@ -274,4 +273,3 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
 })
-
