@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.artempotemkin.workouttracker",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
